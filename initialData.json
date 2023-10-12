@@ -1,0 +1,5 @@
+{
+  "initialVolume": "2",
+  "initialMinCO2Value": "0.2",
+  "initialMaxCO2Value": "0.4"
+}

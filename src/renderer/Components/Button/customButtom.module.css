@@ -1,0 +1,9 @@
+.container {
+  padding: 0.3rem;
+}
+
+.disabled_button {
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: darkgrey;
+}

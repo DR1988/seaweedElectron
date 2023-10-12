@@ -1,0 +1,29 @@
+.row {
+  padding-top: 1rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.error {
+  color: crimson;
+  /*border: 1px solid crimson;*/
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+}
+
+.input {
+  padding: 0.5rem;
+}
+
+.button {
+  height: 35px;
+  margin-right: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+}

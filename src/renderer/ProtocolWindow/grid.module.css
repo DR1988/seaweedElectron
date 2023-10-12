@@ -1,0 +1,40 @@
+.container {
+  width: 1220px;
+  position: relative;
+  /*overflow: hidden;*/
+}
+
+.gridContent {
+  border: 1px solid red;
+}
+
+.gridContainer {
+  display: flex;
+}
+
+.valveTimeComponentAdderContainer {
+  margin-left: 1rem;
+}
+
+.linesKeeper {
+  width: 100%;
+  overflow-x: scroll;
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.linesKeeperContainer{
+  height: 470px;
+  width: 100%;
+}
+
+.description {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.descriptionContainer {
+  margin-right: 1rem;
+}

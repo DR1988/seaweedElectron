@@ -1,0 +1,27 @@
+.item {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid red;
+  position: absolute;
+
+  background: rgba(171, 193, 197, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  /*transition: all 0.5s linear, left 0.5s linear;*/
+  user-select: none;
+}
+
+.errorItem {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: absolute;
+  user-select: none;
+}

@@ -1,0 +1,35 @@
+.timeShow {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.timeFormer{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.divider{
+  width: 2px;
+  height: 22px;
+  background-color: #648591;
+}
+
+.timeCount{
+  position: absolute;
+  top: 0;
+  left: 5px;
+}
+
+.timeFormer:last-child .timeCount{
+  left: -20px;
+}
+
+.timeLine{
+  height: 30px;
+  border: thin solid #648591;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}

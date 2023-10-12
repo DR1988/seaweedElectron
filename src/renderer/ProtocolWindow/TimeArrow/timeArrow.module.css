@@ -1,0 +1,45 @@
+:root {
+  --width: 6px;
+  --height: 9px;
+  --arrowColor: #007bff;
+  --containerHeight: 452px;
+}
+
+.container {
+  width: calc(var(--width) * 2);
+  position: absolute;
+  height: var(--containerHeight);
+}
+
+.container:focus{
+  outline: none;
+}
+
+.arrowContainer {
+  position: absolute;
+  bottom: 0;
+}
+
+.arrowLine {
+  position: absolute;
+  height: var(--containerHeight);
+  width: 2px;
+  left: calc(var(--width) - 1px);
+  background-color: var(--arrowColor);
+  pointer-events: none;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 var(--width) var(--height) var(--width);
+  border-color: transparent transparent var(--arrowColor) transparent;
+}
+
+.block {
+  width: calc(var(--width) * 2);
+  height: calc(var(--height) * 0.7);
+  background-color: var(--arrowColor);
+}
+
