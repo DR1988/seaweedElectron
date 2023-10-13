@@ -58,6 +58,16 @@ type GridProps = {
 const scalesCount = 6;
 const scaleFactor = 2;
 
+const scaleMapper = {
+  1: 1,
+  2: 2,
+  3: 4,
+  4: 8,
+  5: 12,
+  6: 15,
+  7: 24,
+};
+
 const ARROW_WIDTH = 6; // ширина стрелки, которая показывает положениее бегунка
 const TIME_INTERVAL = 100;
 let seconds = 0;
@@ -80,6 +90,7 @@ const _GridElement: React.FC<GridProps> = ({
   const [gridWidth, setGridWidth] = useState(1200);
   const [translateX, setTranslateX] = useState(0);
   const [scale, setScale] = useState(1);
+  const [scaleValue, setScaleValue] = useState(1);
 
   const allTime = useMemo(() => {
     return grid.reduce((acc, current) => {
@@ -528,13 +539,14 @@ const _GridElement: React.FC<GridProps> = ({
   }, []);
 
   const increaseScale = () => {
-    if (scale < Math.pow(2, scalesCount) && sectionRef.current) {
+    if (scale < 20 /*Math.pow(2, scalesCount)*/ && sectionRef.current) {
       const sectionWidth = sectionRef.current.getBoundingClientRect().width;
       const translate = sectionWidth / 2 - sectionWidth / 2 / (scale * 2);
 
-      const currentScale = scale * scaleFactor;
+      const currentScale = scaleValue + 1; // * scaleFactor;
+      setScaleValue(currentScale);
+      setScale(scaleMapper[currentScale]);
       setTranslateX(translate);
-      setScale(currentScale);
 
       if (!finish) {
         if (timeArrowRef.current) {
@@ -584,12 +596,14 @@ const _GridElement: React.FC<GridProps> = ({
 
   const decreaseScale = () => {
     if (scale > 1 && sectionRef.current) {
-      const currentScale = scale / scaleFactor;
+      // const currentScale = scale / scaleFactor;
+      const currentScale = scaleValue - 1; // * scaleFactor;
       const sectionWidth = sectionRef.current.getBoundingClientRect().width;
       const translate = sectionWidth / 2 - sectionWidth / 2 / (scale / 2);
 
+      setScaleValue(currentScale);
+      setScale(scaleMapper[currentScale]);
       setTranslateX(translate);
-      setScale(currentScale);
 
       if (!finish) {
         if (timeArrowRef.current) {

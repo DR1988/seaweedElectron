@@ -42,6 +42,15 @@ export const TimeLine: React.FC<TimeLineProps> = ({
   const parts = 12 * scale;
   for (let i = 0; i < parts; i++) {
     const isLast = i === parts - 1;
+
+    let shouldUseSmall = false;
+    const lastTime = isLast ? (24 * (i + 1)) / parts : 0;
+    let time = (24 * i) / parts;
+    if (!Number.isInteger(time)) {
+      time = Math.ceil((time - Math.floor(time)) * 60);
+      shouldUseSmall = true;
+    }
+
     dividersTemplatesDays.push(
       <div
         key={i}
@@ -53,13 +62,26 @@ export const TimeLine: React.FC<TimeLineProps> = ({
         <div
         // style={{ transform: `scaleX(${1 / scale})` }}
         >
-          <div className={styles.divider} />
-          <div className={styles.timeCount}>{(24 * i) / parts}</div>
+          <div
+            style={{
+              height: shouldUseSmall ? '12px' : '22px',
+            }}
+            className={styles.divider}
+          />
+          <div
+            style={{
+              top: !isLast && shouldUseSmall ? '-10px' : '0px',
+              // left: isLast ? '0px' : '0px',
+            }}
+            className={styles.timeCount}
+          >
+            {time}
+          </div>
         </div>
         {isLast ? (
           <div style={{ position: 'relative' }}>
             <div className={styles.divider} />
-            <div className={styles.timeCount}>{(24 * (i + 1)) / parts}</div>
+            <div className={styles.timeCount}>{lastTime}</div>
           </div>
         ) : null}
       </div>
