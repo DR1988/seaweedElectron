@@ -39,13 +39,14 @@ export const TimeLine: React.FC<TimeLineProps> = ({
     totalDays = days;
   }
 
-  const parts = 12 * scale;
+  const parts = 12 * scale * totalDays;
+  const totalHours = 24 * totalDays;
   for (let i = 0; i < parts; i++) {
     const isLast = i === parts - 1;
 
     let shouldUseSmall = false;
-    const lastTime = isLast ? (24 * (i + 1)) / parts : 0;
-    let time = (24 * i) / parts;
+    const lastTime = isLast ? (totalHours * (i + 1)) / parts : 0;
+    let time = (totalHours * i) / parts;
     if (!Number.isInteger(time)) {
       time = Math.ceil((time - Math.floor(time)) * 60);
       shouldUseSmall = true;
@@ -55,7 +56,7 @@ export const TimeLine: React.FC<TimeLineProps> = ({
       <div
         key={i}
         style={{
-          width: (1200 / parts) * scale,
+          width: (1200 / parts) * scale * totalDays,
         }}
         className={styles.timeFormer}
       >
@@ -71,7 +72,6 @@ export const TimeLine: React.FC<TimeLineProps> = ({
           <div
             style={{
               top: !isLast && shouldUseSmall ? '-10px' : '0px',
-              // left: isLast ? '0px' : '0px',
             }}
             className={styles.timeCount}
           >
@@ -81,7 +81,14 @@ export const TimeLine: React.FC<TimeLineProps> = ({
         {isLast ? (
           <div style={{ position: 'relative' }}>
             <div className={styles.divider} />
-            <div className={styles.timeCount}>{lastTime}</div>
+            <div
+              style={{
+                left: '-20px',
+              }}
+              className={styles.timeCount}
+            >
+              {lastTime}
+            </div>
           </div>
         ) : null}
       </div>
@@ -119,7 +126,7 @@ export const TimeLine: React.FC<TimeLineProps> = ({
 
   return (
     <section
-      style={{ width: `calc(${scale * 100}% - ${scale * 20}px)` }}
+      style={{ width: `calc(${totalDays * scale * 100}% - ${scale * 20}px)` }}
       className={styles.timeLine}
     >
       <div

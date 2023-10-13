@@ -23,9 +23,9 @@
   left: 5px;
 }
 
-.timeFormer:last-child .timeCount{
-  left: -20px;
-}
+/*.timeFormer:last-child .timeCount{*/
+/*  left: -20px;*/
+/*}*/
 
 .timeLine{
   height: 30px;

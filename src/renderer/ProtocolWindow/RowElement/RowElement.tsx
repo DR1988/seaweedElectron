@@ -78,17 +78,17 @@ export const GridRow: React.FC<GridRowProps> = ({
           //     />
           //   );
           //
-          // case 'opto_accustic':
-          //   return (
-          //     <OptoAccusticElement
-          //       key={change.id}
-          //       item={change}
-          //       allTime={allTime}
-          //       selectItem={selectItem}
-          //       gridWidth={gridWidth}
-          //       scale={scale}
-          //     />
-          //   );
+          case 'opto_accustic':
+            return (
+              <OptoAccusticElement
+                key={change.id}
+                item={change}
+                allTime={allTime}
+                selectItem={selectItem}
+                gridWidth={gridWidth}
+                scale={scale}
+              />
+            );
 
           default:
             return null;

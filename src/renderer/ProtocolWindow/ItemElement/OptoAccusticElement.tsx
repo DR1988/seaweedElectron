@@ -26,11 +26,15 @@ export const OptoAccusticElement: React.FC<ItemProps> = ({
 }) => {
   const { startTime, endTime } = item;
 
-  const width = endTime - startTime;
+  const timeLength = endTime - startTime;
 
   const _selectItem = React.useCallback(() => {
     selectItem(item);
   }, [selectItem, item]);
+
+  // const widthReal = (gridWidth * timeLength * scale) / 60 / 60 / 24;
+
+  // const width = Math.max(widthReal, 2 * scale);
 
   const { crosses } = item;
   return (
@@ -40,10 +44,10 @@ export const OptoAccusticElement: React.FC<ItemProps> = ({
         className={styles.item}
         style={{
           left: `${(gridWidth * startTime * scale) / allTime}px`,
-          width: `${(gridWidth * width * scale) / allTime}px`,
+          width: `${(gridWidth * timeLength * scale) / allTime}px`,
         }}
       >
-        <span>{width}</span>
+        <span>{timeLength}</span>
       </div>
       {crosses?.map((cross) => (
         <div

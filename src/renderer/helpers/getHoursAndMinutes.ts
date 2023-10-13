@@ -11,8 +11,11 @@ export const getHoursAndMinutes = (time: number) => {
     minutes = Math.floor(time / Seconds_In_Minute);
   }
 
+  let days = Math.ceil(hours / 24);
+
   return {
     hours,
     minutes,
+    days,
   };
 };

@@ -22,13 +22,15 @@ export const BrightItemElement: React.FC<ItemProps> = ({
 }) => {
   const { startTime, endTime, brightness, brightnessEnd } = item;
 
-  const width = endTime - startTime;
-  console.log('--------------------');
-  console.log('width', width, gridWidth * width * scale);
-  console.log('width all div', (gridWidth * startTime * scale) / 60 / 60);
+  const timeLength = endTime - startTime;
+  // console.log('--------------------');
+  // console.log('width', timeLength, gridWidth * timeLength * scale);
+  // console.log('width all div', (gridWidth * startTime * scale) / 60 / 60);
   const _selectItem = React.useCallback(() => {
     selectItem(item);
   }, [selectItem, item]);
+
+  const width = (gridWidth * timeLength * scale) / 60 / 60 / 24;
 
   const { crosses } = item;
   return (
@@ -38,7 +40,7 @@ export const BrightItemElement: React.FC<ItemProps> = ({
         className={styles.item}
         style={{
           left: `${(gridWidth * startTime * scale) / 60 / 60 / 24}px`,
-          width: `${(gridWidth * width * scale) / 60 / 60 / 24}px`,
+          width: `${width}px`,
         }}
       >
         {brightnessEnd ? (

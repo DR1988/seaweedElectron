@@ -158,13 +158,21 @@ export const initialGrid: GridType = [
         type: EItemType.OptoAcc,
         line: 'o',
       },
+
       {
         id: 2,
-        startTime: 30,
-        endTime: 32,
+        startTime: 3,
+        endTime: 4,
         type: EItemType.OptoAcc,
         line: 'o',
       },
+      // {
+      //   id: 2,
+      //   startTime: 30,
+      //   endTime: 32,
+      //   type: EItemType.OptoAcc,
+      //   line: 'o',
+      // },
     ],
     description: 'Оптический измеритель',
   },
