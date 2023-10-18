@@ -48,7 +48,7 @@ export const TimeLine: React.FC<TimeLineProps> = ({
     const lastTime = isLast ? (totalHours * (i + 1)) / parts : 0;
     let time = (totalHours * i) / parts;
     if (!Number.isInteger(time)) {
-      time = Math.ceil((time - Math.floor(time)) * 60);
+      time = Math.round((time - Math.floor(time)) * 60);
       shouldUseSmall = true;
     }
 

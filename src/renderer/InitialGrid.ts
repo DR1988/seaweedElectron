@@ -161,8 +161,8 @@ export const initialGrid: GridType = [
 
       {
         id: 2,
-        startTime: 3,
-        endTime: 4,
+        startTime: 1230,
+        endTime: 1231,
         type: EItemType.OptoAcc,
         line: 'o',
       },
