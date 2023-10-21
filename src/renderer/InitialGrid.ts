@@ -75,15 +75,6 @@ export const initialGrid: GridType = [
     shortName: 'STEP_Z',
     changes: [
       {
-        startTime: 0,
-        volume: 2,
-        direction: 'clockwise',
-        type: EItemType.Stepper,
-        id: 0,
-        endTime: 0,
-        line: 'z',
-      },
-      {
         startTime: 23,
         volume: 2,
         direction: 'clockwise',
@@ -205,7 +196,7 @@ export const initialGrid: GridType = [
         startTime: 4300,
         type: EItemType.Light,
         id: 2,
-        endTime: 5500,
+        endTime: 7800,
         line: 'l',
         isChangeable: true,
         brightness: 5,

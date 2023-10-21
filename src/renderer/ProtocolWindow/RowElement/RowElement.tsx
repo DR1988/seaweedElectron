@@ -54,30 +54,30 @@ export const GridRow: React.FC<GridRowProps> = ({
               />
             );
 
-          // case 'stepper':
-          //   return (
-          //     <StepperItemElement
-          //       selectItem={selectItem}
-          //       key={change.id}
-          //       item={change}
-          //       allTime={allTime}
-          //       gridWidth={gridWidth}
-          //       scale={scale}
-          //     />
-          //   );
-          //
-          // case 'air_lift':
-          //   return (
-          //     <AirLiftElement
-          //       key={change.id}
-          //       item={change}
-          //       allTime={allTime}
-          //       selectItem={selectItem}
-          //       gridWidth={gridWidth}
-          //       scale={scale}
-          //     />
-          //   );
-          //
+          case 'stepper':
+            return (
+              <StepperItemElement
+                selectItem={selectItem}
+                key={change.id}
+                item={change}
+                allTime={allTime}
+                gridWidth={gridWidth}
+                scale={scale}
+              />
+            );
+
+          case 'air_lift':
+            return (
+              <AirLiftElement
+                key={change.id}
+                item={change}
+                allTime={allTime}
+                selectItem={selectItem}
+                gridWidth={gridWidth}
+                scale={scale}
+              />
+            );
+
           case 'opto_accustic':
             return (
               <OptoAccusticElement

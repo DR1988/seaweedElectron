@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -66,6 +67,7 @@ const scaleMapper = {
   5: 12,
   // 6: 15,
   6: 24,
+  // 7: 120,
 };
 
 const ARROW_WIDTH = 6; // ширина стрелки, которая показывает положениее бегунка
@@ -88,7 +90,6 @@ const _GridElement: React.FC<GridProps> = ({
   setFinish,
 }) => {
   const [gridWidth, setGridWidth] = useState(1200);
-  const [translateX, setTranslateX] = useState(0);
   const [scale, setScale] = useState(1);
   const [scaleValue, setScaleValue] = useState(1);
 
@@ -128,8 +129,6 @@ const _GridElement: React.FC<GridProps> = ({
     }, 0);
   }, [grid]);
 
-  const gridContainerRef = useRef<HTMLDivElement | null>(null);
-  const gridRef = useRef<HTMLDivElement | null>(null);
   const intervalIdRef = useRef<number | NodeJS.Timer | null>(null);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const timeArrowRef = useRef<HTMLDivElement | null>(null);
@@ -546,7 +545,6 @@ const _GridElement: React.FC<GridProps> = ({
       const currentScale = scaleValue + 1; // * scaleFactor;
       setScaleValue(currentScale);
       setScale(scaleMapper[currentScale]);
-      setTranslateX(translate);
 
       if (!finish) {
         if (timeArrowRef.current) {
@@ -596,14 +594,12 @@ const _GridElement: React.FC<GridProps> = ({
 
   const decreaseScale = () => {
     if (scale > 1 && sectionRef.current) {
-      // const currentScale = scale / scaleFactor;
       const currentScale = scaleValue - 1; // * scaleFactor;
       const sectionWidth = sectionRef.current.getBoundingClientRect().width;
       const translate = sectionWidth / 2 - sectionWidth / 2 / (scale / 2);
 
       setScaleValue(currentScale);
       setScale(scaleMapper[currentScale]);
-      setTranslateX(translate);
 
       if (!finish) {
         if (timeArrowRef.current) {
@@ -648,8 +644,6 @@ const _GridElement: React.FC<GridProps> = ({
           }, 10);
         }
       }
-    } else if (translateX !== 0) {
-      setTranslateX(0);
     }
   };
 
@@ -659,21 +653,45 @@ const _GridElement: React.FC<GridProps> = ({
     };
   }, []);
 
+  const [currentPos, setCurrentPos] = useState(0);
+
   const changScale = (e: React.WheelEvent) => {
     if (sectionRef.current) {
+      const diffx = e.clientX - e.currentTarget.getBoundingClientRect().x;
       if (e.deltaY < 0) {
         increaseScale();
+        setTimeout(() => {
+          const currentScale = scaleValue + 1; // * scaleFactor;
+          const resultScaleFactor = scaleMapper[currentScale];
+          if (resultScaleFactor) {
+            const positionSet = (resultScaleFactor - 1) * diffx;
+            sectionRef.current?.scrollTo({ left: positionSet });
+          }
+        }, 10);
       } else {
         decreaseScale();
       }
     }
   };
 
+  const scrollTo = () => {
+    if (sectionRef.current) {
+      sectionRef.current.scrollTo({ left: currentPos });
+    }
+  };
   return (
     <>
       <span>Масштаб: {scale}</span>
       <Timer start={start} finish={finish} />
-      <Grid ref={gridContainerRef} container>
+      <Button onClick={scrollTo}>Scroll</Button>
+      <input
+        value={currentPos}
+        onChange={(e) => {
+          setCurrentPos(+e.target.value);
+        }}
+      />
+      <span>currentPos: {currentPos}</span>
+      <Grid container>
         <Grid xs={12}>
           <div style={{ display: 'flex' }}>
             <div className={styles.gridContainer}>
@@ -683,13 +701,17 @@ const _GridElement: React.FC<GridProps> = ({
                 ))}
               </div>
               <div className={styles.gridContent}>
-                <section ref={gridRef} className={styles.container}>
+                <section className={styles.container}>
                   <section
                     className={styles.linesKeeper}
                     ref={sectionRef}
                     id={'linesKeeper'}
+                    onScroll={(event) => {
+                      const { scrollLeft } = event.target;
+                      console.log(scrollLeft);
+                    }}
                     onWheel={changScale}
-                    onMouseEnter={() => {
+                    onMouseEnter={(event) => {
                       document.body.addEventListener('wheel', cancelWheel, {
                         passive: false,
                       });
@@ -701,12 +723,6 @@ const _GridElement: React.FC<GridProps> = ({
                     <div
                       id={'linesKeeperContainer'}
                       className={styles.linesKeeperContainer}
-                      style={
-                        {
-                          // transform: `scaleX(${scale}) translateX(${translateX}px)`,
-                          // transform: `scaleX(${scale})`,
-                        }
-                      }
                     >
                       {grid.map((element, ind) => {
                         return (
@@ -748,12 +764,12 @@ const _GridElement: React.FC<GridProps> = ({
                     />
                     <TimeArrow
                       id={'timeArrow5'}
-                      visible={scale === 16}
+                      visible={scale === 12}
                       elementRef={timeArrowRef5}
                     />
                     <TimeArrow
                       id={'timeArrow6'}
-                      visible={scale === 32}
+                      visible={scale === 24}
                       elementRef={timeArrowRef6}
                     />
                     <TimeArrow

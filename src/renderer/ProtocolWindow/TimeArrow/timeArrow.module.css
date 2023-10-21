@@ -9,6 +9,7 @@
   width: calc(var(--width) * 2);
   position: absolute;
   height: var(--containerHeight);
+  pointer-events: none;
 }
 
 .container:focus{

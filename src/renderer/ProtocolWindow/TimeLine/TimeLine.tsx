@@ -18,7 +18,6 @@ export const TimeLine: React.FC<TimeLineProps> = ({
   scale = 1,
 }) => {
   let totalDays = 1;
-  const dividersTemplates = [];
   const dividersTemplatesDays = [];
   const chunk = width / chunks;
 
@@ -60,9 +59,7 @@ export const TimeLine: React.FC<TimeLineProps> = ({
         }}
         className={styles.timeFormer}
       >
-        <div
-        // style={{ transform: `scaleX(${1 / scale})` }}
-        >
+        <div>
           <div
             style={{
               height: shouldUseSmall ? '12px' : '22px',
@@ -88,35 +85,6 @@ export const TimeLine: React.FC<TimeLineProps> = ({
               className={styles.timeCount}
             >
               {lastTime}
-            </div>
-          </div>
-        ) : null}
-      </div>
-    );
-  }
-
-  for (let i = 0; i < chunks; i++) {
-    const isLast = i === chunks - 1;
-
-    dividersTemplates.push(
-      <div
-        key={i}
-        style={{
-          width: scale * chunk,
-        }}
-        className={styles.timeFormer}
-      >
-        <div
-        // style={{ transform: `scaleX(${1 / scale})` }}
-        >
-          <div className={styles.divider} />
-          <div className={styles.timeCount}>{(allTime * i) / chunks}</div>
-        </div>
-        {isLast ? (
-          <div style={{ position: 'relative' }}>
-            <div className={styles.divider} />
-            <div className={styles.timeCount}>
-              {(allTime * (i + 1)) / chunks}
             </div>
           </div>
         ) : null}
