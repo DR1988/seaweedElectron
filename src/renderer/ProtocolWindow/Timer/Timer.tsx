@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
 export type Props = {
   start: boolean;
@@ -7,7 +7,7 @@ export type Props = {
 
 const TIMER_INTERVAL = 100;
 
-export const Timer: React.FC<Props> = ({ start, finish }) => {
+export const Timer: React.FC<Props> = memo(({ start, finish }) => {
   const [timeSpent, setTimeSpent] = useState(0);
 
   const intervalIdRef = useRef<NodeJS.Timer | number>(-1);
@@ -34,4 +34,4 @@ export const Timer: React.FC<Props> = ({ start, finish }) => {
       <span>Timer: {timeSpent / 1000}</span>
     </div>
   );
-};
+});

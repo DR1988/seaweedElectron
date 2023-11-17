@@ -1,5 +1,5 @@
-const Seconds_In_Minute = 60;
-const Seconds_In_Hour = 3600;
+export const Seconds_In_Minute = 60;
+export const Seconds_In_Hour = 3600;
 
 export const getHoursAndMinutes = (time: number) => {
   const hours = Math.floor(time / Seconds_In_Hour);
@@ -11,7 +11,7 @@ export const getHoursAndMinutes = (time: number) => {
     minutes = Math.floor(time / Seconds_In_Minute);
   }
 
-  let days = Math.ceil(hours / 24);
+  const days = Math.ceil(hours / 24);
 
   return {
     hours,

@@ -18,6 +18,8 @@ import { resolveHtmlPath } from './util';
 import { getCo2Port, getPort } from './portConnection';
 import { EChannels } from '../Types/Types';
 
+const Co2ResultArray: { time: number; value: string }[] = [];
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -94,35 +96,49 @@ const createWindow = async () => {
       let timerId: string | number | NodeJS.Timeout | undefined;
 
       serialPortCo2.on('data', (chunk) => {
-        console.log('CO2 chunk', chunk.toString());
+        // console.log('CO2 chunk', chunk.toString());
         connectedData += chunk.toString();
         // result = '';
 
-        if (connectedData.includes('@RADT')) {
-          console.log('connectedData', connectedData);
+        // if (connectedData.includes('@RADT')) {
+        //   console.log('connectedData', connectedData);
+        //   connectedData = '';
+        //   const decodedResult = decodeC02Commands(chunk.toString());
+        //   if (
+        //     decodedResult &&
+        //     decodedResult.length > 3 &&
+        //     Number(decodedResult) > 0
+        //   ) {
+        //     event.sender.send('serial-channel', `CO2_RESULT:${decodedResult}`);
+        //   }
+        // }
+        clearTimeout(timerId);
+        timerId = setTimeout(() => {
+          result = connectedData;
           connectedData = '';
-          const decodedResult = decodeC02Commands(chunk.toString());
+          console.log('result CO2', result);
+          const decodedResult = decodeC02Commands(result);
+          console.log('decodedResult', decodedResult);
           if (
             decodedResult &&
             decodedResult.length > 3 &&
             Number(decodedResult) > 0
           ) {
             event.sender.send('serial-channel', `CO2_RESULT:${decodedResult}`);
+            Co2ResultArray.push({ time: Date.now(), value: decodedResult });
+            fs.writeFile(
+              './co2Result.json',
+              JSON.stringify(Co2ResultArray, null, 2),
+              'utf-8',
+              (err) => {
+                if (err) {
+                  console.log('ERROR:', err);
+                  return;
+                }
+              }
+            );
           }
-        }
-        // clearTimeout(timerId);
-        // timerId = setTimeout(() => {
-        //   result = connectedData;
-        //   connectedData = '';
-        //   console.log('result CO2', result);
-        //   const decodedResult = decodeC02Commands(result);
-        //   console.log('decodedResult', decodedResult);
-        //   console.log('event.sender', event.sender);
-        //   event.sender.send('serial-channel', `CO2_RESULT:${decodedResult}`);
-        // }, 300);
-
-        // console.log('connectedData', connectedData);
-        // console.log('data.toString()', chunk.toString());
+        }, 300);
       });
     }
 

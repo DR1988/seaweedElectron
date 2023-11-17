@@ -23,6 +23,8 @@ export const stopBright = () => {
 };
 
 export const startValve = (line: SteppersValues) => {
+  console.log('SEND startValve', `${line}\n`);
+
   window.electron.serialPort.sendMessage('serial-channel', [
     'serial:transfer',
     `${line}E1D1S${MAX_TIME_TO_VALVE}S|\n`,
@@ -30,6 +32,8 @@ export const startValve = (line: SteppersValues) => {
 };
 
 export const stopValve = (line: SteppersValues) => {
+  console.log('SEND stopValve', `${line}\n`);
+
   window.electron.serialPort.sendMessage('serial-channel', [
     'serial:transfer',
     `${line}E0D1S0S|\n`,

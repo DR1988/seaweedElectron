@@ -39,6 +39,11 @@ import {
   stopBright,
   stopValve,
 } from './sendMessage';
+import {
+  getHoursAndMinutes,
+  Seconds_In_Minute,
+  Seconds_In_Hour,
+} from '../helpers/getHoursAndMinutes';
 
 type GridProps = {
   grid: GridType;
@@ -67,7 +72,7 @@ const scaleMapper = {
   5: 12,
   // 6: 15,
   6: 24,
-  // 7: 120,
+  7: 120,
 };
 
 const ARROW_WIDTH = 6; // ширина стрелки, которая показывает положениее бегунка
@@ -94,7 +99,7 @@ const _GridElement: React.FC<GridProps> = ({
   const [scaleValue, setScaleValue] = useState(1);
 
   const allTime = useMemo(() => {
-    return grid.reduce((acc, current) => {
+    const timeSeconds = grid.reduce((acc, current) => {
       switch (current.type) {
         case EItemType.Stepper: {
           const max = Math.max(...current.changes.map((c) => c.endTime || 0));
@@ -127,6 +132,10 @@ const _GridElement: React.FC<GridProps> = ({
       }
       return acc;
     }, 0);
+
+    // return timeSeconds;
+    const { days } = getHoursAndMinutes(timeSeconds);
+    return days * 24 * Seconds_In_Hour;
   }, [grid]);
 
   const intervalIdRef = useRef<number | NodeJS.Timer | null>(null);
@@ -371,6 +380,7 @@ const _GridElement: React.FC<GridProps> = ({
 
   useEffect(() => {
     if (start && timeArrowRef.current) {
+      console.log('distance 1', gridWidth - ARROW_WIDTH);
       timeArrowRef.current.style.left = `${gridWidth - ARROW_WIDTH}px`;
     }
 
@@ -390,17 +400,18 @@ const _GridElement: React.FC<GridProps> = ({
     }
 
     if (start && timeArrowRef5.current) {
-      const distance = 16 * gridWidth - ARROW_WIDTH;
+      const distance = 12 * gridWidth - ARROW_WIDTH;
       timeArrowRef5.current.style.left = `${distance}px`;
     }
 
     if (start && timeArrowRef6.current) {
-      const distance = 32 * gridWidth - ARROW_WIDTH;
+      const distance = 24 * gridWidth - ARROW_WIDTH;
+      console.log('distance 6', distance);
       timeArrowRef6.current.style.left = `${distance}px`;
     }
 
     if (start && timeArrowRef7.current) {
-      const distance = 64 * gridWidth - ARROW_WIDTH;
+      const distance = 120 * gridWidth - ARROW_WIDTH;
       timeArrowRef7.current.style.left = `${distance}px`;
     }
 
@@ -538,7 +549,7 @@ const _GridElement: React.FC<GridProps> = ({
   }, []);
 
   const increaseScale = () => {
-    if (scale < 20 /*Math.pow(2, scalesCount)*/ && sectionRef.current) {
+    if (scale < 120 /*Math.pow(2, scalesCount)*/ && sectionRef.current) {
       const sectionWidth = sectionRef.current.getBoundingClientRect().width;
       const translate = sectionWidth / 2 - sectionWidth / 2 / (scale * 2);
 
@@ -660,14 +671,14 @@ const _GridElement: React.FC<GridProps> = ({
       const diffx = e.clientX - e.currentTarget.getBoundingClientRect().x;
       if (e.deltaY < 0) {
         increaseScale();
-        setTimeout(() => {
-          const currentScale = scaleValue + 1; // * scaleFactor;
-          const resultScaleFactor = scaleMapper[currentScale];
-          if (resultScaleFactor) {
-            const positionSet = (resultScaleFactor - 1) * diffx;
-            sectionRef.current?.scrollTo({ left: positionSet });
-          }
-        }, 10);
+        // setTimeout(() => {
+        //   const currentScale = scaleValue + 1; // * scaleFactor;
+        //   const resultScaleFactor = scaleMapper[currentScale];
+        //   if (resultScaleFactor) {
+        //     const positionSet = (resultScaleFactor - 1) * diffx;
+        //     sectionRef.current?.scrollTo({ left: positionSet });
+        //   }
+        // }, 10);
       } else {
         decreaseScale();
       }
@@ -683,14 +694,14 @@ const _GridElement: React.FC<GridProps> = ({
     <>
       <span>Масштаб: {scale}</span>
       <Timer start={start} finish={finish} />
-      <Button onClick={scrollTo}>Scroll</Button>
-      <input
-        value={currentPos}
-        onChange={(e) => {
-          setCurrentPos(+e.target.value);
-        }}
-      />
-      <span>currentPos: {currentPos}</span>
+      {/*<Button onClick={scrollTo}>Scroll</Button>*/}
+      {/*<input*/}
+      {/*  value={currentPos}*/}
+      {/*  onChange={(e) => {*/}
+      {/*    setCurrentPos(+e.target.value);*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<span>currentPos: {currentPos}</span>*/}
       <Grid container>
         <Grid xs={12}>
           <div style={{ display: 'flex' }}>
@@ -706,10 +717,6 @@ const _GridElement: React.FC<GridProps> = ({
                     className={styles.linesKeeper}
                     ref={sectionRef}
                     id={'linesKeeper'}
-                    onScroll={(event) => {
-                      const { scrollLeft } = event.target;
-                      console.log(scrollLeft);
-                    }}
                     onWheel={changScale}
                     onMouseEnter={(event) => {
                       document.body.addEventListener('wheel', cancelWheel, {
@@ -736,11 +743,20 @@ const _GridElement: React.FC<GridProps> = ({
                           />
                         );
                       })}
-                      <TimeLine
-                        scale={scale}
-                        width={gridWidth}
-                        allTime={allTime}
-                      />
+                      {Object.values(scaleMapper).map((v) => (
+                        <TimeLine
+                          scale={v}
+                          width={gridWidth}
+                          allTime={allTime}
+                          visible={scale === v}
+                        />
+                      ))}
+                      {/*<TimeLine*/}
+                      {/*  scale={scale}*/}
+                      {/*  width={gridWidth}*/}
+                      {/*  allTime={allTime}*/}
+                      {/*  visible*/}
+                      {/*/>*/}
                     </div>
                     <TimeArrow
                       id={'timeArrow1'}
@@ -774,7 +790,7 @@ const _GridElement: React.FC<GridProps> = ({
                     />
                     <TimeArrow
                       id={'timeArrow7'}
-                      visible={scale === 64}
+                      visible={scale === 120}
                       elementRef={timeArrowRef7}
                     />
                   </section>

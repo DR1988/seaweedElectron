@@ -79,10 +79,13 @@ export default function App() {
     'zE1D1S1600S|xE1D1S1600S|yE1D1S1600S|'
     // 'bB50B|'
   );
-  const [messageCo2Value, setMessageCo2Value] = useState('@RR00');
+  const [messageCo2Value, setMessageCo2Value] = useState('@RRDT');
 
   const [showCalibration, setShowCalibration] = useState(false);
   const [co2ResultValue, setCo2Result] = useState<string | null>(null);
+  const [co2ResultArray, setCo2ResultArray] = useState<
+    { time: number; value: string }[]
+  >([]);
   const [calibrationValuesTime, setCalibrationValuesTime] =
     useState<CalibrationTypeRecord>({
       x: 0,
@@ -160,6 +163,10 @@ export default function App() {
           const co2Result = data.split(':')[1];
           console.log('!APP co2Result:', co2Result);
           setCo2Result(co2Result);
+          setCo2ResultArray((prev) => [
+            ...prev,
+            { time: Date.now(), value: co2Result },
+          ]);
         }
       }
     );
@@ -1544,26 +1551,26 @@ export default function App() {
           />
         </Grid>
 
-        <div>
-          <input
-            style={{ width: 400, height: 60, fontSize: 20 }}
-            onChange={(e) => setMessageValue(e.currentTarget.value)}
-            id="data"
-            value={messageValue}
-          />
-          <button onClick={sendData}>Send data</button>
-        </div>
-        <div>
-          <h3>Co2 message</h3>
-          <input
-            style={{ width: 400, height: 60, fontSize: 20 }}
-            onChange={(e) => setMessageCo2Value(e.currentTarget.value)}
-            id="dataCo2"
-            value={messageCo2Value}
-          />
-          <button onClick={sendCo2Data}>Send data</button>
-          {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}
-        </div>
+        {/*<div>*/}
+        {/*  <input*/}
+        {/*    style={{ width: 400, height: 60, fontSize: 20 }}*/}
+        {/*    onChange={(e) => setMessageValue(e.currentTarget.value)}*/}
+        {/*    id="data"*/}
+        {/*    value={messageValue}*/}
+        {/*  />*/}
+        {/*  <button onClick={sendData}>Send data</button>*/}
+        {/*</div>*/}
+        {/*<div>*/}
+        {/*  <h3>Co2 message</h3>*/}
+        {/*  <input*/}
+        {/*    style={{ width: 400, height: 60, fontSize: 20 }}*/}
+        {/*    onChange={(e) => setMessageCo2Value(e.currentTarget.value)}*/}
+        {/*    id="dataCo2"*/}
+        {/*    value={messageCo2Value}*/}
+        {/*  />*/}
+        {/*  <button onClick={sendCo2Data}>Send data</button>*/}
+        {/*  {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}*/}
+        {/*</div>*/}
 
         <InitialSettings
           initialValues={initialValues}
