@@ -9,7 +9,7 @@ export const initialGrid: GridType = [
     changes: [
       {
         startTime: 0,
-        volume: 2,
+        volume:7,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 0,
@@ -46,7 +46,7 @@ export const initialGrid: GridType = [
     shortName: 'STEP_Y',
     changes: [
       {
-        startTime: 2,
+        startTime: 66,
         volume: 3,
         direction: 'clockwise',
         type: EItemType.Stepper,
@@ -75,8 +75,8 @@ export const initialGrid: GridType = [
     shortName: 'STEP_Z',
     changes: [
       {
-        startTime: 23,
-        volume: 2,
+        startTime: 74,
+        volume: 0.5,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 1,
@@ -93,8 +93,8 @@ export const initialGrid: GridType = [
     shortName: 'STEP_E',
     changes: [
       {
-        startTime: 4,
-        volume: 4,
+        startTime: 86,
+        volume: 0.5,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 0,
@@ -145,15 +145,15 @@ export const initialGrid: GridType = [
       {
         id: 1,
         startTime: 0,
-        endTime: 2,
+        endTime: 10,
         type: EItemType.OptoAcc,
         line: 'o',
       },
 
       {
         id: 2,
-        startTime: 1230,
-        endTime: 1231,
+        startTime: 20,
+        endTime: 30,
         type: EItemType.OptoAcc,
         line: 'o',
       },
@@ -206,10 +206,10 @@ export const initialGrid: GridType = [
         startTime: 0,
         type: EItemType.Light,
         id: 5,
-        endTime: 3600,
+        endTime: 10,
         isChangeable: false,
         line: 'l',
-        brightness: 10,
+        brightness: 20,
       },
       // {
       //   startTime: 45,

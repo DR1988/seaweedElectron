@@ -1,3 +1,4 @@
+import { stopCO2PurgeValve, stopCO2Valve } from 'renderer/Co2ChamberControl/Co2ChamberControl';
 import { Brightness, SteppersValues } from '../../Types/Types';
 
 const MAX_TIME_TO_VALVE = 999999999; // примерно 290 часов
@@ -69,10 +70,20 @@ export const stopAirLift = () => {
 };
 
 export const stopAll = () => {
-  window.electron.serialPort.sendMessage('serial-channel', [
-    'serial:transfer',
-    `bB0B|zE0D1S0S|xE0D1S0S|yE0D1S0S|oO0O|aC|\n`,
-  ]);
+  stopAirLift();
+  stopBright();
+  stopOptic();
+  stopCO2Valve();
+  stopCO2PurgeValve();
+  stopValve('x')
+  stopValve('y')
+  stopValve('z')
+  stopValve('e')
+  // window.electron.serialPort.sendMessage('serial-channel', [
+  //   'serial:transfer',
+  //   // `eE0D1S0S|\n`,
+  //   `bB0B|zE0D1S0S|xE0D1S0S|yE0D1S0S|eE0D1S0S|oO0O|aC|\n`,
+  // ]);
 };
 
 export const sendCommands = (commands: string) => {

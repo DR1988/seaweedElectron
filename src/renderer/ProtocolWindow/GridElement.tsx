@@ -38,6 +38,9 @@ import {
   stopAll,
   stopBright,
   stopValve,
+  startOptic,
+  stopOptic,
+  startOpticCommand
 } from './sendMessage';
 import {
   getHoursAndMinutes,
@@ -224,6 +227,10 @@ const _GridElement: React.FC<GridProps> = ({
             commands += startValveCommand(el.line);
           }
         }
+        else if (el.type === EItemType.OptoAcc) {
+          console.log('START INIT', el);
+          commands += startOpticCommand();
+        }
       });
 
       sendCommands(commands);
@@ -334,6 +341,24 @@ const _GridElement: React.FC<GridProps> = ({
                 Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05
               ) {
                 stopAirLift();
+              }
+            }
+            else if (el.type === EItemType.OptoAcc) {
+              if (
+                Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05 &&
+                elementsRef.current[ind + 1] &&
+                el.endTime === elementsRef.current[ind + 1].startTime &&
+                el.line === elementsRef.current[ind + 1].line
+              ) {
+                console.log('SKIP');
+              } else if (
+                Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
+              ) {
+                startOptic();
+              } else if (
+                Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05
+              ) {
+                stopOptic();
               }
             }
           });
@@ -832,6 +857,28 @@ const _GridElement: React.FC<GridProps> = ({
           >
             Стоп
           </Button>
+          {/* <Button
+            onClick={() => {
+              startValve('x')
+              startValve('y')
+              startValve('z')
+              startValve('e')
+            }}
+            variant="contained"
+          >
+            пуск
+          </Button>
+          <Button
+            onClick={() => {
+              stopValve('x')
+              stopValve('y')
+              stopValve('z')
+              stopValve('e')
+            }}
+            variant="contained"
+          >
+            не пуск
+          </Button> */}
         </Grid>
       </Grid>
     </>

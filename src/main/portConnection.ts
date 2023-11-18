@@ -53,6 +53,7 @@ export async function getPort(event: IpcMainEvent) {
   try {
     connectedPort = await tryConnect(ports);
     if (connectedPort) {
+      console.log(`port ${connectedPort.path} is conneccted`)
       event.sender.send('serial-channel', 'serial:valve_controller_connected');
     } else {
       event.sender.send('serial-channel', 'serial:valve_controller_not-found');
@@ -94,7 +95,11 @@ export const promisedSerialCo2OnData = (
 
 const sendToPortDataWithDelay = (serial: SerialPort<AutoDetectTypes>) => {
   setTimeout(() => {
-    const writeResult = serial.write('@RR00\r\n');
+    try{
+      const writeResult = serial.write('@RR00\r\n');
+    } catch(e) {
+      console.log(`error: unebale to write to pots ${serial.path}`, e)
+    }
   }, 200);
 };
 
@@ -108,19 +113,23 @@ export async function tryConnectToCo2Port(ports: PortInfo[]) {
     console.log('Co2 serial path', serial.path);
     sendToPortDataWithDelay(serial);
 
-    const result = (await promisedSerialCo2OnData(serial)) as string;
-    console.log('co2 port result', result);
+    try {
+      const result = (await promisedSerialCo2OnData(serial)) as string;
+      console.log('co2 port result', result);
 
-    if (result === 'EMPTY') {
-      if (serial.isOpen) {
-        serial.close();
+      // if (result === 'EMPTY') {
+      //   if (serial.isOpen) {
+      //     serial.close();
+      //   }
+      // }
+
+      if (result.includes('@RA00 TEST-OK')) {
+        console.log('WRITE SERIAL');
+        foundSerial = serial;
+        break;
       }
-    }
-
-    if (result.includes('@RA00 TEST-OK')) {
-      console.log('WRITE SERIAL');
-      foundSerial = serial;
-      break;
+    } catch (e) {
+      console.log('error connect co2 port', e);
     }
   }
   console.log(111);
