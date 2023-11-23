@@ -11,7 +11,7 @@ export const getHoursAndMinutes = (time: number) => {
     minutes = Math.floor(time / Seconds_In_Minute);
   }
 
-  const days = Math.ceil(hours / 24);
+  const days = Math.max(1, time / 3600 / 24);
 
   return {
     hours,

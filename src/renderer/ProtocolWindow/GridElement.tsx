@@ -40,7 +40,7 @@ import {
   stopValve,
   startOptic,
   stopOptic,
-  startOpticCommand
+  startOpticCommand,
 } from './sendMessage';
 import {
   getHoursAndMinutes,
@@ -102,6 +102,7 @@ const _GridElement: React.FC<GridProps> = ({
   const [scaleValue, setScaleValue] = useState(1);
 
   const allTime = useMemo(() => {
+    console.log(1231231);
     const timeSeconds = grid.reduce((acc, current) => {
       switch (current.type) {
         case EItemType.Stepper: {
@@ -226,8 +227,7 @@ const _GridElement: React.FC<GridProps> = ({
             console.log('START INIT', el);
             commands += startValveCommand(el.line);
           }
-        }
-        else if (el.type === EItemType.OptoAcc) {
+        } else if (el.type === EItemType.OptoAcc) {
           console.log('START INIT', el);
           commands += startOpticCommand();
         }
@@ -342,8 +342,7 @@ const _GridElement: React.FC<GridProps> = ({
               ) {
                 stopAirLift();
               }
-            }
-            else if (el.type === EItemType.OptoAcc) {
+            } else if (el.type === EItemType.OptoAcc) {
               if (
                 Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05 &&
                 elementsRef.current[ind + 1] &&
