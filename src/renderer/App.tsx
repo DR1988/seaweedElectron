@@ -245,6 +245,13 @@ export default function App() {
     connected === 'connecting' || connected === 'connected';
 
   const [mainGrid, setMainGrid] = useState<GridType>(initialGrid);
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on(EChannels.loadedProtocolData, (dataGrid) => {
+      setMainGrid(dataGrid);
+    });
+  }, []);
+
   const [selectedItem, setSelectedItem] = useState<
     StepperItem | LightItem | AirLifItem | OptoAccusticItem | null
   >(null);

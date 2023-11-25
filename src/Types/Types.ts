@@ -159,6 +159,10 @@ export enum EChannels {
   loadedInitial = 'loaded-initial',
   saveInitials = 'save-initials',
   initialsDataSaved = 'initial-data-saved',
+  saveProtocol = 'save-protocol',
+  saveProtocolFile = 'save-protocol-file',
+  loadProtocol = 'load-protocol',
+  loadedProtocolData = 'loaded-protocol-data',
 }
 
 export type ChannelsArgs = {
@@ -170,6 +174,10 @@ export type ChannelsArgs = {
   (channel: EChannels.loadedInitial, args: InitialValues): void;
   (channel: EChannels.saveInitials, args: InitialValues): void;
   (channel: EChannels.initialsDataSaved, args: any): void;
+  (channel: EChannels.saveProtocol, args: any): void;
+  (channel: EChannels.saveProtocolFile, args: string): void;
+  (channel: EChannels.loadProtocol): void;
+  (channel: EChannels.loadedProtocolData, args: Grid): void;
 };
 
 export type unsub = () => void;
@@ -192,6 +200,10 @@ export type ChannelsCallback = {
     listener: (values: InitialValues) => void
   ): void;
   (channel: EChannels.initialsDataSaved, listener: (args: any) => void): void;
+  (channel: EChannels.saveProtocol, listener: (args: any) => void): void;
+  (channel: EChannels.saveProtocolFile, listener: (args: string) => void): void;
+  (channel: EChannels.loadProtocol, listener: (args: any) => void): void;
+  (channel: EChannels.loadedProtocolData, listener: (args: Grid) => void): void;
 };
 
 export type Connection = 'initial' | 'connecting' | 'connected' | 'not-found';

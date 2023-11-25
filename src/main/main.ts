@@ -10,7 +10,7 @@
  */
 import path from 'path';
 import fs from 'fs';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -246,6 +246,69 @@ const createWindow = async () => {
       );
     } else {
       console.log('ARGS is UNDEFINED');
+    }
+  });
+
+  ipcMain.on(EChannels.saveProtocol, async (event, args) => {
+    if (args) {
+      const result = await dialog.showSaveDialog({
+        title: 'Сохранить',
+        filters: [
+          {
+            extensions: ['json'],
+            name: '',
+          },
+        ],
+      });
+
+      if (!result.canceled) {
+        if (result.filePath) {
+          fs.writeFile(
+            result.filePath,
+            JSON.stringify(args, null, 2),
+            'utf-8',
+            (err) => {
+              if (err) {
+                console.log('ERROR:', err);
+                return;
+              }
+            }
+          );
+        }
+      }
+    } else {
+      console.log('ARGS is UNDEFINED');
+    }
+  });
+
+  ipcMain.on(EChannels.loadProtocol, async (event, args) => {
+    const result = await dialog.showOpenDialog({
+      title: 'Открыть',
+      filters: [
+        {
+          extensions: ['json'],
+          name: '',
+        },
+      ],
+      properties: ['openFile'],
+    });
+
+    if (!result.canceled) {
+      if (result.filePaths.length > 0) {
+        fs.readFile(result.filePaths[0], (err, data) => {
+          if (err) {
+            console.log('ERROR:', err);
+            return;
+          }
+          if (data) {
+            const resultJSONData = data.toString();
+
+            const resultData = JSON.parse(resultJSONData);
+
+            event.sender.send(EChannels.loadedProtocolData, resultData);
+          }
+        });
+      }
     }
   });
 

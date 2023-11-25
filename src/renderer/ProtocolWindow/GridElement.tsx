@@ -10,6 +10,7 @@ import { GridRow } from './RowElement/RowElement';
 import {
   AirLifItem,
   CalibrationTypeRecord,
+  EChannels,
   EItemType,
   Grid as GridType,
   LightItem,
@@ -855,6 +856,25 @@ const _GridElement: React.FC<GridProps> = ({
             variant="contained"
           >
             Стоп
+          </Button>
+          <Button
+            onClick={() => {
+              window.electron.ipcRenderer.sendMessage(
+                EChannels.saveProtocol,
+                grid
+              );
+            }}
+            variant="contained"
+          >
+            Сохранить
+          </Button>
+          <Button
+            onClick={() => {
+              window.electron.ipcRenderer.sendMessage(EChannels.loadProtocol);
+            }}
+            variant="contained"
+          >
+            Загрузить протокол
           </Button>
           {/* <Button
             onClick={() => {
