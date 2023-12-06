@@ -2,6 +2,7 @@ import { PortInfo } from '@serialport/bindings-cpp';
 import { SerialPort } from 'serialport';
 import IpcMainEvent = Electron.IpcMainEvent;
 import { AutoDetectTypes } from '@serialport/bindings-cpp';
+import { DelimiterParser } from '@serialport/parser-delimiter';
 
 export async function tryConnect(ports: PortInfo[]) {
   let message = '';
@@ -13,9 +14,11 @@ export async function tryConnect(ports: PortInfo[]) {
       path: port.path,
       baudRate: 9600,
     });
+    const currentParser = serial.pipe(new DelimiterParser({ delimiter: '\n' }));
     result = await new Promise<SerialPort<AutoDetectTypes> | null>(
       (resolve) => {
-        serial.once('data', (data) => {
+        currentParser.once('data', (data) => {
+          console.log('data.toString()', data.toString());
           if (data.toString().includes('CONNECTED')) {
             clearTimeout(timerId);
             console.log('data: CONNECTED', data.toString());
@@ -30,7 +33,7 @@ export async function tryConnect(ports: PortInfo[]) {
         });
 
         timerId = setTimeout(() => {
-          console.log('serial path', serial.path);
+          console.log('timeout serial path', serial.path);
           serial.isOpen && serial.close();
           resolve(null);
         }, 3000);
@@ -53,7 +56,7 @@ export async function getPort(event: IpcMainEvent) {
   try {
     connectedPort = await tryConnect(ports);
     if (connectedPort) {
-      console.log(`port ${connectedPort.path} is conneccted`)
+      console.log(`port ${connectedPort.path} is conneccted`);
       event.sender.send('serial-channel', 'serial:valve_controller_connected');
     } else {
       event.sender.send('serial-channel', 'serial:valve_controller_not-found');
@@ -61,8 +64,9 @@ export async function getPort(event: IpcMainEvent) {
   } catch (e) {
     console.log('ERROR:', e);
   }
-
-  return connectedPort;
+  const parser = connectedPort?.pipe(new DelimiterParser({ delimiter: '\n' }));
+  return { connectedPort, parser };
+  // return connectedPort;
 }
 
 export const promisedSerialCo2OnData = (
@@ -95,10 +99,10 @@ export const promisedSerialCo2OnData = (
 
 const sendToPortDataWithDelay = (serial: SerialPort<AutoDetectTypes>) => {
   setTimeout(() => {
-    try{
+    try {
       const writeResult = serial.write('@RR00\r\n');
-    } catch(e) {
-      console.log(`error: unebale to write to pots ${serial.path}`, e)
+    } catch (e) {
+      console.log(`error: unebale to write to pots ${serial.path}`, e);
     }
   }, 200);
 };

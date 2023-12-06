@@ -4,30 +4,7 @@
     "id": "x",
     "type": "stepper",
     "shortName": "STEP_X",
-    "changes": [
-      {
-        "startTime": 0,
-        "volume": 7,
-        "direction": "clockwise",
-        "type": "stepper",
-        "id": 0,
-        "endTime": 143.066,
-        "line": "x"
-      },
-      {
-        "id": 1,
-        "startTime": 180,
-        "volume": 2,
-        "direction": "clockwise",
-        "type": "stepper",
-        "endTime": 220.876,
-        "line": "x",
-        "wrongSign": "",
-        "crossingValueStart": 0,
-        "crossingValueEnd": 0,
-        "crosses": []
-      }
-    ],
+    "changes": [],
     "description": "Включает клапан X"
   },
   {
@@ -89,29 +66,7 @@
     "id": "a",
     "type": "air_lift",
     "shortName": "Компрессор",
-    "changes": [
-      {
-        "id": 1,
-        "startTime": 0,
-        "endTime": 2,
-        "type": "air_lift",
-        "line": "a"
-      },
-      {
-        "id": 2,
-        "startTime": 4,
-        "endTime": 6,
-        "type": "air_lift",
-        "line": "a"
-      },
-      {
-        "id": 3,
-        "startTime": 8,
-        "endTime": 12,
-        "type": "air_lift",
-        "line": "a"
-      }
-    ],
+    "changes": [],
     "description": "Включение и выключение воздушного компрессора"
   },
   {
@@ -119,33 +74,7 @@
     "id": "o",
     "type": "opto_accustic",
     "shortName": "Оптический измеритель",
-    "changes": [
-      {
-        "id": 1,
-        "startTime": 0,
-        "endTime": 10,
-        "type": "opto_accustic",
-        "line": "o"
-      },
-      {
-        "id": 2,
-        "startTime": 20,
-        "endTime": 30,
-        "type": "opto_accustic",
-        "line": "o"
-      },
-      {
-        "id": 3,
-        "startTime": 60,
-        "type": "opto_accustic",
-        "endTime": 120,
-        "line": "o",
-        "wrongSign": "",
-        "crossingValueStart": 0,
-        "crossingValueEnd": 0,
-        "crosses": []
-      }
-    ],
+    "changes": [],
     "description": "Оптический измеритель"
   },
   {
@@ -167,25 +96,35 @@
       {
         "startTime": 0,
         "type": "light",
-        "id": 5,
+        "id": 1,
         "endTime": 10,
-        "isChangeable": false,
         "line": "l",
-        "brightness": 20
+        "isChangeable": true,
+        "brightness": 5,
+        "brightnessEnd": 75,
+        "wrongSign": ""
       },
       {
-        "id": 6,
+        "startTime": 10,
         "type": "light",
-        "startTime": 120,
-        "endTime": 720,
-        "brightness": 66,
-        "line": "l",
-        "wrongSign": "",
-        "crossingValueStart": 0,
-        "crossingValueEnd": 0,
+        "id": 5,
+        "endTime": 20,
         "isChangeable": false,
-        "crosses": [],
+        "line": "l",
+        "brightness": 96,
+        "wrongSign": "",
         "wrongSignLight": ""
+      },
+      {
+        "startTime": 20,
+        "type": "light",
+        "id": 11,
+        "endTime": 30,
+        "line": "l",
+        "isChangeable": true,
+        "brightness": 75,
+        "brightnessEnd": 5,
+        "wrongSign": ""
       }
     ],
     "description": "Включает свет"

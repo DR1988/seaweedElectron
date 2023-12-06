@@ -9,7 +9,7 @@ export const initialGrid: GridType = [
     changes: [
       {
         startTime: 0,
-        volume:7,
+        volume: 7,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 0,
@@ -205,11 +205,31 @@ export const initialGrid: GridType = [
       {
         startTime: 0,
         type: EItemType.Light,
-        id: 5,
+        id: 1,
         endTime: 10,
+        line: 'l',
+        isChangeable: true,
+        brightness: 5,
+        brightnessEnd: 75,
+      },
+      {
+        startTime: 10,
+        type: EItemType.Light,
+        id: 5,
+        endTime: 20,
         isChangeable: false,
         line: 'l',
-        brightness: 20,
+        brightness: 75,
+      },
+      {
+        startTime: 20,
+        type: EItemType.Light,
+        id: 11,
+        endTime: 30,
+        line: 'l',
+        isChangeable: true,
+        brightness: 75,
+        brightnessEnd: 5,
       },
       // {
       //   startTime: 45,

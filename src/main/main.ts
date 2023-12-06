@@ -17,6 +17,9 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { getCo2Port, getPort } from './portConnection';
 import { EChannels } from '../Types/Types';
+import { DelimiterParser } from '@serialport/parser-delimiter';
+import { SerialPort } from 'serialport';
+import { AutoDetectTypes } from '@serialport/bindings-cpp';
 
 const Co2ResultArray: { time: number; value: string }[] = [];
 
@@ -77,14 +80,17 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  let serialPort: Awaited<ReturnType<typeof getPort>> = null;
+  let serialPort: SerialPort<AutoDetectTypes> | null = null;
   let serialPortCo2: Awaited<ReturnType<typeof getPort>> = null;
+  let arduinoParser: DelimiterParser | undefined;
   let isSerialListenerSet = false;
   let isSerialCo2ListenerSet = false;
   ipcMain.on('serial-channel', async (event, args) => {
     if (args.includes('serial:connect')) {
-      serialPort = await getPort(event);
-      serialPortCo2 = await getCo2Port(event);
+      const { connectedPort, parser: _arduinoParser } = await getPort(event);
+      serialPort = connectedPort;
+      arduinoParser = _arduinoParser;
+      // serialPortCo2 = await getCo2Port(event);
     }
     console.log('serialPort', !!serialPort);
     console.log('serialPortCo2', !!serialPortCo2);
@@ -142,10 +148,10 @@ const createWindow = async () => {
       });
     }
 
-    if (serialPort && !isSerialListenerSet) {
+    if (serialPort && !isSerialListenerSet && arduinoParser) {
       isSerialListenerSet = true;
       console.log('SUBSCRIBED SERIAL');
-      serialPort.on('data', (data) => {
+      arduinoParser.on('data', (data) => {
         if (data.toString().includes('STEPPER_STOP')) {
           event.sender.send('serial-channel', data.toString());
         }

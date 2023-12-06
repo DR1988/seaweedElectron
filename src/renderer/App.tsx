@@ -76,7 +76,7 @@ export default function App() {
 
   const [connected, setConnected] = useState<Connection>('initial');
   const [messageValue, setMessageValue] = useState(
-    'zE1D1S1600S|xE1D1S1600S|yE1D1S1600S|'
+    'bB90B|'
     // 'bB50B|'
   );
   const [messageCo2Value, setMessageCo2Value] = useState('@RRDT');

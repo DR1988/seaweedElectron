@@ -103,7 +103,6 @@ const _GridElement: React.FC<GridProps> = ({
   const [scaleValue, setScaleValue] = useState(1);
 
   const allTime = useMemo(() => {
-    console.log(1231231);
     const timeSeconds = grid.reduce((acc, current) => {
       switch (current.type) {
         case EItemType.Stepper: {
@@ -140,7 +139,11 @@ const _GridElement: React.FC<GridProps> = ({
 
     // return timeSeconds;
     const { days } = getHoursAndMinutes(timeSeconds);
-    return days * 24 * Seconds_In_Hour;
+    if (process.env.NODE_ENV === 'development') {
+      return days * 24 * Seconds_In_Hour;
+    }
+
+    return 1 * Seconds_In_Hour;
   }, [grid]);
 
   const intervalIdRef = useRef<number | NodeJS.Timer | null>(null);
@@ -265,7 +268,7 @@ const _GridElement: React.FC<GridProps> = ({
                 el.endTime === elementsRef.current[ind + 1].startTime &&
                 el.line === elementsRef.current[ind + 1].line
               ) {
-                console.log('SKIP');
+                console.log('SKIP LIGHT');
               } else if (
                 Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
               ) {
@@ -316,7 +319,7 @@ const _GridElement: React.FC<GridProps> = ({
                 el.endTime === elementsRef.current[ind + 1].startTime &&
                 el.line === elementsRef.current[ind + 1].line
               ) {
-                console.log('SKIP');
+                console.log('SKIP STEPPER');
               } else if (
                 Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
               ) {
@@ -333,7 +336,7 @@ const _GridElement: React.FC<GridProps> = ({
                 el.endTime === elementsRef.current[ind + 1].startTime &&
                 el.line === elementsRef.current[ind + 1].line
               ) {
-                console.log('SKIP');
+                console.log('SKIP AIR');
               } else if (
                 Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
               ) {
@@ -350,7 +353,7 @@ const _GridElement: React.FC<GridProps> = ({
                 el.endTime === elementsRef.current[ind + 1].startTime &&
                 el.line === elementsRef.current[ind + 1].line
               ) {
-                console.log('SKIP');
+                console.log('SKIP OPTO');
               } else if (
                 Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
               ) {
@@ -367,7 +370,7 @@ const _GridElement: React.FC<GridProps> = ({
             currentChangeableBright.current &&
             currentChangeableBright.current.startTime <
               timerIntervalRef.current / 1000 &&
-            currentChangeableBright.current.endTime >=
+            currentChangeableBright.current.endTime >
               timerIntervalRef.current / 1000 &&
             currentChangeableBright.current?.brightnessEnd
           ) {
@@ -380,7 +383,6 @@ const _GridElement: React.FC<GridProps> = ({
                 ).toFixed(4)
               );
 
-              console.log('nextBrightness', nextBrightness);
               if (
                 Math.abs(
                   nextBrightness -
