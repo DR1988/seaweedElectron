@@ -114,21 +114,7 @@ export const initialGrid: GridType = [
       {
         id: 1,
         startTime: 0,
-        endTime: 2,
-        type: EItemType.AirLift,
-        line: 'a',
-      },
-      {
-        id: 2,
-        startTime: 4,
-        endTime: 6,
-        type: EItemType.AirLift,
-        line: 'a',
-      },
-      {
-        id: 3,
-        startTime: 8,
-        endTime: 12,
+        endTime: 120,
         type: EItemType.AirLift,
         line: 'a',
       },

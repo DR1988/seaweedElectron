@@ -90,7 +90,7 @@ const createWindow = async () => {
       const { connectedPort, parser: _arduinoParser } = await getPort(event);
       serialPort = connectedPort;
       arduinoParser = _arduinoParser;
-      // serialPortCo2 = await getCo2Port(event);
+      serialPortCo2 = await getCo2Port(event);
     }
     console.log('serialPort', !!serialPort);
     console.log('serialPortCo2', !!serialPortCo2);
@@ -131,7 +131,7 @@ const createWindow = async () => {
             Number(decodedResult) > 0
           ) {
             event.sender.send('serial-channel', `CO2_RESULT:${decodedResult}`);
-            Co2ResultArray.push({ time: Date.now(), value: decodedResult });
+            Co2ResultArray.push({ time: new Date().toISOString(), value: decodedResult });
             fs.writeFile(
               './co2Result.json',
               JSON.stringify(Co2ResultArray, null, 2),

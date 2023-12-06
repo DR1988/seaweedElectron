@@ -81,6 +81,7 @@ const scaleMapper = {
 
 const ARROW_WIDTH = 6; // ширина стрелки, которая показывает положениее бегунка
 const TIME_INTERVAL = 100;
+const TIME_INTERVAL_CO2 = 3000;
 let seconds = 0;
 
 const cancelWheel = (event: React.WheelEvent) => event.preventDefault();
@@ -147,6 +148,7 @@ const _GridElement: React.FC<GridProps> = ({
   }, [grid]);
 
   const intervalIdRef = useRef<number | NodeJS.Timer | null>(null);
+  const intervalIdCO2Ref = useRef<number | NodeJS.Timer | null>(null);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const timeArrowRef = useRef<HTMLDivElement | null>(null);
   const timeArrowRef2 = useRef<HTMLDivElement | null>(null);
@@ -251,6 +253,7 @@ const _GridElement: React.FC<GridProps> = ({
       }
 
       intervalIdRef.current && clearInterval(intervalIdRef.current);
+      intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
 
       intervalIdRef.current = setInterval(() => {
         timerIntervalRef.current += TIME_INTERVAL;
@@ -302,10 +305,7 @@ const _GridElement: React.FC<GridProps> = ({
                     currentBrightness: el.brightness,
                   };
 
-                  console.log(
-                    'currentChangeableBright.current',
-                    currentChangeableBright.current
-                  );
+          
                 }
               } else if (
                 Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05
@@ -400,8 +400,16 @@ const _GridElement: React.FC<GridProps> = ({
         if (timerIntervalRef.current / 1000 >= allTime) {
           setFinish(true);
           intervalIdRef.current && clearInterval(intervalIdRef.current);
+          intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
         }
       }, TIME_INTERVAL);
+
+      intervalIdCO2Ref.current = setInterval(() => {
+        window.electron.serialPort.sendMessage('serial-channel', [
+          'serialCo2:transfer',
+          '@RRDT',
+        ]);
+      }, TIME_INTERVAL_CO2)
     }
   }, [start, gridWidth, finish]);
 
@@ -450,6 +458,8 @@ const _GridElement: React.FC<GridProps> = ({
       seconds = 0;
       started.current = false;
       intervalIdRef.current && clearInterval(intervalIdRef.current);
+      intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
+
       if (timeArrowRef.current) {
         timerIntervalRef.current = 0;
         timeArrowRef.current.style.transition = 'none';

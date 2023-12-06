@@ -1567,17 +1567,17 @@ export default function App() {
         {/*  />*/}
         {/*  <button onClick={sendData}>Send data</button>*/}
         {/*</div>*/}
-        {/*<div>*/}
-        {/*  <h3>Co2 message</h3>*/}
-        {/*  <input*/}
-        {/*    style={{ width: 400, height: 60, fontSize: 20 }}*/}
-        {/*    onChange={(e) => setMessageCo2Value(e.currentTarget.value)}*/}
-        {/*    id="dataCo2"*/}
-        {/*    value={messageCo2Value}*/}
-        {/*  />*/}
-        {/*  <button onClick={sendCo2Data}>Send data</button>*/}
-        {/*  {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}*/}
-        {/*</div>*/}
+        <div>
+         {/* <h3>Co2 message</h3>
+         <input
+            style={{ width: 400, height: 60, fontSize: 20 }}
+            onChange={(e) => setMessageCo2Value(e.currentTarget.value)}
+            id="dataCo2"
+            value={messageCo2Value}
+          />
+         <button onClick={sendCo2Data}>Send data</button> */}
+         {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}
+        </div>
 
         <InitialSettings
           initialValues={initialValues}
@@ -1593,7 +1593,7 @@ export default function App() {
         />
 
         <section style={{ visibility: shouldShowForm ? 'visible' : 'hidden' }}>
-          <div
+          {/* <div
             style={{ display: 'flex', flexDirection: 'column', paddingTop: 20 }}
           >
             <label htmlFor="bright">Яркость: {brightness}</label>
@@ -1607,7 +1607,7 @@ export default function App() {
               min="0"
               max="100"
             />
-          </div>
+          </div> */}
 
           <Calibration
             calibrationValuesTime={calibrationValuesTime}
