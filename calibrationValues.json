@@ -1,26 +1,30 @@
 {
   "calibrationValues": {
     "x": {
-      "steps": 10000,
-      "volume": 1
+      "steps": 2000,
+      "volume": 2,
+      "time": 2.1
     },
     "z": {
-      "steps": 10000,
-      "volume": 1
+      "steps": 2000,
+      "volume": 1.5,
+      "time": 2.1
     },
     "y": {
-      "steps": 10000,
-      "volume": 1
+      "steps": 20000,
+      "volume": 5.7,
+      "time": 20.719
     },
     "e": {
-      "steps": 10000,
-      "volume": 1
+      "steps": 2000,
+      "volume": 2,
+      "time": 2.101
     }
   },
   "calibrationTimePerSecond": {
-    "x": 20.438,
-    "y": 20.456,
-    "z": 20.438,
-    "e": 20.438
+    "x": 1.05,
+    "y": 3.6349122807017546,
+    "z": 1.4000000000000001,
+    "e": 1.0505
   }
 }

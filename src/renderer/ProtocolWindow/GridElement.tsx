@@ -140,11 +140,12 @@ const _GridElement: React.FC<GridProps> = ({
 
     // return timeSeconds;
     const { days } = getHoursAndMinutes(timeSeconds);
-    if (process.env.NODE_ENV === 'development') {
-      return days * 24 * Seconds_In_Hour;
-    }
+    return days * 24 * Seconds_In_Hour;
+    // if (process.env.NODE_ENV === 'development') {
+    //   return days * 24 * Seconds_In_Hour;
+    // }
 
-    return 1 * Seconds_In_Hour;
+    // return 1 * Seconds_In_Hour;
   }, [grid]);
 
   const intervalIdRef = useRef<number | NodeJS.Timer | null>(null);

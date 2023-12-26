@@ -26,6 +26,7 @@ import {
   OptoAccusticItem,
   StepperItem,
   SteppersValues,
+  CalibrationTypeRecordValues
 } from '../Types/Types';
 import cloneDeep from 'lodash/cloneDeep';
 import { BrightModal } from './ProtocolWindow/Modals/BrightModal';
@@ -93,8 +94,9 @@ export default function App() {
       z: 0,
       e: 0,
     });
+    
   const [calibrationValuesProp, setCalibrationValuesProp] = useState<
-    Record<SteppersValues, CalibrationValue> | undefined
+  CalibrationTypeRecordValues | undefined
   >(undefined);
 
   const [showModal, setOpenModal, setCloseModal] = useToggle();
@@ -148,15 +150,20 @@ export default function App() {
           if (calibrationStart.current) {
             calibrationStart.current = false;
 
-            const valve = data.split('_STEPPER_STOP')[0].toLowerCase();
+            const valve = data.split('_STEPPER_STOP')[0].toLowerCase().trim() as SteppersValues;
             const endTime = Date.now();
             const totalCalibrationTime = endTime - startTimeRef.current;
-
             if (valve) {
-              setCalibrationValuesTime((prev) => ({
-                ...prev,
-                [valve]: totalCalibrationTime / 1000,
-              }));
+              setCalibrationValuesProp((prev) => {
+                if(prev === undefined) {
+                  return {
+                    [valve]: {time: totalCalibrationTime / 1000,} 
+                  };
+                }
+                return {
+                  ...prev,
+                  [valve]: {...prev[valve], time: totalCalibrationTime / 1000,} 
+                }});
             }
           }
         } else if (data.includes('CO2_RESULT')) {
@@ -1610,7 +1617,6 @@ export default function App() {
           </div> */}
 
           <Calibration
-            calibrationValuesTime={calibrationValuesTime}
             showCalibration={showCalibration}
             closeCalibration={setShowCalibration}
             calibrate={(id, steps) => {
@@ -1626,10 +1632,11 @@ export default function App() {
                 console.log('EEEEE', e);
               }
             }}
-            calibrationValuesProp={calibrationValuesProp}
+            calibrationValues={calibrationValuesProp}
+            changeCalibrationValue={setCalibrationValuesProp}
           />
 
-          <CalibrationChecker calibrationValuesTime={calibrationValuesTime} />
+          <CalibrationChecker calibrationValues={calibrationValuesProp || {}} />
 
           {/*{!isEmptyCalibrationValues(calibrationValuesTime) ? (*/}
 

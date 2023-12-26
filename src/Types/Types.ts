@@ -207,3 +207,11 @@ export type ChannelsCallback = {
 };
 
 export type Connection = 'initial' | 'connecting' | 'connected' | 'not-found';
+
+export type CalibrationValue = {
+  steps: number;
+  volume: number;
+  time: number;
+};
+
+export type CalibrationTypeRecordValues = Record<SteppersValues, CalibrationValue>;

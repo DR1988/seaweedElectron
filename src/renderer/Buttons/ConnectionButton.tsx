@@ -94,7 +94,7 @@ export const ConnectionButton: React.FC<Props> = ({
         disableRestoreFocus
       >
         <Typography sx={{ p: 1 }}>
-          Сначало надо подключиться к устройством (контроллеру для работы с
+          Сначала надо подключиться к устройствам (контроллеру для работы с
           клапанами и датчику Co2)
         </Typography>
       </Popover>

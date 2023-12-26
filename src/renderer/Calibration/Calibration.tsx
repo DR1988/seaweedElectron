@@ -4,8 +4,10 @@ import {
   EChannels,
   steppers,
   SteppersValues,
+  CalibrationTypeRecordValues,
+  CalibrationValue
 } from '../../Types/Types';
-import { isNumber } from '../helpers/numberValidator';
+import { isNumber, isDecimalNumber } from '../helpers/numberValidator';
 import {
   Button,
   Dialog,
@@ -22,39 +24,33 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-export type CalibrationValue = {
-  steps: number;
-  volume: number;
-};
+
 
 export type CalibrationProps = {
   closeCalibration: (close: boolean) => void;
   showCalibration: boolean;
   calibrate: (id: SteppersValues, steps: number) => void;
-  calibrationValuesTime: CalibrationTypeRecord;
-  calibrationValuesProp?: Record<SteppersValues, CalibrationValue> | undefined;
+  calibrationValues?: CalibrationTypeRecordValues | undefined;
+  changeCalibrationValue: (calibrationTypeRecordValues: CalibrationTypeRecordValues) => void
 };
 
-const defaultValue: Record<SteppersValues, CalibrationValue> = {
-  x: { steps: 0, volume: 0 },
-  z: { steps: 0, volume: 0 },
-  y: { steps: 0, volume: 0 },
-  e: { steps: 0, volume: 0 },
+const defaultValue: CalibrationTypeRecordValues = {
+  x: { steps: 0, volume: 0, time: 0 },
+  z: { steps: 0, volume: 0, time: 0  },
+  y: { steps: 0, volume: 0, time: 0  },
+  e: { steps: 0, volume: 0, time: 0  },
 };
 
-const MIN_STEPS = 10000;
+const MIN_STEPS = 2000;
 const MAX_STEPS = 50000;
 
 export const Calibration: React.FC<CalibrationProps> = ({
   closeCalibration,
   calibrate,
   showCalibration,
-  calibrationValuesTime,
-  calibrationValuesProp = defaultValue,
+  calibrationValues = defaultValue,
+  changeCalibrationValue
 }) => {
-  const [calibrationValues, changeCalibrationValue] = useState<
-    Record<SteppersValues, CalibrationValue>
-  >(calibrationValuesProp);
 
   const [calibrationStepsErrors, changeCalibrationStepsErrors] = useState<
     Partial<Record<SteppersValues, string>> | undefined
@@ -71,7 +67,7 @@ export const Calibration: React.FC<CalibrationProps> = ({
 
   useEffect(() => {
     setBlockCalibration(false);
-  }, [calibrationValuesTime]);
+  }, [calibrationValues]);
 
   const calibrationTimePerSecond: {
     x: number;
@@ -82,7 +78,6 @@ export const Calibration: React.FC<CalibrationProps> = ({
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     console.log('calibrationValues', calibrationValues);
-    console.log('calibrationValuesTime', calibrationValuesTime);
     let hasErrors = false;
 
     if (calibrationValues && !Object.values(calibrationValues).length) {
@@ -106,10 +101,11 @@ export const Calibration: React.FC<CalibrationProps> = ({
         ];
         if (!value.steps) {
           hasErrors = true;
-          changeCalibrationStepsErrors((prev) => ({
+          changeCalibrationStepsErrors((prev) => {
+            return {
             ...prev,
             [key]: 'Необходио задать значения',
-          }));
+          }});
         } else {
           const newCalibrationErrors = { ...calibrationStepsErrors };
           delete newCalibrationErrors[key];
@@ -128,7 +124,7 @@ export const Calibration: React.FC<CalibrationProps> = ({
           const newCalibrationErrors = { ...calibrationVolumeErrors };
           delete newCalibrationErrors[key];
           changeCalibrationVolumeErrors(newCalibrationErrors);
-          const volumePerSecond = calibrationValuesTime[key] / value.volume;
+          const volumePerSecond = calibrationValues[key].time / value.volume;
           calibrationTimePerSecond[key] = volumePerSecond;
         }
       });
@@ -156,10 +152,6 @@ export const Calibration: React.FC<CalibrationProps> = ({
       }, 3000);
     }
   }, [showCalibrationDataSaved]);
-
-  useEffect(() => {
-    changeCalibrationValue(calibrationValuesProp);
-  }, [calibrationValuesProp]);
 
   return (
     <Dialog
@@ -223,7 +215,7 @@ export const Calibration: React.FC<CalibrationProps> = ({
           </ListItem>
           <ListItem disablePadding>
             <Typography variant="body1" paragraph={false} component="span">
-              После ввода численного значения надмите кнопку{' '}
+              После ввода численного значения нажмите кнопку{' '}
               <Typography
                 paragraph={false}
                 component="span"
@@ -254,12 +246,14 @@ export const Calibration: React.FC<CalibrationProps> = ({
               <TextField
                 error={!!calibrationStepsErrors?.[id]}
                 label={`Количество шагов для клапана ${id.toUpperCase()}`}
-                value={calibrationValues[id]?.steps || 0}
+                value={calibrationValues?.[id]?.steps || 0}
                 helperText={calibrationStepsErrors?.[id] || ' '}
                 onChange={(e) => {
-                  if (calibrationValues) {
-                    const value = e.target.value;
-                    if (isNumber(value)) {
+                  const value = e.target.value;
+                  if (isNumber(value)) {
+                    console.log('calibrationValues', calibrationValues);
+                    
+                    if (calibrationValues) {
                       const newCalibrationValues = {
                         ...calibrationValues,
                       };
@@ -267,6 +261,17 @@ export const Calibration: React.FC<CalibrationProps> = ({
                         ...newCalibrationValues[id],
                         steps: parseInt(value),
                       };
+                      changeCalibrationStepsErrors((prev) => ({
+                        ...prev,
+                        [id]: '',
+                      }));
+                      console.log('newCalibrationValues', newCalibrationValues);
+                      
+                      changeCalibrationValue(newCalibrationValues);
+                    } else {
+                      const newCalibrationValues = {[id]: {
+                        steps: parseInt(value),
+                      }}
                       changeCalibrationStepsErrors((prev) => ({
                         ...prev,
                         [id]: '',
@@ -281,18 +286,49 @@ export const Calibration: React.FC<CalibrationProps> = ({
               <TextField
                 error={!!calibrationVolumeErrors?.[id]}
                 label="Пролитый Объем (мл)"
-                value={calibrationValues[id]?.volume || 0}
+                value={calibrationValues?.[id]?.volume || 0}
                 helperText={calibrationVolumeErrors?.[id] || ' '}
+                onBlur={e => {
+                  const value = e.target.value
+                  if (isDecimalNumber(value) && value.endsWith('.')) {
+                    const newCalibrationValues = {
+                      ...calibrationValues,
+                    };
+                    newCalibrationValues[id] = {
+                      ...newCalibrationValues[id],
+                      volume: parseFloat(value),
+                    };
+                    changeCalibrationVolumeErrors((prev) => ({
+                      ...prev,
+                      [id]: '',
+                    }));
+                    changeCalibrationValue(newCalibrationValues);
+                  } else {
+                    const newCalibrationValues = {
+                      ...calibrationValues,
+                    };
+                    newCalibrationValues[id] = {
+                      ...newCalibrationValues[id],
+                      volume: parseFloat(value),
+                    };
+                    changeCalibrationVolumeErrors((prev) => ({
+                      ...prev,
+                      [id]: '',
+                    }));
+                    changeCalibrationValue(newCalibrationValues);
+                  }
+                }}
                 onChange={(e) => {
                   if (calibrationValues) {
                     const value = e.target.value;
-                    if (isNumber(value)) {
+                    
+                    if (isDecimalNumber(value)) {
                       const newCalibrationValues = {
                         ...calibrationValues,
                       };
                       newCalibrationValues[id] = {
                         ...newCalibrationValues[id],
-                        volume: parseInt(value),
+                        volume: value, 
                       };
                       changeCalibrationVolumeErrors((prev) => ({
                         ...prev,
@@ -302,17 +338,17 @@ export const Calibration: React.FC<CalibrationProps> = ({
                     }
                   } else {
                     changeCalibrationValue({
-                      x: { steps: 0, volume: 0 },
-                      y: { steps: 0, volume: 0 },
-                      z: { steps: 0, volume: 0 },
-                      e: { steps: 0, volume: 0 },
+                      x: { steps: 0, volume: 0, time: 0},
+                      y: { steps: 0, volume: 0, time: 0 },
+                      z: { steps: 0, volume: 0, time: 0 },
+                      e: { steps: 0, volume: 0, time: 0 },
                     });
                   }
                 }}
               />
             </Grid>
             <Grid item display="flex" alignItems="flex-end" xs={3} height={56}>
-              {!!calibrationValuesTime[id] ? (
+              {!!calibrationValues?.[id]?.time ? (
                 <Typography variant="body1">
                   Калибровка заняла:
                   <Typography>
@@ -321,7 +357,7 @@ export const Calibration: React.FC<CalibrationProps> = ({
                       component="span"
                       sx={{ fontWeight: 'bold' }}
                     >
-                      {calibrationValuesTime[id]}
+                      {calibrationValues[id].time}
                     </Typography>{' '}
                     секунд
                   </Typography>
@@ -333,13 +369,13 @@ export const Calibration: React.FC<CalibrationProps> = ({
                 variant="contained"
                 disabled={isCalibrationBlock}
                 onClick={() => {
-                  if (calibrationValues[id].steps > MAX_STEPS) {
+                  if ((calibrationValues?.[id]?.steps || 0) > MAX_STEPS) {
                     changeCalibrationStepsErrors((prev) => ({
                       ...prev,
                       [id]: `Задать значение меньше ${MAX_STEPS}`,
                     }));
                     return;
-                  } else if (calibrationValues[id].steps < MIN_STEPS) {
+                  } else if ((calibrationValues?.[id]?.steps || 0) < MIN_STEPS) {
                     changeCalibrationStepsErrors((prev) => ({
                       ...prev,
                       [id]: `Задать значение больше ${MIN_STEPS}`,
