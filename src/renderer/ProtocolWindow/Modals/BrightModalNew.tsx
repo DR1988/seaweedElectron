@@ -75,7 +75,8 @@ export const BrightModalNew: React.FC<ModalProps> = ({
     (e: ChangeEvent<HTMLInputElement>) => {
       if (
         Number.isInteger(+e.target.value.trim()) &&
-        +e.target.value.trim() >= 0
+        +e.target.value.trim() >= 0 &&
+        +e.target.value.trim() < 24
       ) {
         setLocalStartTimeHours(+e.target.value);
         const { minutes } = getHoursAndMinutes(startTime);
@@ -110,7 +111,8 @@ export const BrightModalNew: React.FC<ModalProps> = ({
     (e: ChangeEvent<HTMLInputElement>) => {
       if (
         Number.isInteger(+e.target.value.trim()) &&
-        +e.target.value.trim() >= 0
+        +e.target.value.trim() >= 0 &&
+        +e.target.value.trim() < 24
       ) {
         setLocalEndTimeHours(+e.target.value);
 

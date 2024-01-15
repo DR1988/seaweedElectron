@@ -56,9 +56,12 @@ export const BrightItemElement: React.FC<ItemProps> = ({
           className={styles.errorItem}
           style={{
             zIndex: 2,
-            left: `${(gridWidth * cross.crossingValueStart) / allTime}px`,
+            left: `${
+              (scale * gridWidth * cross.crossingValueStart) / allTime
+            }px`,
             width: `${
-              (gridWidth *
+              (scale *
+                gridWidth *
                 Math.abs(cross.crossingValueEnd - cross.crossingValueStart)) /
               allTime
             }px`,

@@ -86,7 +86,9 @@ export const TimeLine: React.FC<TimeLineProps> = memo(
     return (
       <section
         style={{
-          width: `calc(${totalDays * scale * 100}% - ${scale * 20}px)`,
+          width: `calc(${totalDays * scale * 100}% - ${
+            2 * (scale - 1) * 20
+          }px)`,
           visibility: visible ? 'visible' : 'hidden',
           position: visible ? 'static' : 'fixed',
         }}

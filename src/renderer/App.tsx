@@ -26,7 +26,7 @@ import {
   OptoAccusticItem,
   StepperItem,
   SteppersValues,
-  CalibrationTypeRecordValues
+  CalibrationTypeRecordValues,
 } from '../Types/Types';
 import cloneDeep from 'lodash/cloneDeep';
 import { BrightModal } from './ProtocolWindow/Modals/BrightModal';
@@ -46,6 +46,7 @@ import { AirLiftModal } from './ProtocolWindow/Modals/AirLiftModal';
 import { OptoAccusticModalNew } from './ProtocolWindow/Modals/OptoAccusticModalNew';
 import { OptoAccusticModal } from './ProtocolWindow/Modals/OptoAccusticModal';
 import { Co2ChamberControl } from './Co2ChamberControl/Co2ChamberControl';
+import { getHoursAndMinutes } from './helpers/getHoursAndMinutes';
 
 const theme = createTheme({
   typography: {
@@ -94,9 +95,9 @@ export default function App() {
       z: 0,
       e: 0,
     });
-    
+
   const [calibrationValuesProp, setCalibrationValuesProp] = useState<
-  CalibrationTypeRecordValues | undefined
+    CalibrationTypeRecordValues | undefined
   >(undefined);
 
   const [showModal, setOpenModal, setCloseModal] = useToggle();
@@ -150,20 +151,27 @@ export default function App() {
           if (calibrationStart.current) {
             calibrationStart.current = false;
 
-            const valve = data.split('_STEPPER_STOP')[0].toLowerCase().trim() as SteppersValues;
+            const valve = data
+              .split('_STEPPER_STOP')[0]
+              .toLowerCase()
+              .trim() as SteppersValues;
             const endTime = Date.now();
             const totalCalibrationTime = endTime - startTimeRef.current;
             if (valve) {
               setCalibrationValuesProp((prev) => {
-                if(prev === undefined) {
+                if (prev === undefined) {
                   return {
-                    [valve]: {time: totalCalibrationTime / 1000,} 
+                    [valve]: { time: totalCalibrationTime / 1000 },
                   };
                 }
                 return {
                   ...prev,
-                  [valve]: {...prev[valve], time: totalCalibrationTime / 1000,} 
-                }});
+                  [valve]: {
+                    ...prev[valve],
+                    time: totalCalibrationTime / 1000,
+                  },
+                };
+              });
             }
           }
         } else if (data.includes('CO2_RESULT')) {
@@ -547,6 +555,26 @@ export default function App() {
           wrongSign = 'Есть пересечения с другими элементами';
         }
 
+        const { days: endTimeDays } = getHoursAndMinutes(newEndTime);
+
+        const { days: startTimeDays } = getHoursAndMinutes(
+          newSelectedItem.startTime
+        );
+
+        if (endTimeDays !== startTimeDays) {
+          wrongSign =
+            'Время окончания должно быть в тех же сутках, что и время начала';
+
+          mainGrid[lineIndex].changes[itemIndex] = {
+            ...newSelectedItem,
+            endTime: newEndTime,
+            wrongSign,
+          };
+
+          setMainGrid([...mainGrid]);
+          setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
+        }
+
         newSelectedItem.crosses = crosses;
 
         if (newEndTime <= newSelectedItem.startTime) {
@@ -636,6 +664,26 @@ export default function App() {
 
         if (newEndTime < newSelectedItem.startTime) {
           wrongSign = 'Время окончания должно быть больше времени старта';
+
+          mainGrid[lineIndex].changes[itemIndex] = {
+            ...newSelectedItem,
+            endTime: newEndTime,
+            wrongSign,
+          };
+
+          setMainGrid([...mainGrid]);
+          setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
+        }
+
+        const { days: endTimeDays } = getHoursAndMinutes(newEndTime);
+
+        const { days: startTimeDays } = getHoursAndMinutes(
+          newSelectedItem.startTime
+        );
+
+        if (endTimeDays !== startTimeDays) {
+          wrongSign =
+            'Время окончания должно быть в тех же сутках, что и время начала';
 
           mainGrid[lineIndex].changes[itemIndex] = {
             ...newSelectedItem,
@@ -1059,6 +1107,12 @@ export default function App() {
     const line = mainGrid[lineIndex];
     const newSelectedItem = cloneDeep(selectedItem);
 
+    const { days: endTimeDays } = getHoursAndMinutes(newEndTime);
+
+    const { days: startTimeDays } = getHoursAndMinutes(
+      newSelectedItem.startTime
+    );
+
     if (line && newSelectedItem) {
       if (line.type === EItemType.Light) {
         let hasIntersection = false;
@@ -1111,7 +1165,7 @@ export default function App() {
         }
         newSelectedItem.crosses = crosses;
 
-        const element = {
+        let element = {
           ...newSelectedItem,
           endTime: newEndTime,
           wrongSign,
@@ -1128,6 +1182,30 @@ export default function App() {
           ];
         } else {
           mainGrid[lineIndex].changes[index] = element;
+        }
+
+        if (endTimeDays !== startTimeDays) {
+          wrongSign =
+            'Время окончания должно быть в тех же сутках, что и время начала';
+
+          element = {
+            ...newSelectedItem,
+            endTime: newEndTime,
+            wrongSign,
+          } as LightItem;
+
+          const index = mainGrid[lineIndex].changes.findIndex(
+            (c) => c.id === element.id
+          );
+
+          if (index === -1) {
+            mainGrid[lineIndex].changes = [
+              ...mainGrid[lineIndex].changes,
+              element,
+            ];
+          } else {
+            mainGrid[lineIndex].changes[index] = element;
+          }
         }
 
         setMainGrid([...mainGrid]);
@@ -1184,7 +1262,7 @@ export default function App() {
         }
         newSelectedItem.crosses = crosses;
 
-        const element = {
+        let element = {
           ...newSelectedItem,
           endTime: newEndTime,
           wrongSign,
@@ -1202,6 +1280,31 @@ export default function App() {
         } else {
           mainGrid[lineIndex].changes[index] = element;
         }
+
+        if (endTimeDays !== startTimeDays) {
+          wrongSign =
+            'Время окончания должно быть в тех же сутках, что и время начала';
+
+          element = {
+            ...newSelectedItem,
+            endTime: newEndTime,
+            wrongSign,
+          } as AirLifItem;
+
+          const index = mainGrid[lineIndex].changes.findIndex(
+            (c) => c.id === element.id
+          );
+
+          if (index === -1) {
+            mainGrid[lineIndex].changes = [
+              ...mainGrid[lineIndex].changes,
+              element,
+            ];
+          } else {
+            mainGrid[lineIndex].changes[index] = element;
+          }
+        }
+
         setMainGrid([...mainGrid]);
         setSelectedItem({ ...element });
       }
@@ -1256,7 +1359,7 @@ export default function App() {
         }
         newSelectedItem.crosses = crosses;
 
-        const element = {
+        let element = {
           ...newSelectedItem,
           endTime: newEndTime,
           wrongSign,
@@ -1274,6 +1377,31 @@ export default function App() {
         } else {
           mainGrid[lineIndex].changes[index] = element;
         }
+
+        if (endTimeDays !== startTimeDays) {
+          wrongSign =
+            'Время окончания должно быть в тех же сутках, что и время начала';
+
+          element = {
+            ...newSelectedItem,
+            endTime: newEndTime,
+            wrongSign,
+          } as OptoAccusticItem;
+
+          const index = mainGrid[lineIndex].changes.findIndex(
+            (c) => c.id === element.id
+          );
+
+          if (index === -1) {
+            mainGrid[lineIndex].changes = [
+              ...mainGrid[lineIndex].changes,
+              element,
+            ];
+          } else {
+            mainGrid[lineIndex].changes[index] = element;
+          }
+        }
+
         setMainGrid([...mainGrid]);
         setSelectedItem({ ...element });
       }
@@ -1477,7 +1605,7 @@ export default function App() {
 
         newSelectedItem.crosses = crosses;
 
-        const element = {
+        let element = {
           ...newSelectedItem,
           volume: newVolume,
           endTime: newEndTime,
@@ -1495,6 +1623,37 @@ export default function App() {
           ];
         } else {
           mainGrid[lineIndex].changes[index] = element;
+        }
+
+        const { days: endTimeDays } = getHoursAndMinutes(newEndTime);
+
+        const { days: startTimeDays } = getHoursAndMinutes(
+          newSelectedItem.startTime
+        );
+
+        if (endTimeDays !== startTimeDays) {
+          wrongSign =
+            'Время окончания должно быть в тех же сутках, что и время начала';
+
+          element = {
+            ...newSelectedItem,
+            volume: newVolume,
+            endTime: newEndTime,
+            wrongSign,
+          } as StepperItem;
+
+          const index = mainGrid[lineIndex].changes.findIndex(
+            (c) => c.id === element.id
+          );
+
+          if (index === -1) {
+            mainGrid[lineIndex].changes = [
+              ...mainGrid[lineIndex].changes,
+              element,
+            ];
+          } else {
+            mainGrid[lineIndex].changes[index] = element;
+          }
         }
 
         setMainGrid([...mainGrid]);
@@ -1575,7 +1734,7 @@ export default function App() {
         {/*  <button onClick={sendData}>Send data</button>*/}
         {/*</div>*/}
         <div>
-         {/* <h3>Co2 message</h3>
+          {/* <h3>Co2 message</h3>
          <input
             style={{ width: 400, height: 60, fontSize: 20 }}
             onChange={(e) => setMessageCo2Value(e.currentTarget.value)}
@@ -1583,7 +1742,7 @@ export default function App() {
             value={messageCo2Value}
           />
          <button onClick={sendCo2Data}>Send data</button> */}
-         {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}
+          {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}
         </div>
 
         <InitialSettings

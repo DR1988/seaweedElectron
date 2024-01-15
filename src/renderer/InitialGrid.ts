@@ -46,8 +46,8 @@ export const initialGrid: GridType = [
     shortName: 'STEP_Y',
     changes: [
       {
-        startTime: 66,
-        volume: 3,
+        startTime: 0,
+        volume: 10,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 0,
@@ -75,8 +75,8 @@ export const initialGrid: GridType = [
     shortName: 'STEP_Z',
     changes: [
       {
-        startTime: 74,
-        volume: 0.5,
+        startTime: 0,
+        volume: 9,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 1,
@@ -93,8 +93,8 @@ export const initialGrid: GridType = [
     shortName: 'STEP_E',
     changes: [
       {
-        startTime: 86,
-        volume: 0.5,
+        startTime: 0,
+        volume: 15,
         direction: 'clockwise',
         type: EItemType.Stepper,
         id: 0,

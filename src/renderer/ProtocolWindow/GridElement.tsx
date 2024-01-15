@@ -305,8 +305,6 @@ const _GridElement: React.FC<GridProps> = ({
                     timeStep,
                     currentBrightness: el.brightness,
                   };
-
-          
                 }
               } else if (
                 Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05
@@ -410,7 +408,7 @@ const _GridElement: React.FC<GridProps> = ({
           'serialCo2:transfer',
           '@RRDT',
         ]);
-      }, TIME_INTERVAL_CO2)
+      }, TIME_INTERVAL_CO2);
     }
   }, [start, gridWidth, finish]);
 
@@ -773,7 +771,8 @@ const _GridElement: React.FC<GridProps> = ({
                         return (
                           <GridRow
                             key={element.id}
-                            allTime={allTime}
+                            // allTime={allTime}
+                            allTime={86400}
                             element={element}
                             selectItem={selectItem}
                             gridWidth={gridWidth}
@@ -781,20 +780,20 @@ const _GridElement: React.FC<GridProps> = ({
                           />
                         );
                       })}
-                      {Object.values(scaleMapper).map((v) => (
-                        <TimeLine
-                          scale={v}
-                          width={gridWidth}
-                          allTime={allTime}
-                          visible={scale === v}
-                        />
-                      ))}
-                      {/*<TimeLine*/}
-                      {/*  scale={scale}*/}
-                      {/*  width={gridWidth}*/}
-                      {/*  allTime={allTime}*/}
-                      {/*  visible*/}
-                      {/*/>*/}
+                      {/*{Object.values(scaleMapper).map((v) => (*/}
+                      {/*  <TimeLine*/}
+                      {/*    scale={v}*/}
+                      {/*    width={gridWidth}*/}
+                      {/*    allTime={allTime}*/}
+                      {/*    visible={scale === v}*/}
+                      {/*  />*/}
+                      {/*))}*/}
+                      <TimeLine
+                        scale={scale}
+                        width={gridWidth}
+                        allTime={allTime}
+                        visible
+                      />
                     </div>
                     <TimeArrow
                       id={'timeArrow1'}
