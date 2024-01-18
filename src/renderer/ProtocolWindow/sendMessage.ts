@@ -1,4 +1,7 @@
-import { stopCO2PurgeValve, stopCO2Valve } from 'renderer/Co2ChamberControl/Co2ChamberControl';
+import {
+  stopCO2PurgeValve,
+  stopCO2Valve,
+} from 'renderer/Co2ChamberControl/Co2ChamberControl';
 import { Brightness, SteppersValues } from '../../Types/Types';
 
 const MAX_TIME_TO_VALVE = 999999999; // примерно 290 часов
@@ -75,10 +78,10 @@ export const stopAll = () => {
   stopOptic();
   stopCO2Valve();
   stopCO2PurgeValve();
-  stopValve('x')
-  stopValve('y')
-  stopValve('z')
-  stopValve('e')
+  stopValve('x');
+  stopValve('y');
+  stopValve('z');
+  stopValve('e');
   // window.electron.serialPort.sendMessage('serial-channel', [
   //   'serial:transfer',
   //   // `eE0D1S0S|\n`,

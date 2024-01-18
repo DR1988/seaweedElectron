@@ -38,7 +38,14 @@ export const GridRow: React.FC<GridRowProps> = ({
   scale,
 }) => {
   return (
-    <div style={{ width: `${scale * 1200 + 20}px` }} className={styles.row}>
+    <div
+      style={
+        {
+          // width: `${scale * 1200 + 20}px`,
+        }
+      }
+      className={styles.row}
+    >
       {/*<div style={{ position: 'absolute', left: -50 }}>{element.name}</div>*/}
       {element.changes.map((change) => {
         switch (change.type) {

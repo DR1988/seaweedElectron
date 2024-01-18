@@ -129,6 +129,10 @@ export type Grid = [
   LineTypeLight
 ];
 
+export type Days = number[];
+
+export type GridDays = Grid[];
+
 export type CalibrationTypeRecord = Record<SteppersValues, number>;
 
 export type ValueOf<T> = T[keyof T];
@@ -214,4 +218,7 @@ export type CalibrationValue = {
   time: number;
 };
 
-export type CalibrationTypeRecordValues = Record<SteppersValues, CalibrationValue>;
+export type CalibrationTypeRecordValues = Record<
+  SteppersValues,
+  CalibrationValue
+>;

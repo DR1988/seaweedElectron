@@ -10,9 +10,11 @@ import { GridRow } from './RowElement/RowElement';
 import {
   AirLifItem,
   CalibrationTypeRecord,
+  Days,
   EChannels,
   EItemType,
   Grid as GridType,
+  GridDays,
   LightItem,
   LineTypeAirLift,
   LineTypeLight,
@@ -48,6 +50,7 @@ import {
   Seconds_In_Minute,
   Seconds_In_Hour,
 } from '../helpers/getHoursAndMinutes';
+import { emptyGrid, initialGrid, testGrid } from '../InitialGrid';
 
 type GridProps = {
   grid: GridType;
@@ -63,6 +66,12 @@ type GridProps = {
   setStart: (value: boolean) => void;
   finish: boolean;
   setFinish: (value: boolean) => void;
+  currentDay: number;
+  setCurrentDay: (value: number) => void;
+  days: Days;
+  setDays: (days: Days) => void;
+  mainGridArray: GridDays;
+  setMainGridArray: (grid: GridDays) => void;
 };
 
 const scalesCount = 6;
@@ -98,6 +107,12 @@ const _GridElement: React.FC<GridProps> = ({
   setStart,
   finish,
   setFinish,
+  currentDay,
+  setCurrentDay,
+  days,
+  setDays,
+  mainGridArray,
+  setMainGridArray,
 }) => {
   const [gridWidth, setGridWidth] = useState(1200);
   const [scale, setScale] = useState(1);
@@ -141,6 +156,7 @@ const _GridElement: React.FC<GridProps> = ({
     // return timeSeconds;
     const { days } = getHoursAndMinutes(timeSeconds);
     return days * 24 * Seconds_In_Hour;
+    // return 60;
     // if (process.env.NODE_ENV === 'development') {
     //   return days * 24 * Seconds_In_Hour;
     // }
@@ -726,6 +742,39 @@ const _GridElement: React.FC<GridProps> = ({
       sectionRef.current.scrollTo({ left: currentPos });
     }
   };
+
+  const _increaseCurrentDay = useCallback(() => {
+    if (days.length > currentDay + 1) {
+      setCurrentDay(currentDay + 1);
+    }
+  }, [currentDay, days]);
+
+  const _decreaseCurrentDay = useCallback(() => {
+    if (currentDay > 0) {
+      setCurrentDay(currentDay - 1);
+    }
+  }, [currentDay]);
+
+  const _addDay = useCallback(() => {
+    const lastElement = days.length - 1;
+    const gridElement = mainGridArray[lastElement];
+
+    if (gridElement) {
+      const totalChanges = gridElement.reduce(
+        (acc, curr) => acc + curr.changes.length,
+        0
+      );
+
+      if (totalChanges !== 0) {
+        const day = days[lastElement];
+
+        setDays([...days, day + 1]);
+
+        setMainGridArray([...mainGridArray, testGrid]);
+      }
+    }
+  }, [days, mainGridArray]);
+
   return (
     <>
       <span>Масштаб: {scale}</span>
@@ -847,48 +896,53 @@ const _GridElement: React.FC<GridProps> = ({
           </div>
         </Grid>
 
-        <Grid marginTop="1.5rem" xs={12}>
-          <Button
-            disabled={start}
-            onClick={() => {
-              setStart(true);
-              setFinish(false);
-            }}
-            variant="contained"
-          >
-            Старт
-          </Button>
-          <Button
-            onClick={() => {
-              setStart(false);
-              setFinish(true);
-              stopAll();
-              currentChangeableBright.current = null;
-            }}
-            variant="contained"
-          >
-            Стоп
-          </Button>
-          <Button
-            onClick={() => {
-              window.electron.ipcRenderer.sendMessage(
-                EChannels.saveProtocol,
-                grid
-              );
-            }}
-            variant="contained"
-          >
-            Сохранить
-          </Button>
-          <Button
-            onClick={() => {
-              window.electron.ipcRenderer.sendMessage(EChannels.loadProtocol);
-            }}
-            variant="contained"
-          >
-            Загрузить протокол
-          </Button>
-          {/* <Button
+        <Grid
+          marginTop="1.5rem"
+          xs={12}
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          <div>
+            <Button
+              disabled={start}
+              onClick={() => {
+                setStart(true);
+                setFinish(false);
+              }}
+              variant="contained"
+            >
+              Старт
+            </Button>
+            <Button
+              onClick={() => {
+                setStart(false);
+                setFinish(true);
+                stopAll();
+                currentChangeableBright.current = null;
+              }}
+              variant="contained"
+            >
+              Стоп
+            </Button>
+            <Button
+              onClick={() => {
+                window.electron.ipcRenderer.sendMessage(
+                  EChannels.saveProtocol,
+                  grid
+                );
+              }}
+              variant="contained"
+            >
+              Сохранить
+            </Button>
+            <Button
+              onClick={() => {
+                window.electron.ipcRenderer.sendMessage(EChannels.loadProtocol);
+              }}
+              variant="contained"
+            >
+              Загрузить протокол
+            </Button>
+            {/* <Button
             onClick={() => {
               startValve('x')
               startValve('y')
@@ -910,6 +964,16 @@ const _GridElement: React.FC<GridProps> = ({
           >
             не пуск
           </Button> */}
+          </div>
+          <div>
+            <span>Выбранный день {currentDay + 1}</span>
+            <Button onClick={_decreaseCurrentDay}>Назад</Button>
+            <Button onClick={_increaseCurrentDay}>Вперед</Button>
+            <Button onClick={_addDay}>Добавить</Button>
+            <Button>Удалить</Button>
+            <Button>Скопировать</Button>
+            <Button>Вставить</Button>
+          </div>
         </Grid>
       </Grid>
     </>

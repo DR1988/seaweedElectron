@@ -27,6 +27,8 @@ import {
   StepperItem,
   SteppersValues,
   CalibrationTypeRecordValues,
+  GridDays,
+  Days,
 } from '../Types/Types';
 import cloneDeep from 'lodash/cloneDeep';
 import { BrightModal } from './ProtocolWindow/Modals/BrightModal';
@@ -38,7 +40,7 @@ import { InitialValues } from '../Types/StorageTypes';
 import { createTheme, Grid, ThemeProvider } from '@mui/material';
 import { ConnectionButton } from './Buttons/ConnectionButton';
 import { CalibrationButtons } from './Buttons/CalibrationButton';
-import { initialGrid } from './InitialGrid';
+import { initialDays, initialGrid, initialGridObj } from './InitialGrid';
 import { BrightModalNew } from './ProtocolWindow/Modals/BrightModalNew';
 import { StepperModalNew } from './ProtocolWindow/Modals/StepperModalNew';
 import { AirLiftModalNew } from './ProtocolWindow/Modals/AirLiftModalNew';
@@ -260,6 +262,9 @@ export default function App() {
     connected === 'connecting' || connected === 'connected';
 
   const [mainGrid, setMainGrid] = useState<GridType>(initialGrid);
+  const [mainGridArray, setMainGridArray] = useState<GridDays>(initialGridObj);
+  const [days, setDays] = useState<Days>(initialDays);
+  const [currentDay, setCurrentDay] = useState(0);
 
   useEffect(() => {
     window.electron.ipcRenderer.on(EChannels.loadedProtocolData, (dataGrid) => {
@@ -837,6 +842,270 @@ export default function App() {
   };
 
   const changeNewStartTime = (newStartTime: number) => {
+    const lineIndex = mainGrid.findIndex(
+      (element) => element.id === selectedItem?.line
+    );
+    const line = mainGrid[lineIndex];
+    const newSelectedItem = cloneDeep(selectedItem);
+    const crosses: Array<Crossing> = [];
+
+    let hasIntersection = false;
+    line.changes.forEach((c) => {
+      if (
+        newStartTime >= c.startTime &&
+        newStartTime < c.endTime &&
+        newSelectedItem?.id !== c.id
+      ) {
+        hasIntersection = true;
+      }
+    });
+
+    let wrongSign = hasIntersection ? 'Время начало имеет пересечения' : '';
+
+    if (line && newSelectedItem && newSelectedItem?.type === EItemType.Light) {
+      if (newSelectedItem?.endTime) {
+        if (newStartTime >= newSelectedItem.endTime) {
+          wrongSign = 'Время старта больше или равно времени окончания';
+        }
+        line.changes.forEach((c, ind) => {
+          const crossing: Crossing = {
+            crossingValueStart: 0,
+            crossingValueEnd: 0,
+          };
+
+          if (
+            newSelectedItem.id !== c.id &&
+            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+            newSelectedItem.endTime >= c.endTime
+          ) {
+            crossing.crossingValueStart =
+              newStartTime <= c.startTime ? c.startTime : newStartTime;
+            if (newSelectedItem.endTime > c.endTime) {
+              crossing.crossingValueEnd = c.endTime;
+            } else {
+              crossing.crossingValueEnd = newSelectedItem.endTime;
+            }
+            crosses.push(crossing);
+          }
+        });
+      }
+
+      newSelectedItem.crosses = crosses;
+
+      if (crosses.length) {
+        wrongSign = 'Есть пересечения с другими элементами';
+      }
+
+      const element = {
+        ...newSelectedItem,
+        startTime: newStartTime,
+        wrongSign,
+      } as LightItem;
+
+      const index = mainGrid[lineIndex].changes.findIndex(
+        (c) => c.id === element.id
+      );
+
+      if (index === -1) {
+        (mainGrid[lineIndex].changes as LightItem[]) = [
+          ...mainGrid[lineIndex].changes,
+          element,
+        ];
+      } else {
+        mainGrid[lineIndex].changes[index] = element;
+      }
+
+      setMainGrid([...mainGrid]);
+      setSelectedItem({ ...element });
+    }
+
+    if (
+      line &&
+      newSelectedItem &&
+      newSelectedItem?.type === EItemType.OptoAcc
+    ) {
+      if (newSelectedItem?.endTime) {
+        if (newStartTime >= newSelectedItem.endTime) {
+          wrongSign = 'Время старта больше или равно времени окончания';
+        }
+        line.changes.forEach((c, ind) => {
+          const crossing: Crossing = {
+            crossingValueStart: 0,
+            crossingValueEnd: 0,
+          };
+
+          if (
+            newSelectedItem.id !== c.id &&
+            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+            newSelectedItem.endTime >= c.endTime
+          ) {
+            crossing.crossingValueStart =
+              newStartTime <= c.startTime ? c.startTime : newStartTime;
+            if (newSelectedItem.endTime > c.endTime) {
+              crossing.crossingValueEnd = c.endTime;
+            } else {
+              crossing.crossingValueEnd = newSelectedItem.endTime;
+            }
+            crosses.push(crossing);
+          }
+        });
+      }
+
+      newSelectedItem.crosses = crosses;
+
+      if (crosses.length) {
+        wrongSign = 'Есть пересечения с другими элементами';
+      }
+
+      const element = {
+        ...newSelectedItem,
+        startTime: newStartTime,
+        wrongSign,
+      } as OptoAccusticItem;
+
+      const index = mainGrid[lineIndex].changes.findIndex(
+        (c) => c.id === element.id
+      );
+
+      if (index === -1) {
+        (mainGrid[lineIndex].changes as OptoAccusticItem[]) = [
+          ...mainGrid[lineIndex].changes,
+          element,
+        ];
+      } else {
+        mainGrid[lineIndex].changes[index] = element;
+      }
+
+      setMainGrid([...mainGrid]);
+      setSelectedItem({ ...element });
+    }
+
+    if (
+      line &&
+      newSelectedItem &&
+      newSelectedItem?.type === EItemType.AirLift
+    ) {
+      if (newSelectedItem?.endTime) {
+        if (newStartTime >= newSelectedItem.endTime) {
+          wrongSign = 'Время старта больше или равно времени окончания';
+        }
+        line.changes.forEach((c, ind) => {
+          const crossing: Crossing = {
+            crossingValueStart: 0,
+            crossingValueEnd: 0,
+          };
+
+          if (
+            newSelectedItem.id !== c.id &&
+            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+            newSelectedItem.endTime >= c.endTime
+          ) {
+            crossing.crossingValueStart =
+              newStartTime <= c.startTime ? c.startTime : newStartTime;
+            if (newSelectedItem.endTime > c.endTime) {
+              crossing.crossingValueEnd = c.endTime;
+            } else {
+              crossing.crossingValueEnd = newSelectedItem.endTime;
+            }
+            crosses.push(crossing);
+          }
+        });
+      }
+
+      newSelectedItem.crosses = crosses;
+
+      if (crosses.length) {
+        wrongSign = 'Есть пересечения с другими элементами';
+      }
+
+      const element = {
+        ...newSelectedItem,
+        startTime: newStartTime,
+        wrongSign,
+      } as AirLifItem;
+
+      const index = mainGrid[lineIndex].changes.findIndex(
+        (c) => c.id === element.id
+      );
+
+      if (index === -1) {
+        (mainGrid[lineIndex].changes as AirLifItem[]) = [
+          ...mainGrid[lineIndex].changes,
+          element,
+        ];
+      } else {
+        mainGrid[lineIndex].changes[index] = element;
+      }
+
+      setMainGrid([...mainGrid]);
+      setSelectedItem({ ...element });
+    }
+
+    if (
+      line.type === EItemType.Stepper &&
+      newSelectedItem &&
+      newSelectedItem.type === EItemType.Stepper
+    ) {
+      const calibrationTime = calibrationValuesTime[newSelectedItem.line];
+      const newEndTime =
+        newStartTime + calibrationTime * newSelectedItem.volume;
+
+      if (newSelectedItem?.endTime) {
+        if (newStartTime > newEndTime) {
+          wrongSign = 'Время старта больше времени окончания';
+        }
+        line.changes.forEach((c, ind) => {
+          const crossing: Crossing = {
+            crossingValueStart: 0,
+            crossingValueEnd: 0,
+          };
+
+          if (
+            newSelectedItem.id !== c.id &&
+            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+            (newEndTime >= c.endTime || newEndTime > c.startTime)
+          ) {
+            crossing.crossingValueStart =
+              newStartTime <= c.startTime ? c.startTime : newStartTime;
+            if (newEndTime > c.endTime) {
+              crossing.crossingValueEnd = c.endTime;
+            } else {
+              crossing.crossingValueEnd = newEndTime;
+            }
+            crosses.push(crossing);
+          }
+        });
+      }
+
+      newSelectedItem.crosses = crosses;
+
+      if (crosses.length) {
+        wrongSign = 'Есть пересечения с другими элементами';
+      }
+
+      const element = {
+        ...newSelectedItem,
+        startTime: newStartTime,
+        endTime: newEndTime,
+        wrongSign,
+      };
+
+      const index = mainGrid[lineIndex].changes.findIndex(
+        (c) => c.id === element.id
+      );
+
+      if (index === -1) {
+        mainGrid[lineIndex].changes = [...mainGrid[lineIndex].changes, element];
+      } else {
+        mainGrid[lineIndex].changes[index] = element;
+      }
+
+      setMainGrid([...mainGrid]);
+      setSelectedItem({ ...element });
+    }
+  };
+
+  const changeNewStartTimeObj = (newStartTime: number) => {
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -1681,7 +1950,32 @@ export default function App() {
     });
 
     setMainGrid(calibratedGrid);
-  }, [calibrationValuesTime]);
+
+    const calibratedGridArray = mainGridArray.reduce((acc, curr) => {
+      const calibratedGrid = curr.map((gridElement) => {
+        if (gridElement.type === EItemType.Stepper) {
+          const calibrationTime = calibrationValuesTime[gridElement.id];
+
+          const newChanges = gridElement.changes.map((c) => {
+            return { ...c, endTime: c.startTime + c.volume * calibrationTime };
+          });
+
+          return {
+            ...gridElement,
+            changes: newChanges,
+          };
+        }
+
+        return gridElement;
+      });
+
+      acc.push(calibratedGrid);
+
+      return acc;
+    }, [] as GridDays);
+
+    setMainGridArray(calibratedGridArray);
+  }, [calibrationValuesTime, currentDay]);
 
   const saveInitialValues = (key: keyof InitialValues, value: string) => {
     setInitialValues((prev) => {
@@ -1701,7 +1995,11 @@ export default function App() {
   };
 
   const shouldShowForm = isInitialValueSet();
-
+  console.log(
+    'mainGridArray[currentDay]',
+    mainGridArray,
+    mainGridArray[currentDay]
+  );
   return (
     <ThemeProvider theme={theme}>
       <Grid height="100%">
@@ -1800,7 +2098,8 @@ export default function App() {
           {/*{!isEmptyCalibrationValues(calibrationValuesTime) ? (*/}
 
           <GridElement
-            grid={mainGrid}
+            grid={mainGridArray[currentDay]}
+            // grid={mainGrid}
             selectItem={selectItem}
             selectNewLightItem={selectNewLightItem}
             selectNewStepperItem={selectNewStepperItem}
@@ -1811,6 +2110,12 @@ export default function App() {
             setStart={setStart}
             finish={finish}
             setFinish={setFinish}
+            currentDay={currentDay}
+            setCurrentDay={setCurrentDay}
+            days={days}
+            setDays={setDays}
+            mainGridArray={mainGridArray}
+            setMainGridArray={setMainGridArray}
           />
 
           {/*) : null}*/}

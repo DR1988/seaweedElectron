@@ -1,4 +1,4 @@
-import { EItemType, Grid as GridType } from '../Types/Types';
+import { Days, EItemType, Grid as GridType, GridDays } from '../Types/Types';
 
 export const initialGrid: GridType = [
   {
@@ -226,6 +226,201 @@ export const initialGrid: GridType = [
       //   line: 'l',
       //   brightness: 10,
       // },
+    ],
+    description: 'Включает свет',
+  },
+];
+
+export const initialGridObj: GridDays = [initialGrid];
+
+export const initialDays: Days = [0];
+
+export const emptyGrid: GridType = [
+  {
+    name: 'Stepper',
+    id: 'x',
+    type: EItemType.Stepper,
+    shortName: 'STEP_X',
+    changes: [],
+    description: 'Включает клапан X',
+  },
+  {
+    name: 'Stepper',
+    id: 'y',
+    type: EItemType.Stepper,
+    shortName: 'STEP_Y',
+    changes: [],
+    description: 'Включает клапан Y',
+  },
+
+  {
+    name: 'Stepper',
+    id: 'z',
+    type: EItemType.Stepper,
+    shortName: 'STEP_Z',
+    changes: [],
+    description: 'Включает клапан Z',
+  },
+  {
+    name: 'Stepper',
+    id: 'e',
+    type: EItemType.Stepper,
+    shortName: 'STEP_E',
+    changes: [],
+    description: 'Включает клапан E',
+  },
+
+  {
+    name: 'Air Lift',
+    id: 'a',
+    type: EItemType.AirLift,
+    shortName: 'Компрессор',
+    changes: [],
+    description: 'Включение и выключение воздушного компрессора',
+  },
+
+  {
+    name: 'Optic Measurement',
+    id: 'o',
+    type: EItemType.OptoAcc,
+    shortName: 'Оптический измеритель',
+    changes: [],
+    description: 'Оптический измеритель',
+  },
+  {
+    name: 'Light',
+    id: 'l',
+    type: EItemType.Light,
+    shortName: 'LIGHT',
+    changes: [],
+    description: 'Включает свет',
+  },
+];
+
+export const testGrid: GridType = [
+  {
+    name: 'Stepper',
+    id: 'x',
+    type: EItemType.Stepper,
+    shortName: 'STEP_X',
+    changes: [
+      {
+        startTime: 0,
+        volume: 27,
+        direction: 'clockwise',
+        type: EItemType.Stepper,
+        id: 0,
+        endTime: 0,
+        line: 'x',
+      },
+
+      // {
+      //   startTime: 9,
+      //   volume: 1,
+      //   direction: 'clockwise',
+      //   type: EItemType.Stepper,
+      //   id: 1,
+      //   endTime: 0,
+      //   line: 'x',
+      // },
+      //
+      // {
+      //   startTime: 19,
+      //   volume: 2,
+      //   direction: 'clockwise',
+      //   type: EItemType.Stepper,
+      //   id: 2,
+      //   endTime: 0,
+      //   line: 'x',
+      // },
+    ],
+    description: 'Включает клапан X',
+  },
+  {
+    name: 'Stepper',
+    id: 'y',
+    type: EItemType.Stepper,
+    shortName: 'STEP_Y',
+    changes: [],
+    description: 'Включает клапан Y',
+  },
+
+  {
+    name: 'Stepper',
+    id: 'z',
+    type: EItemType.Stepper,
+    shortName: 'STEP_Z',
+    changes: [],
+    description: 'Включает клапан Z',
+  },
+  {
+    name: 'Stepper',
+    id: 'e',
+    type: EItemType.Stepper,
+    shortName: 'STEP_E',
+    changes: [
+      {
+        startTime: 0,
+        volume: 115,
+        direction: 'clockwise',
+        type: EItemType.Stepper,
+        id: 0,
+        endTime: 0,
+        line: 'e',
+      },
+    ],
+    description: 'Включает клапан E',
+  },
+
+  {
+    name: 'Air Lift',
+    id: 'a',
+    type: EItemType.AirLift,
+    shortName: 'Компрессор',
+    changes: [
+      {
+        id: 1,
+        startTime: 0,
+        endTime: 1120,
+        type: EItemType.AirLift,
+        line: 'a',
+      },
+    ],
+    description: 'Включение и выключение воздушного компрессора',
+  },
+
+  {
+    name: 'Optic Measurement',
+    id: 'o',
+    type: EItemType.OptoAcc,
+    shortName: 'Оптический измеритель',
+    changes: [
+      {
+        id: 1,
+        startTime: 0,
+        endTime: 210,
+        type: EItemType.OptoAcc,
+        line: 'o',
+      },
+    ],
+    description: 'Оптический измеритель',
+  },
+  {
+    name: 'Light',
+    id: 'l',
+    type: EItemType.Light,
+    shortName: 'LIGHT',
+    changes: [
+      {
+        startTime: 4300,
+        type: EItemType.Light,
+        id: 2,
+        endTime: 17800,
+        line: 'l',
+        isChangeable: true,
+        brightness: 5,
+        brightnessEnd: 75,
+      },
     ],
     description: 'Включает свет',
   },
