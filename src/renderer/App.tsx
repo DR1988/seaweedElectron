@@ -1995,11 +1995,7 @@ export default function App() {
   };
 
   const shouldShowForm = isInitialValueSet();
-  console.log(
-    'mainGridArray[currentDay]',
-    mainGridArray,
-    mainGridArray[currentDay]
-  );
+
   return (
     <ThemeProvider theme={theme}>
       <Grid height="100%">

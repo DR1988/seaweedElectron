@@ -118,45 +118,53 @@ const _GridElement: React.FC<GridProps> = ({
   const [scale, setScale] = useState(1);
   const [scaleValue, setScaleValue] = useState(1);
 
+  const currentDayRef = useRef(currentDay);
+  const copyGridRef = useRef<GridType | null>(null);
+
+  useEffect(() => {
+    currentDayRef.current = currentDay;
+  }, [currentDay]);
+
   const allTime = useMemo(() => {
-    const timeSeconds = grid.reduce((acc, current) => {
-      switch (current.type) {
-        case EItemType.Stepper: {
-          const max = Math.max(...current.changes.map((c) => c.endTime || 0));
-          if (max > acc) {
-            acc = max;
-          }
-          break;
-        }
-        case EItemType.Light: {
-          const max = Math.max(...current.changes.map((c) => c.endTime || 0));
-          if (max > acc) {
-            acc = max;
-          }
-          break;
-        }
-        case EItemType.AirLift: {
-          const max = Math.max(...current.changes.map((c) => c.endTime || 0));
-          if (max > acc) {
-            acc = max;
-          }
-          break;
-        }
-        case EItemType.OptoAcc: {
-          const max = Math.max(...current.changes.map((c) => c.endTime || 0));
-          if (max > acc) {
-            acc = max;
-          }
-          break;
-        }
-      }
-      return acc;
-    }, 0);
+    // const timeSeconds = grid.reduce((acc, current) => {
+    //   switch (current.type) {
+    //     case EItemType.Stepper: {
+    //       const max = Math.max(...current.changes.map((c) => c.endTime || 0));
+    //       if (max > acc) {
+    //         acc = max;
+    //       }
+    //       break;
+    //     }
+    //     case EItemType.Light: {
+    //       const max = Math.max(...current.changes.map((c) => c.endTime || 0));
+    //       if (max > acc) {
+    //         acc = max;
+    //       }
+    //       break;
+    //     }
+    //     case EItemType.AirLift: {
+    //       const max = Math.max(...current.changes.map((c) => c.endTime || 0));
+    //       if (max > acc) {
+    //         acc = max;
+    //       }
+    //       break;
+    //     }
+    //     case EItemType.OptoAcc: {
+    //       const max = Math.max(...current.changes.map((c) => c.endTime || 0));
+    //       if (max > acc) {
+    //         acc = max;
+    //       }
+    //       break;
+    //     }
+    //   }
+    //   return acc;
+    // }, 0);
 
     // return timeSeconds;
-    const { days } = getHoursAndMinutes(timeSeconds);
-    return days * 24 * Seconds_In_Hour;
-    // return 60;
+    // const { days } = getHoursAndMinutes(timeSeconds);
+    // return days * 24 * Seconds_In_Hour;
+    // return 86400
+    return 10;
     // if (process.env.NODE_ENV === 'development') {
     //   return days * 24 * Seconds_In_Hour;
     // }
@@ -196,73 +204,15 @@ const _GridElement: React.FC<GridProps> = ({
 
   useEffect(() => {
     if (start && timeArrowRef.current) {
-      let commands = '';
-      elementsRef.current.forEach((el, ind) => {
-        if (el.type === EItemType.AirLift) {
-          if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
-            console.log('START INIT', el);
-            commands += startAirLiftCommand();
-          }
-        }
-
-        if (el.type === EItemType.Light) {
-          if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
-            console.log('START INIT', el);
-            commands += startBrightCommand(el.brightness);
-
-            if (
-              el.isChangeable &&
-              el.id !== currentChangeableBright.current?.id &&
-              el.brightnessEnd
-            ) {
-              const brightnessDiff = Math.abs(el.brightnessEnd - el.brightness);
-              console.log('brightnessDiff', brightnessDiff);
-              const timeDiff = Math.abs(el.endTime - el.startTime);
-              console.log('timeDiff', timeDiff);
-              let timeStep = Math.floor((timeDiff / brightnessDiff) * 10) / 10;
-              console.log('timeStep', timeStep);
-
-              let brightStep =
-                Math.floor((brightnessDiff / timeDiff) * 10) / 10;
-              console.log('brightStep', brightStep);
-
-              if (timeStep < 1) {
-                timeStep = 1;
-              }
-
-              currentChangeableBright.current = {
-                ...el,
-                brightStep,
-                timeStep,
-                currentBrightness: el.brightness,
-              };
-
-              console.log(
-                'currentChangeableBright.current',
-                currentChangeableBright.current
-              );
-            }
-          }
-        }
-
-        if (el.type === EItemType.Stepper) {
-          if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
-            console.log('START INIT', el);
-            commands += startValveCommand(el.line);
-          }
-        } else if (el.type === EItemType.OptoAcc) {
-          console.log('START INIT', el);
-          commands += startOpticCommand();
-        }
-      });
-
-      sendCommands(commands);
+      setStartCondition();
     }
   }, [start, gridWidth]);
 
   const started = useRef(false);
 
   useEffect(() => {
+    // console.log('days', days);
+    // console.log('currentDay', currentDay);
     if (start && timeArrowRef.current && !finish) {
       let secondsSpent = 0;
       if (!started.current) {
@@ -292,6 +242,7 @@ const _GridElement: React.FC<GridProps> = ({
               } else if (
                 Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
               ) {
+                console.log('PPPPPPP');
                 sendBright(el.brightness);
 
                 if (
@@ -300,16 +251,12 @@ const _GridElement: React.FC<GridProps> = ({
                   el.brightnessEnd
                 ) {
                   const brightnessDiff = el.brightnessEnd - el.brightness;
-                  console.log('brightnessDiff', brightnessDiff);
                   const timeDiff = Math.abs(el.endTime - el.startTime);
-                  console.log('timeDiff', timeDiff);
                   let timeStep =
                     Math.floor((timeDiff / brightnessDiff) * 10) / 10;
-                  console.log('timeStep', timeStep);
 
                   let brightStep =
                     Math.floor((brightnessDiff / timeDiff) * 1000) / 1000;
-                  console.log('brightStep', brightStep);
 
                   if (timeStep < 1) {
                     timeStep = 1;
@@ -325,6 +272,7 @@ const _GridElement: React.FC<GridProps> = ({
               } else if (
                 Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05
               ) {
+                console.log('STOP?', el);
                 stopBright();
               }
             } else if (el.type === EItemType.Stepper) {
@@ -413,9 +361,22 @@ const _GridElement: React.FC<GridProps> = ({
         }
 
         if (timerIntervalRef.current / 1000 >= allTime) {
-          setFinish(true);
-          intervalIdRef.current && clearInterval(intervalIdRef.current);
-          intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
+          if (days.length > currentDayRef.current + 1) {
+            console.log('QQQQQ');
+            setCurrentDay((prev) => prev + 1);
+            timerIntervalRef.current = 0;
+            moveTimeArrowsToStart();
+            setTimeout(() => {
+              setArrowsDistance();
+              setStartCondition();
+            }, 0);
+            secondsSpent = 0;
+          } else {
+            console.log('FFFFFF');
+            setFinish(true);
+            intervalIdRef.current && clearInterval(intervalIdRef.current);
+            intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
+          }
         }
       }, TIME_INTERVAL);
 
@@ -426,11 +387,107 @@ const _GridElement: React.FC<GridProps> = ({
         ]);
       }, TIME_INTERVAL_CO2);
     }
-  }, [start, gridWidth, finish]);
+  }, [start, finish]);
 
   useEffect(() => {
+    setArrowsDistance();
+
+    started.current = true;
+  }, [start]);
+
+  useEffect(() => {
+    if (!start && started.current) {
+      started.current = false;
+      intervalIdRef.current && clearInterval(intervalIdRef.current);
+      intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
+      moveTimeArrowsToStart();
+    }
+  }, [start, gridWidth]);
+
+  const moveTimeArrowsToStart = () => {
+    seconds = 0;
+
+    if (timeArrowRef.current) {
+      timerIntervalRef.current = 0;
+      timeArrowRef.current.style.transition = 'none';
+      timeArrowRef.current.style.left = `-${ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef.current) {
+          timeArrowRef.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+
+    if (timeArrowRef2.current) {
+      timeArrowRef2.current.style.transition = 'none';
+      timeArrowRef2.current.style.left = `${-ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef2.current) {
+          timeArrowRef2.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef2.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+
+    if (timeArrowRef3.current) {
+      timeArrowRef3.current.style.transition = 'none';
+      timeArrowRef3.current.style.left = `${-ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef3.current) {
+          timeArrowRef3.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef3.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+
+    if (timeArrowRef4.current) {
+      timeArrowRef4.current.style.transition = 'none';
+      timeArrowRef4.current.style.left = `${-ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef4.current) {
+          timeArrowRef4.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef4.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+
+    if (timeArrowRef5.current) {
+      timeArrowRef5.current.style.transition = 'none';
+      timeArrowRef5.current.style.left = `${-ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef5.current) {
+          timeArrowRef5.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef5.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+
+    if (timeArrowRef6.current) {
+      timeArrowRef6.current.style.transition = 'none';
+      timeArrowRef6.current.style.left = `${-ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef6.current) {
+          timeArrowRef6.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef6.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+
+    if (timeArrowRef7.current) {
+      timeArrowRef7.current.style.transition = 'none';
+      timeArrowRef7.current.style.left = `${-ARROW_WIDTH}px`;
+      setTimeout(() => {
+        if (timeArrowRef7.current) {
+          timeArrowRef7.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
+          timeArrowRef7.current.style.transition = `left ${allTime}s linear`;
+        }
+      }, 0);
+    }
+  };
+
+  const setArrowsDistance = () => {
     if (start && timeArrowRef.current) {
-      console.log('distance 1', gridWidth - ARROW_WIDTH);
       timeArrowRef.current.style.left = `${gridWidth - ARROW_WIDTH}px`;
     }
 
@@ -456,7 +513,6 @@ const _GridElement: React.FC<GridProps> = ({
 
     if (start && timeArrowRef6.current) {
       const distance = 24 * gridWidth - ARROW_WIDTH;
-      console.log('distance 6', distance);
       timeArrowRef6.current.style.left = `${distance}px`;
     }
 
@@ -464,96 +520,70 @@ const _GridElement: React.FC<GridProps> = ({
       const distance = 120 * gridWidth - ARROW_WIDTH;
       timeArrowRef7.current.style.left = `${distance}px`;
     }
+  };
 
-    started.current = true;
-  }, [start, gridWidth]);
-
-  useEffect(() => {
-    if (!start && started.current) {
-      seconds = 0;
-      started.current = false;
-      intervalIdRef.current && clearInterval(intervalIdRef.current);
-      intervalIdCO2Ref.current && clearInterval(intervalIdCO2Ref.current);
-
-      if (timeArrowRef.current) {
-        timerIntervalRef.current = 0;
-        timeArrowRef.current.style.transition = 'none';
-        timeArrowRef.current.style.left = `-${ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef.current) {
-            timeArrowRef.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef.current.style.transition = `left ${allTime}s linear`;
-          }
-        }, 0);
+  const setStartCondition = () => {
+    let commands = '';
+    elementsRef.current.forEach((el, ind) => {
+      if (el.type === EItemType.AirLift) {
+        if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
+          // console.log('START INIT', el);
+          commands += startAirLiftCommand();
+        }
       }
 
-      if (timeArrowRef2.current) {
-        timeArrowRef2.current.style.transition = 'none';
-        timeArrowRef2.current.style.left = `${-ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef2.current) {
-            timeArrowRef2.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef2.current.style.transition = `left ${allTime}s linear`;
+      if (el.type === EItemType.Light) {
+        if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
+          // console.log('START INIT', el);
+          commands += startBrightCommand(el.brightness);
+
+          if (
+            el.isChangeable &&
+            el.id !== currentChangeableBright.current?.id &&
+            el.brightnessEnd
+          ) {
+            const brightnessDiff = Math.abs(el.brightnessEnd - el.brightness);
+            // console.log('brightnessDiff', brightnessDiff);
+            const timeDiff = Math.abs(el.endTime - el.startTime);
+            // console.log('timeDiff', timeDiff);
+            let timeStep = Math.floor((timeDiff / brightnessDiff) * 10) / 10;
+            // console.log('timeStep', timeStep);
+
+            let brightStep = Math.floor((brightnessDiff / timeDiff) * 10) / 10;
+            // console.log('brightStep', brightStep);
+
+            if (timeStep < 1) {
+              timeStep = 1;
+            }
+
+            currentChangeableBright.current = {
+              ...el,
+              brightStep,
+              timeStep,
+              currentBrightness: el.brightness,
+            };
+
+            console.log(
+              'currentChangeableBright.current',
+              currentChangeableBright.current
+            );
           }
-        }, 0);
+        }
       }
 
-      if (timeArrowRef3.current) {
-        timeArrowRef3.current.style.transition = 'none';
-        timeArrowRef3.current.style.left = `${-ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef3.current) {
-            timeArrowRef3.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef3.current.style.transition = `left ${allTime}s linear`;
-          }
-        }, 0);
+      if (el.type === EItemType.Stepper) {
+        if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
+          // console.log('START INIT', el);
+          commands += startValveCommand(el.line);
+        }
+      } else if (el.type === EItemType.OptoAcc) {
+        // console.log('START INIT', el);
+        commands += startOpticCommand();
       }
+    });
 
-      if (timeArrowRef4.current) {
-        timeArrowRef4.current.style.transition = 'none';
-        timeArrowRef4.current.style.left = `${-ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef4.current) {
-            timeArrowRef4.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef4.current.style.transition = `left ${allTime}s linear`;
-          }
-        }, 0);
-      }
-
-      if (timeArrowRef5.current) {
-        timeArrowRef5.current.style.transition = 'none';
-        timeArrowRef5.current.style.left = `${-ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef5.current) {
-            timeArrowRef5.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef5.current.style.transition = `left ${allTime}s linear`;
-          }
-        }, 0);
-      }
-
-      if (timeArrowRef6.current) {
-        timeArrowRef6.current.style.transition = 'none';
-        timeArrowRef6.current.style.left = `${-ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef6.current) {
-            timeArrowRef6.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef6.current.style.transition = `left ${allTime}s linear`;
-          }
-        }, 0);
-      }
-
-      if (timeArrowRef7.current) {
-        timeArrowRef7.current.style.transition = 'none';
-        timeArrowRef7.current.style.left = `${-ARROW_WIDTH}px`;
-        setTimeout(() => {
-          if (timeArrowRef7.current) {
-            timeArrowRef7.current.style.transition = `left ${TIME_INTERVAL}ms linear`;
-            timeArrowRef7.current.style.transition = `left ${allTime}s linear`;
-          }
-        }, 0);
-      }
-    }
-  }, [start, gridWidth]);
+    sendCommands(commands);
+  };
 
   // useEffect(() => {
   //   if (sectionRef.current && !started.current) {
@@ -770,10 +800,40 @@ const _GridElement: React.FC<GridProps> = ({
 
         setDays([...days, day + 1]);
 
-        setMainGridArray([...mainGridArray, testGrid]);
+        setMainGridArray([
+          ...mainGridArray,
+          days.length % 2 === 0 ? emptyGrid : testGrid,
+        ]);
       }
     }
   }, [days, mainGridArray]);
+
+  const _remove = useCallback(() => {
+    if (days.length > 1) {
+      setDays([...days.slice(0, days.length - 1)]);
+      setMainGridArray(
+        mainGridArray.filter((g, index) => index !== currentDay)
+      );
+
+      if (currentDay === days.length - 1 && currentDay > 0) {
+        setCurrentDay(currentDay - 1);
+      }
+    }
+  }, [days, currentDay, mainGridArray]);
+
+  const _copy = () => {
+    copyGridRef.current = grid;
+  };
+
+  const _paste = () => {
+    if (copyGridRef.current) {
+      const newMainGridArray = [...mainGridArray];
+
+      newMainGridArray[currentDay] = copyGridRef.current;
+
+      setMainGridArray([...newMainGridArray]);
+    }
+  };
 
   return (
     <>
@@ -821,7 +881,8 @@ const _GridElement: React.FC<GridProps> = ({
                           <GridRow
                             key={element.id}
                             // allTime={allTime}
-                            allTime={86400}
+                            // allTime={86400}
+                            allTime={allTime}
                             element={element}
                             selectItem={selectItem}
                             gridWidth={gridWidth}
@@ -970,9 +1031,9 @@ const _GridElement: React.FC<GridProps> = ({
             <Button onClick={_decreaseCurrentDay}>Назад</Button>
             <Button onClick={_increaseCurrentDay}>Вперед</Button>
             <Button onClick={_addDay}>Добавить</Button>
-            <Button>Удалить</Button>
-            <Button>Скопировать</Button>
-            <Button>Вставить</Button>
+            <Button onClick={_remove}>Удалить</Button>
+            <Button onClick={_copy}>Скопировать</Button>
+            <Button onClick={_paste}>Вставить</Button>
           </div>
         </Grid>
       </Grid>

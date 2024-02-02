@@ -30,7 +30,8 @@ export const BrightItemElement: React.FC<ItemProps> = ({
     selectItem(item);
   }, [selectItem, item]);
 
-  const width = (gridWidth * timeLength * scale) / 60 / 60 / 24;
+  // const width = (gridWidth * timeLength * scale) / 60 / 60 / 24;
+  const width = (gridWidth * timeLength * scale) / allTime;
 
   const { crosses } = item;
   return (
@@ -39,7 +40,8 @@ export const BrightItemElement: React.FC<ItemProps> = ({
         onClick={_selectItem}
         className={styles.item}
         style={{
-          left: `${(gridWidth * startTime * scale) / 60 / 60 / 24}px`,
+          // left: `${(gridWidth * startTime * scale) / 60 / 60 / 24}px`,
+          left: `${(gridWidth * startTime * scale) / allTime}px`,
           width: `${width}px`,
         }}
       >

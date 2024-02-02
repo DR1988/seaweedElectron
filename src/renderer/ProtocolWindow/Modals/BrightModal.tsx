@@ -193,6 +193,9 @@ export const BrightModal: React.FC<ModalProps> = ({
               <Row className={styles.timeBox}>
                 <Typography>Время начала</Typography>
               </Row>
+              <Row>
+                <Typography>Время начала {startTime} секунды</Typography>
+              </Row>
               <Row className={styles.input_container}>
                 <div className={styles.input_content}>
                   <TextField
