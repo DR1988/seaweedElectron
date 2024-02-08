@@ -988,7 +988,7 @@ const _GridElement: React.FC<GridProps> = ({
               onClick={() => {
                 window.electron.ipcRenderer.sendMessage(
                   EChannels.saveProtocol,
-                  grid
+                  mainGridArray
                 );
               }}
               variant="contained"

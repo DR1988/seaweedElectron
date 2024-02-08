@@ -72,6 +72,13 @@ export const stopAirLift = () => {
   ]);
 };
 
+export const startValves = () => {
+  startValve('x');
+  startValve('y');
+  startValve('z');
+  startValve('e');
+};
+
 export const stopAll = () => {
   stopAirLift();
   stopBright();

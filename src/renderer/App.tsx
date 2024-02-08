@@ -49,6 +49,7 @@ import { OptoAccusticModalNew } from './ProtocolWindow/Modals/OptoAccusticModalN
 import { OptoAccusticModal } from './ProtocolWindow/Modals/OptoAccusticModal';
 import { Co2ChamberControl } from './Co2ChamberControl/Co2ChamberControl';
 import { getHoursAndMinutes } from './helpers/getHoursAndMinutes';
+import { startValves } from './ProtocolWindow/sendMessage';
 
 const theme = createTheme({
   typography: {
@@ -66,6 +67,20 @@ const theme = createTheme({
     ].join(','),
   },
 });
+
+const updateMainGridArray = (
+  mainGridArray: GridDays,
+  mainGrid: GridType,
+  currentDay: number
+) => {
+  return mainGridArray.map((g, index) => {
+    if (index === currentDay) {
+      return mainGrid;
+    }
+
+    return g;
+  });
+};
 
 export default function App() {
   const [initialValues, setInitialValues] = useState<InitialValues>({
@@ -261,14 +276,16 @@ export default function App() {
   const disabledConnection =
     connected === 'connecting' || connected === 'connected';
 
-  const [mainGrid, setMainGrid] = useState<GridType>(initialGrid);
   const [mainGridArray, setMainGridArray] = useState<GridDays>(initialGridObj);
   const [days, setDays] = useState<Days>(initialDays);
   const [currentDay, setCurrentDay] = useState(0);
 
   useEffect(() => {
     window.electron.ipcRenderer.on(EChannels.loadedProtocolData, (dataGrid) => {
-      setMainGrid(dataGrid);
+      setMainGridArray(dataGrid);
+      const daysLoaded = dataGrid?.map((el, i) => i);
+      setDays(daysLoaded);
+      setCurrentDay(0);
     });
   }, []);
 
@@ -370,7 +387,8 @@ export default function App() {
   };
 
   const changeStartTime = (newStartTime: number) => {
-    if (selectedItem) {
+    const mainGrid = mainGridArray[currentDay];
+    if (mainGrid && selectedItem) {
       const itemPosition = mainGrid.reduce(
         (acc, currentItem, lineIndex) => {
           const itemIndex = currentItem.changes.findIndex(
@@ -437,7 +455,13 @@ export default function App() {
             wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
 
@@ -447,7 +471,13 @@ export default function App() {
           wrongSign: wrongSign,
         };
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
       }
 
@@ -497,13 +527,21 @@ export default function App() {
           crossingValueEnd: 0,
         };
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
       }
     }
   };
 
   const changeVolume = (newVolume: number) => {
+    const mainGrid = mainGridArray[currentDay];
+
     if (selectedItem) {
       const itemPosition = mainGrid.reduce(
         (acc, currentItem, lineIndex) => {
@@ -576,7 +614,13 @@ export default function App() {
             wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
 
@@ -592,7 +636,13 @@ export default function App() {
             wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         } else {
           mainGrid[lineIndex].changes[itemIndex] = {
@@ -602,7 +652,13 @@ export default function App() {
             wrongSign: wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
       }
@@ -610,6 +666,8 @@ export default function App() {
   };
 
   const changeEndTime = (newEndTime: number) => {
+    const mainGrid = mainGridArray[currentDay];
+
     if (selectedItem) {
       const itemPosition = mainGrid.reduce(
         (acc, currentItem, lineIndex) => {
@@ -676,7 +734,13 @@ export default function App() {
             wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
 
@@ -696,7 +760,13 @@ export default function App() {
             wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
 
@@ -706,13 +776,21 @@ export default function App() {
           wrongSign: wrongSign,
         };
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
       }
     }
   };
 
   const changeBrightness = (newBrightValue: Brightness) => {
+    const mainGrid = mainGridArray[currentDay];
+
     if (selectedItem) {
       const itemPosition = mainGrid.reduce(
         (acc, currentItem, lineIndex) => {
@@ -747,7 +825,13 @@ export default function App() {
             wrongSignLight: wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
       }
@@ -755,6 +839,8 @@ export default function App() {
   };
 
   const changeEndBrightness = (newBrightValue: Brightness) => {
+    const mainGrid = mainGridArray[currentDay];
+
     if (selectedItem) {
       const itemPosition = mainGrid.reduce(
         (acc, currentItem, lineIndex) => {
@@ -789,7 +875,13 @@ export default function App() {
             wrongSignLight: wrongSign,
           };
 
-          setMainGrid([...mainGrid]);
+          const newMainGridArray = updateMainGridArray(
+            mainGridArray,
+            mainGrid,
+            currentDay
+          );
+
+          setMainGridArray(newMainGridArray);
           setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
         }
       }
@@ -797,14 +889,19 @@ export default function App() {
   };
 
   const resetToPreviousChanges = () => {
+    const mainGrid = mainGridArray[currentDay];
+
     if (previousSelected.current) {
+      console.log('previousSelected', previousSelected, mainGrid);
       const itemPosition = mainGrid.reduce(
         (acc, currentItem, lineIndex) => {
+          console.log('currentItem.changes', currentItem.changes);
           const itemIndex = currentItem.changes.findIndex(
             (item) =>
               item.line === previousSelected.current?.line &&
               item.id === previousSelected.current?.id
           );
+          console.log('itemIndex', itemIndex);
           if (itemIndex > -1) {
             return { lineIndex, itemIndex };
           }
@@ -813,19 +910,27 @@ export default function App() {
         },
         { lineIndex: -1, itemIndex: -1 }
       );
-
+      console.log('itemPosition', itemPosition);
       const { lineIndex, itemIndex } = itemPosition;
       mainGrid[lineIndex].changes[itemIndex] = {
         ...previousSelected.current,
         wrongSign: '',
       };
 
-      setMainGrid([...mainGrid]);
+      const newMainGridArray = updateMainGridArray(
+        mainGridArray,
+        mainGrid,
+        currentDay
+      );
+
+      setMainGridArray(newMainGridArray);
       setSelectedItem({ ...mainGrid[lineIndex].changes[itemIndex] });
     }
   };
 
   const removeCurrentItem = () => {
+    const mainGrid = mainGridArray[currentDay];
+
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -837,11 +942,19 @@ export default function App() {
 
     mainGrid[lineIndex] = { ...line, changes: filteredChanges };
 
-    setMainGrid([...mainGrid]);
+    const newMainGridArray = updateMainGridArray(
+      mainGridArray,
+      mainGrid,
+      currentDay
+    );
+
+    setMainGridArray(newMainGridArray);
     setSelectedItem(null);
   };
 
   const changeNewStartTime = (newStartTime: number) => {
+    const mainGrid = mainGridArray[currentDay];
+
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -915,7 +1028,13 @@ export default function App() {
         mainGrid[lineIndex].changes[index] = element;
       }
 
-      setMainGrid([...mainGrid]);
+      const newMainGridArray = updateMainGridArray(
+        mainGridArray,
+        mainGrid,
+        currentDay
+      );
+
+      setMainGridArray(newMainGridArray);
       setSelectedItem({ ...element });
     }
 
@@ -976,7 +1095,13 @@ export default function App() {
         mainGrid[lineIndex].changes[index] = element;
       }
 
-      setMainGrid([...mainGrid]);
+      const newMainGridArray = updateMainGridArray(
+        mainGridArray,
+        mainGrid,
+        currentDay
+      );
+
+      setMainGridArray(newMainGridArray);
       setSelectedItem({ ...element });
     }
 
@@ -1037,7 +1162,13 @@ export default function App() {
         mainGrid[lineIndex].changes[index] = element;
       }
 
-      setMainGrid([...mainGrid]);
+      const newMainGridArray = updateMainGridArray(
+        mainGridArray,
+        mainGrid,
+        currentDay
+      );
+
+      setMainGridArray(newMainGridArray);
       setSelectedItem({ ...element });
     }
 
@@ -1100,276 +1231,284 @@ export default function App() {
         mainGrid[lineIndex].changes[index] = element;
       }
 
-      setMainGrid([...mainGrid]);
+      const newMainGridArray = updateMainGridArray(
+        mainGridArray,
+        mainGrid,
+        currentDay
+      );
+
+      setMainGridArray(newMainGridArray);
       setSelectedItem({ ...element });
     }
   };
 
-  const changeNewStartTimeObj = (newStartTime: number) => {
-    const lineIndex = mainGrid.findIndex(
-      (element) => element.id === selectedItem?.line
-    );
-    const line = mainGrid[lineIndex];
-    const newSelectedItem = cloneDeep(selectedItem);
-    const crosses: Array<Crossing> = [];
-
-    let hasIntersection = false;
-    line.changes.forEach((c) => {
-      if (
-        newStartTime >= c.startTime &&
-        newStartTime < c.endTime &&
-        newSelectedItem?.id !== c.id
-      ) {
-        hasIntersection = true;
-      }
-    });
-
-    let wrongSign = hasIntersection ? 'Время начало имеет пересечения' : '';
-
-    if (line && newSelectedItem && newSelectedItem?.type === EItemType.Light) {
-      if (newSelectedItem?.endTime) {
-        if (newStartTime >= newSelectedItem.endTime) {
-          wrongSign = 'Время старта больше или равно времени окончания';
-        }
-        line.changes.forEach((c, ind) => {
-          const crossing: Crossing = {
-            crossingValueStart: 0,
-            crossingValueEnd: 0,
-          };
-
-          if (
-            newSelectedItem.id !== c.id &&
-            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
-            newSelectedItem.endTime >= c.endTime
-          ) {
-            crossing.crossingValueStart =
-              newStartTime <= c.startTime ? c.startTime : newStartTime;
-            if (newSelectedItem.endTime > c.endTime) {
-              crossing.crossingValueEnd = c.endTime;
-            } else {
-              crossing.crossingValueEnd = newSelectedItem.endTime;
-            }
-            crosses.push(crossing);
-          }
-        });
-      }
-
-      newSelectedItem.crosses = crosses;
-
-      if (crosses.length) {
-        wrongSign = 'Есть пересечения с другими элементами';
-      }
-
-      const element = {
-        ...newSelectedItem,
-        startTime: newStartTime,
-        wrongSign,
-      } as LightItem;
-
-      const index = mainGrid[lineIndex].changes.findIndex(
-        (c) => c.id === element.id
-      );
-
-      if (index === -1) {
-        (mainGrid[lineIndex].changes as LightItem[]) = [
-          ...mainGrid[lineIndex].changes,
-          element,
-        ];
-      } else {
-        mainGrid[lineIndex].changes[index] = element;
-      }
-
-      setMainGrid([...mainGrid]);
-      setSelectedItem({ ...element });
-    }
-
-    if (
-      line &&
-      newSelectedItem &&
-      newSelectedItem?.type === EItemType.OptoAcc
-    ) {
-      if (newSelectedItem?.endTime) {
-        if (newStartTime >= newSelectedItem.endTime) {
-          wrongSign = 'Время старта больше или равно времени окончания';
-        }
-        line.changes.forEach((c, ind) => {
-          const crossing: Crossing = {
-            crossingValueStart: 0,
-            crossingValueEnd: 0,
-          };
-
-          if (
-            newSelectedItem.id !== c.id &&
-            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
-            newSelectedItem.endTime >= c.endTime
-          ) {
-            crossing.crossingValueStart =
-              newStartTime <= c.startTime ? c.startTime : newStartTime;
-            if (newSelectedItem.endTime > c.endTime) {
-              crossing.crossingValueEnd = c.endTime;
-            } else {
-              crossing.crossingValueEnd = newSelectedItem.endTime;
-            }
-            crosses.push(crossing);
-          }
-        });
-      }
-
-      newSelectedItem.crosses = crosses;
-
-      if (crosses.length) {
-        wrongSign = 'Есть пересечения с другими элементами';
-      }
-
-      const element = {
-        ...newSelectedItem,
-        startTime: newStartTime,
-        wrongSign,
-      } as OptoAccusticItem;
-
-      const index = mainGrid[lineIndex].changes.findIndex(
-        (c) => c.id === element.id
-      );
-
-      if (index === -1) {
-        (mainGrid[lineIndex].changes as OptoAccusticItem[]) = [
-          ...mainGrid[lineIndex].changes,
-          element,
-        ];
-      } else {
-        mainGrid[lineIndex].changes[index] = element;
-      }
-
-      setMainGrid([...mainGrid]);
-      setSelectedItem({ ...element });
-    }
-
-    if (
-      line &&
-      newSelectedItem &&
-      newSelectedItem?.type === EItemType.AirLift
-    ) {
-      if (newSelectedItem?.endTime) {
-        if (newStartTime >= newSelectedItem.endTime) {
-          wrongSign = 'Время старта больше или равно времени окончания';
-        }
-        line.changes.forEach((c, ind) => {
-          const crossing: Crossing = {
-            crossingValueStart: 0,
-            crossingValueEnd: 0,
-          };
-
-          if (
-            newSelectedItem.id !== c.id &&
-            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
-            newSelectedItem.endTime >= c.endTime
-          ) {
-            crossing.crossingValueStart =
-              newStartTime <= c.startTime ? c.startTime : newStartTime;
-            if (newSelectedItem.endTime > c.endTime) {
-              crossing.crossingValueEnd = c.endTime;
-            } else {
-              crossing.crossingValueEnd = newSelectedItem.endTime;
-            }
-            crosses.push(crossing);
-          }
-        });
-      }
-
-      newSelectedItem.crosses = crosses;
-
-      if (crosses.length) {
-        wrongSign = 'Есть пересечения с другими элементами';
-      }
-
-      const element = {
-        ...newSelectedItem,
-        startTime: newStartTime,
-        wrongSign,
-      } as AirLifItem;
-
-      const index = mainGrid[lineIndex].changes.findIndex(
-        (c) => c.id === element.id
-      );
-
-      if (index === -1) {
-        (mainGrid[lineIndex].changes as AirLifItem[]) = [
-          ...mainGrid[lineIndex].changes,
-          element,
-        ];
-      } else {
-        mainGrid[lineIndex].changes[index] = element;
-      }
-
-      setMainGrid([...mainGrid]);
-      setSelectedItem({ ...element });
-    }
-
-    if (
-      line.type === EItemType.Stepper &&
-      newSelectedItem &&
-      newSelectedItem.type === EItemType.Stepper
-    ) {
-      const calibrationTime = calibrationValuesTime[newSelectedItem.line];
-      const newEndTime =
-        newStartTime + calibrationTime * newSelectedItem.volume;
-
-      if (newSelectedItem?.endTime) {
-        if (newStartTime > newEndTime) {
-          wrongSign = 'Время старта больше времени окончания';
-        }
-        line.changes.forEach((c, ind) => {
-          const crossing: Crossing = {
-            crossingValueStart: 0,
-            crossingValueEnd: 0,
-          };
-
-          if (
-            newSelectedItem.id !== c.id &&
-            (newStartTime <= c.startTime || newStartTime < c.endTime) &&
-            (newEndTime >= c.endTime || newEndTime > c.startTime)
-          ) {
-            crossing.crossingValueStart =
-              newStartTime <= c.startTime ? c.startTime : newStartTime;
-            if (newEndTime > c.endTime) {
-              crossing.crossingValueEnd = c.endTime;
-            } else {
-              crossing.crossingValueEnd = newEndTime;
-            }
-            crosses.push(crossing);
-          }
-        });
-      }
-
-      newSelectedItem.crosses = crosses;
-
-      if (crosses.length) {
-        wrongSign = 'Есть пересечения с другими элементами';
-      }
-
-      const element = {
-        ...newSelectedItem,
-        startTime: newStartTime,
-        endTime: newEndTime,
-        wrongSign,
-      };
-
-      const index = mainGrid[lineIndex].changes.findIndex(
-        (c) => c.id === element.id
-      );
-
-      if (index === -1) {
-        mainGrid[lineIndex].changes = [...mainGrid[lineIndex].changes, element];
-      } else {
-        mainGrid[lineIndex].changes[index] = element;
-      }
-
-      setMainGrid([...mainGrid]);
-      setSelectedItem({ ...element });
-    }
-  };
+  // const changeNewStartTimeObj = (newStartTime: number) => {
+  //   const lineIndex = mainGrid.findIndex(
+  //     (element) => element.id === selectedItem?.line
+  //   );
+  //   const line = mainGrid[lineIndex];
+  //   const newSelectedItem = cloneDeep(selectedItem);
+  //   const crosses: Array<Crossing> = [];
+  //
+  //   let hasIntersection = false;
+  //   line.changes.forEach((c) => {
+  //     if (
+  //       newStartTime >= c.startTime &&
+  //       newStartTime < c.endTime &&
+  //       newSelectedItem?.id !== c.id
+  //     ) {
+  //       hasIntersection = true;
+  //     }
+  //   });
+  //
+  //   let wrongSign = hasIntersection ? 'Время начало имеет пересечения' : '';
+  //
+  //   if (line && newSelectedItem && newSelectedItem?.type === EItemType.Light) {
+  //     if (newSelectedItem?.endTime) {
+  //       if (newStartTime >= newSelectedItem.endTime) {
+  //         wrongSign = 'Время старта больше или равно времени окончания';
+  //       }
+  //       line.changes.forEach((c, ind) => {
+  //         const crossing: Crossing = {
+  //           crossingValueStart: 0,
+  //           crossingValueEnd: 0,
+  //         };
+  //
+  //         if (
+  //           newSelectedItem.id !== c.id &&
+  //           (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+  //           newSelectedItem.endTime >= c.endTime
+  //         ) {
+  //           crossing.crossingValueStart =
+  //             newStartTime <= c.startTime ? c.startTime : newStartTime;
+  //           if (newSelectedItem.endTime > c.endTime) {
+  //             crossing.crossingValueEnd = c.endTime;
+  //           } else {
+  //             crossing.crossingValueEnd = newSelectedItem.endTime;
+  //           }
+  //           crosses.push(crossing);
+  //         }
+  //       });
+  //     }
+  //
+  //     newSelectedItem.crosses = crosses;
+  //
+  //     if (crosses.length) {
+  //       wrongSign = 'Есть пересечения с другими элементами';
+  //     }
+  //
+  //     const element = {
+  //       ...newSelectedItem,
+  //       startTime: newStartTime,
+  //       wrongSign,
+  //     } as LightItem;
+  //
+  //     const index = mainGrid[lineIndex].changes.findIndex(
+  //       (c) => c.id === element.id
+  //     );
+  //
+  //     if (index === -1) {
+  //       (mainGrid[lineIndex].changes as LightItem[]) = [
+  //         ...mainGrid[lineIndex].changes,
+  //         element,
+  //       ];
+  //     } else {
+  //       mainGrid[lineIndex].changes[index] = element;
+  //     }
+  //
+  //     setMainGrid([...mainGrid]);
+  //     setSelectedItem({ ...element });
+  //   }
+  //
+  //   if (
+  //     line &&
+  //     newSelectedItem &&
+  //     newSelectedItem?.type === EItemType.OptoAcc
+  //   ) {
+  //     if (newSelectedItem?.endTime) {
+  //       if (newStartTime >= newSelectedItem.endTime) {
+  //         wrongSign = 'Время старта больше или равно времени окончания';
+  //       }
+  //       line.changes.forEach((c, ind) => {
+  //         const crossing: Crossing = {
+  //           crossingValueStart: 0,
+  //           crossingValueEnd: 0,
+  //         };
+  //
+  //         if (
+  //           newSelectedItem.id !== c.id &&
+  //           (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+  //           newSelectedItem.endTime >= c.endTime
+  //         ) {
+  //           crossing.crossingValueStart =
+  //             newStartTime <= c.startTime ? c.startTime : newStartTime;
+  //           if (newSelectedItem.endTime > c.endTime) {
+  //             crossing.crossingValueEnd = c.endTime;
+  //           } else {
+  //             crossing.crossingValueEnd = newSelectedItem.endTime;
+  //           }
+  //           crosses.push(crossing);
+  //         }
+  //       });
+  //     }
+  //
+  //     newSelectedItem.crosses = crosses;
+  //
+  //     if (crosses.length) {
+  //       wrongSign = 'Есть пересечения с другими элементами';
+  //     }
+  //
+  //     const element = {
+  //       ...newSelectedItem,
+  //       startTime: newStartTime,
+  //       wrongSign,
+  //     } as OptoAccusticItem;
+  //
+  //     const index = mainGrid[lineIndex].changes.findIndex(
+  //       (c) => c.id === element.id
+  //     );
+  //
+  //     if (index === -1) {
+  //       (mainGrid[lineIndex].changes as OptoAccusticItem[]) = [
+  //         ...mainGrid[lineIndex].changes,
+  //         element,
+  //       ];
+  //     } else {
+  //       mainGrid[lineIndex].changes[index] = element;
+  //     }
+  //
+  //     setMainGrid([...mainGrid]);
+  //     setSelectedItem({ ...element });
+  //   }
+  //
+  //   if (
+  //     line &&
+  //     newSelectedItem &&
+  //     newSelectedItem?.type === EItemType.AirLift
+  //   ) {
+  //     if (newSelectedItem?.endTime) {
+  //       if (newStartTime >= newSelectedItem.endTime) {
+  //         wrongSign = 'Время старта больше или равно времени окончания';
+  //       }
+  //       line.changes.forEach((c, ind) => {
+  //         const crossing: Crossing = {
+  //           crossingValueStart: 0,
+  //           crossingValueEnd: 0,
+  //         };
+  //
+  //         if (
+  //           newSelectedItem.id !== c.id &&
+  //           (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+  //           newSelectedItem.endTime >= c.endTime
+  //         ) {
+  //           crossing.crossingValueStart =
+  //             newStartTime <= c.startTime ? c.startTime : newStartTime;
+  //           if (newSelectedItem.endTime > c.endTime) {
+  //             crossing.crossingValueEnd = c.endTime;
+  //           } else {
+  //             crossing.crossingValueEnd = newSelectedItem.endTime;
+  //           }
+  //           crosses.push(crossing);
+  //         }
+  //       });
+  //     }
+  //
+  //     newSelectedItem.crosses = crosses;
+  //
+  //     if (crosses.length) {
+  //       wrongSign = 'Есть пересечения с другими элементами';
+  //     }
+  //
+  //     const element = {
+  //       ...newSelectedItem,
+  //       startTime: newStartTime,
+  //       wrongSign,
+  //     } as AirLifItem;
+  //
+  //     const index = mainGrid[lineIndex].changes.findIndex(
+  //       (c) => c.id === element.id
+  //     );
+  //
+  //     if (index === -1) {
+  //       (mainGrid[lineIndex].changes as AirLifItem[]) = [
+  //         ...mainGrid[lineIndex].changes,
+  //         element,
+  //       ];
+  //     } else {
+  //       mainGrid[lineIndex].changes[index] = element;
+  //     }
+  //
+  //     setMainGrid([...mainGrid]);
+  //     setSelectedItem({ ...element });
+  //   }
+  //
+  //   if (
+  //     line.type === EItemType.Stepper &&
+  //     newSelectedItem &&
+  //     newSelectedItem.type === EItemType.Stepper
+  //   ) {
+  //     const calibrationTime = calibrationValuesTime[newSelectedItem.line];
+  //     const newEndTime =
+  //       newStartTime + calibrationTime * newSelectedItem.volume;
+  //
+  //     if (newSelectedItem?.endTime) {
+  //       if (newStartTime > newEndTime) {
+  //         wrongSign = 'Время старта больше времени окончания';
+  //       }
+  //       line.changes.forEach((c, ind) => {
+  //         const crossing: Crossing = {
+  //           crossingValueStart: 0,
+  //           crossingValueEnd: 0,
+  //         };
+  //
+  //         if (
+  //           newSelectedItem.id !== c.id &&
+  //           (newStartTime <= c.startTime || newStartTime < c.endTime) &&
+  //           (newEndTime >= c.endTime || newEndTime > c.startTime)
+  //         ) {
+  //           crossing.crossingValueStart =
+  //             newStartTime <= c.startTime ? c.startTime : newStartTime;
+  //           if (newEndTime > c.endTime) {
+  //             crossing.crossingValueEnd = c.endTime;
+  //           } else {
+  //             crossing.crossingValueEnd = newEndTime;
+  //           }
+  //           crosses.push(crossing);
+  //         }
+  //       });
+  //     }
+  //
+  //     newSelectedItem.crosses = crosses;
+  //
+  //     if (crosses.length) {
+  //       wrongSign = 'Есть пересечения с другими элементами';
+  //     }
+  //
+  //     const element = {
+  //       ...newSelectedItem,
+  //       startTime: newStartTime,
+  //       endTime: newEndTime,
+  //       wrongSign,
+  //     };
+  //
+  //     const index = mainGrid[lineIndex].changes.findIndex(
+  //       (c) => c.id === element.id
+  //     );
+  //
+  //     if (index === -1) {
+  //       mainGrid[lineIndex].changes = [...mainGrid[lineIndex].changes, element];
+  //     } else {
+  //       mainGrid[lineIndex].changes[index] = element;
+  //     }
+  //
+  //     setMainGrid([...mainGrid]);
+  //     setSelectedItem({ ...element });
+  //   }
+  // };
 
   const changeNewEndTime = (newEndTime: number) => {
+    const mainGrid = mainGridArray[currentDay];
+
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -1477,7 +1616,13 @@ export default function App() {
           }
         }
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
       if (line.type === EItemType.AirLift) {
@@ -1574,7 +1719,13 @@ export default function App() {
           }
         }
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
       if (line.type === EItemType.OptoAcc) {
@@ -1671,13 +1822,21 @@ export default function App() {
           }
         }
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
     }
   };
 
   const changeBrightnessNew = (newBrightValue: Brightness) => {
+    const mainGrid = mainGridArray[currentDay];
+
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -1714,13 +1873,21 @@ export default function App() {
         } else {
           mainGrid[lineIndex].changes[index] = element;
         }
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
     }
   };
 
   const changeEndBrightnessNew = (newBrightValue: Brightness) => {
+    const mainGrid = mainGridArray[currentDay];
+
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -1757,13 +1924,21 @@ export default function App() {
         } else {
           mainGrid[lineIndex].changes[index] = element;
         }
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
     }
   };
 
   const swapChangeable = (value: boolean) => {
+    const mainGrid = mainGridArray[currentDay];
+
     const lineIndex = mainGrid.findIndex(
       (element) => element.id === selectedItem?.line
     );
@@ -1791,13 +1966,21 @@ export default function App() {
         } else {
           mainGrid[lineIndex].changes[index] = element;
         }
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
     }
   };
 
   const resetToPreviousChangesNew = () => {
+    const mainGrid = mainGridArray[currentDay];
+
     if (previousSelectedLine.current) {
       const index = mainGrid.findIndex(
         (element) => element.id === previousSelectedLine.current?.id
@@ -1805,13 +1988,20 @@ export default function App() {
 
       if (index > -1) {
         mainGrid[index] = previousSelectedLine.current;
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem(null);
       }
     }
   };
 
   const changeNewVolume = (newVolume: number) => {
+    const mainGrid = mainGridArray[currentDay];
     const newSelectedItem = cloneDeep(selectedItem);
 
     const lineIndex = mainGrid.findIndex(
@@ -1925,31 +2115,37 @@ export default function App() {
           }
         }
 
-        setMainGrid([...mainGrid]);
+        const newMainGridArray = updateMainGridArray(
+          mainGridArray,
+          mainGrid,
+          currentDay
+        );
+
+        setMainGridArray(newMainGridArray);
         setSelectedItem({ ...element });
       }
     }
   };
 
   useEffect(() => {
-    const calibratedGrid = mainGrid.map((gridElement) => {
-      if (gridElement.type === EItemType.Stepper) {
-        const calibrationTime = calibrationValuesTime[gridElement.id];
-
-        const newChanges = gridElement.changes.map((c) => {
-          return { ...c, endTime: c.startTime + c.volume * calibrationTime };
-        });
-
-        return {
-          ...gridElement,
-          changes: newChanges,
-        };
-      }
-
-      return gridElement;
-    });
-
-    setMainGrid(calibratedGrid);
+    // const calibratedGrid = mainGrid.map((gridElement) => {
+    //   if (gridElement.type === EItemType.Stepper) {
+    //     const calibrationTime = calibrationValuesTime[gridElement.id];
+    //
+    //     const newChanges = gridElement.changes.map((c) => {
+    //       return { ...c, endTime: c.startTime + c.volume * calibrationTime };
+    //     });
+    //
+    //     return {
+    //       ...gridElement,
+    //       changes: newChanges,
+    //     };
+    //   }
+    //
+    //   return gridElement;
+    // });
+    //
+    // setMainGrid(calibratedGrid);
 
     const calibratedGridArray = mainGridArray.reduce((acc, curr) => {
       const calibratedGrid = curr.map((gridElement) => {
@@ -2018,15 +2214,15 @@ export default function App() {
           />
         </Grid>
 
-        {/*<div>*/}
-        {/*  <input*/}
-        {/*    style={{ width: 400, height: 60, fontSize: 20 }}*/}
-        {/*    onChange={(e) => setMessageValue(e.currentTarget.value)}*/}
-        {/*    id="data"*/}
-        {/*    value={messageValue}*/}
-        {/*  />*/}
-        {/*  <button onClick={sendData}>Send data</button>*/}
-        {/*</div>*/}
+        <div>
+          <input
+            style={{ width: 900, height: 60, fontSize: 20 }}
+            onChange={(e) => setMessageValue(e.currentTarget.value)}
+            id="data"
+            value={messageValue}
+          />
+          <button onClick={startValves}>Send data</button>
+        </div>
         <div>
           {/* <h3>Co2 message</h3>
          <input

@@ -181,7 +181,7 @@ export type ChannelsArgs = {
   (channel: EChannels.saveProtocol, args: any): void;
   (channel: EChannels.saveProtocolFile, args: string): void;
   (channel: EChannels.loadProtocol): void;
-  (channel: EChannels.loadedProtocolData, args: Grid): void;
+  (channel: EChannels.loadedProtocolData, args: GridDays): void;
 };
 
 export type unsub = () => void;
@@ -207,7 +207,10 @@ export type ChannelsCallback = {
   (channel: EChannels.saveProtocol, listener: (args: any) => void): void;
   (channel: EChannels.saveProtocolFile, listener: (args: string) => void): void;
   (channel: EChannels.loadProtocol, listener: (args: any) => void): void;
-  (channel: EChannels.loadedProtocolData, listener: (args: Grid) => void): void;
+  (
+    channel: EChannels.loadedProtocolData,
+    listener: (args: GridDays) => void
+  ): void;
 };
 
 export type Connection = 'initial' | 'connecting' | 'connected' | 'not-found';
