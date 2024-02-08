@@ -163,8 +163,8 @@ const _GridElement: React.FC<GridProps> = ({
     // return timeSeconds;
     // const { days } = getHoursAndMinutes(timeSeconds);
     // return days * 24 * Seconds_In_Hour;
-    // return 86400
-    return 10;
+    return 86400
+    //return 10;
     // if (process.env.NODE_ENV === 'development') {
     //   return days * 24 * Seconds_In_Hour;
     // }
@@ -1028,12 +1028,12 @@ const _GridElement: React.FC<GridProps> = ({
           </div>
           <div>
             <span>Выбранный день {currentDay + 1}</span>
-            <Button onClick={_decreaseCurrentDay}>Назад</Button>
-            <Button onClick={_increaseCurrentDay}>Вперед</Button>
-            <Button onClick={_addDay}>Добавить</Button>
-            <Button onClick={_remove}>Удалить</Button>
-            <Button onClick={_copy}>Скопировать</Button>
-            <Button onClick={_paste}>Вставить</Button>
+            <Button disabled={start} onClick={_decreaseCurrentDay}>Назад</Button>
+            <Button disabled={start} onClick={_increaseCurrentDay}>Вперед</Button>
+            <Button disabled={start} onClick={_addDay}>Добавить</Button>
+            <Button disabled={start} onClick={_remove}>Удалить</Button>
+            <Button disabled={start} onClick={_copy}>Скопировать</Button>
+            <Button disabled={start} onClick={_paste}>Вставить</Button>
           </div>
         </Grid>
       </Grid>

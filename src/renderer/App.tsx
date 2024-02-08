@@ -2214,15 +2214,15 @@ export default function App() {
           />
         </Grid>
 
-        <div>
+        {/* <div>
           <input
             style={{ width: 900, height: 60, fontSize: 20 }}
             onChange={(e) => setMessageValue(e.currentTarget.value)}
             id="data"
             value={messageValue}
           />
-          <button onClick={startValves}>Send data</button>
-        </div>
+          <button onClick={sendData}>Send data</button>
+        </div> */}
         <div>
           {/* <h3>Co2 message</h3>
          <input
