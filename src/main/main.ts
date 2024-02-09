@@ -91,9 +91,10 @@ const createWindow = async () => {
       serialPort = connectedPort;
       arduinoParser = _arduinoParser;
       serialPortCo2 = await getCo2Port(event);
+      console.log('serialPort', !!serialPort);
+      console.log('serialPortCo2', !!serialPortCo2);
     }
-    console.log('serialPort', !!serialPort);
-    console.log('serialPortCo2', !!serialPortCo2);
+
 
     if (serialPortCo2 && !isSerialCo2ListenerSet) {
       isSerialCo2ListenerSet = true;

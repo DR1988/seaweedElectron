@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import styles from './timeLine.module.css';
 import { getHoursAndMinutes } from '../../helpers/getHoursAndMinutes';
+import { Typography } from '@mui/material';
 
 type TimeLineProps = {
   allTime: number;
@@ -103,7 +104,7 @@ export const TimeLine: React.FC<TimeLineProps> = memo(
           {/*{dividersTemplates}*/}
           {dividersTemplatesDays}
         </div>
-        <span>{timeInterval}</span>
+        <Typography>{timeInterval}</Typography>
       </section>
     );
   }

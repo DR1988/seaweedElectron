@@ -37,7 +37,7 @@ import { StepperModal } from './ProtocolWindow/Modals/StepperModal';
 import { CalibrationChecker } from './Calibration/CalibrationChecker';
 import { InitialSettings } from './InitialSettings/InitailSettings';
 import { InitialValues } from '../Types/StorageTypes';
-import { createTheme, Grid, ThemeProvider } from '@mui/material';
+import { createTheme, Grid, ThemeProvider, Typography } from '@mui/material';
 import { ConnectionButton } from './Buttons/ConnectionButton';
 import { CalibrationButtons } from './Buttons/CalibrationButton';
 import { initialDays, initialGrid, initialGridObj } from './InitialGrid';
@@ -95,7 +95,8 @@ export default function App() {
 
   const [connected, setConnected] = useState<Connection>('initial');
   const [messageValue, setMessageValue] = useState(
-    'bB90B|'
+    // 'bB90B|'
+    'xE1D1S999999999S'
     // 'bB50B|'
   );
   const [messageCo2Value, setMessageCo2Value] = useState('@RRDT');
@@ -1554,7 +1555,7 @@ export default function App() {
               newSelectedItem.id !== c.id &&
               (newEndTime > c.startTime || newEndTime >= c.endTime) &&
               (newSelectedItem.startTime <= c.startTime ||
-                newSelectedItem.startTime <= c.endTime)
+                newSelectedItem.startTime < c.endTime)
             ) {
               crossing.crossingValueEnd =
                 newEndTime < c.endTime ? newEndTime : c.endTime;
@@ -1657,7 +1658,7 @@ export default function App() {
               newSelectedItem.id !== c.id &&
               (newEndTime > c.startTime || newEndTime >= c.endTime) &&
               (newSelectedItem.startTime <= c.startTime ||
-                newSelectedItem.startTime <= c.endTime)
+                newSelectedItem.startTime < c.endTime)
             ) {
               crossing.crossingValueEnd =
                 newEndTime < c.endTime ? newEndTime : c.endTime;
@@ -1760,7 +1761,7 @@ export default function App() {
               newSelectedItem.id !== c.id &&
               (newEndTime > c.startTime || newEndTime >= c.endTime) &&
               (newSelectedItem.startTime <= c.startTime ||
-                newSelectedItem.startTime <= c.endTime)
+                newSelectedItem.startTime < c.endTime)
             ) {
               crossing.crossingValueEnd =
                 newEndTime < c.endTime ? newEndTime : c.endTime;
@@ -2224,15 +2225,16 @@ export default function App() {
           <button onClick={sendData}>Send data</button>
         </div> */}
         <div>
-          {/* <h3>Co2 message</h3>
-         <input
+         
+        {/* <input
             style={{ width: 400, height: 60, fontSize: 20 }}
             onChange={(e) => setMessageCo2Value(e.currentTarget.value)}
             id="dataCo2"
             value={messageCo2Value}
           />
          <button onClick={sendCo2Data}>Send data</button> */}
-          {co2ResultValue && <h2>Result Co2: {co2ResultValue}</h2>}
+         <Typography>Значение Co2</Typography>
+          {co2ResultValue && <h2>{co2ResultValue}</h2>}
         </div>
 
         <InitialSettings

@@ -25,7 +25,7 @@ import {
 } from '../../Types/Types';
 import styles from './grid.module.css';
 import { TimeArrow } from './TimeArrow/TimeArrow';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Timer } from './Timer/Timer';
 import { ValveTimeComponentAdder } from './ValveTimeComponentAdder/ValveTimeComponentAdder';
 import { TimeLine } from './TimeLine/TimeLine';
@@ -837,7 +837,7 @@ const _GridElement: React.FC<GridProps> = ({
 
   return (
     <>
-      <span>Масштаб: {scale}</span>
+      <Typography>Масштаб: {scale}</Typography>
       <Timer start={start} finish={finish} />
       {/*<Button onClick={scrollTo}>Scroll</Button>*/}
       {/*<input*/}
@@ -853,7 +853,7 @@ const _GridElement: React.FC<GridProps> = ({
             <div className={styles.gridContainer}>
               <div className={styles.descriptionContainer}>
                 {grid.map((element) => (
-                  <div className={styles.description}>{element.name}</div>
+                  <Typography key={element.id} className={styles.description}>{element.name}</Typography>
                 ))}
               </div>
               <div className={styles.gridContent}>
@@ -1027,7 +1027,7 @@ const _GridElement: React.FC<GridProps> = ({
           </Button> */}
           </div>
           <div>
-            <span>Выбранный день {currentDay + 1}</span>
+            <Typography variant="body1" component="span">Выбранный день {currentDay + 1}</Typography>
             <Button disabled={start} onClick={_decreaseCurrentDay}>Назад</Button>
             <Button disabled={start} onClick={_increaseCurrentDay}>Вперед</Button>
             <Button disabled={start} onClick={_addDay}>Добавить</Button>

@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import React, { memo, useEffect, useRef, useState } from 'react';
 
 export type Props = {
@@ -31,7 +32,7 @@ export const Timer: React.FC<Props> = memo(({ start, finish }) => {
 
   return (
     <div>
-      <span>Timer: {timeSpent / 1000}</span>
+      <Typography>Timer: {timeSpent / 1000}</Typography>
     </div>
   );
 });

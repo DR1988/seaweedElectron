@@ -2,7 +2,7 @@ import { Days, EItemType, Grid as GridType, GridDays } from '../Types/Types';
 
 export const initialGrid: GridType = [
   {
-    name: 'Stepper',
+    name: 'Насос 1',
     id: 'x',
     type: EItemType.Stepper,
     shortName: 'STEP_X',
@@ -40,7 +40,7 @@ export const initialGrid: GridType = [
     description: 'Включает клапан X',
   },
   {
-    name: 'Stepper',
+    name: 'Насос 2',
     id: 'y',
     type: EItemType.Stepper,
     shortName: 'STEP_Y',
@@ -69,7 +69,7 @@ export const initialGrid: GridType = [
   },
 
   {
-    name: 'Stepper',
+    name: 'Насос 3',
     id: 'z',
     type: EItemType.Stepper,
     shortName: 'STEP_Z',
@@ -87,7 +87,7 @@ export const initialGrid: GridType = [
     description: 'Включает клапан Z',
   },
   {
-    name: 'Stepper',
+    name: 'Насос 4',
     id: 'e',
     type: EItemType.Stepper,
     shortName: 'STEP_E',
@@ -123,7 +123,7 @@ export const initialGrid: GridType = [
   },
 
   {
-    name: 'Optic Measurement',
+    name: 'AUX',
     id: 'o',
     type: EItemType.OptoAcc,
     shortName: 'Оптический измеритель',
@@ -154,7 +154,7 @@ export const initialGrid: GridType = [
     description: 'Оптический измеритель',
   },
   {
-    name: 'Light',
+    name: 'Освещение',
     id: 'l',
     type: EItemType.Light,
     shortName: 'LIGHT',
@@ -231,13 +231,11 @@ export const initialGrid: GridType = [
   },
 ];
 
-export const initialGridObj: GridDays = [initialGrid];
-
 export const initialDays: Days = [0];
 
 export const emptyGrid: GridType = [
   {
-    name: 'Stepper',
+    name: 'Насос 1',
     id: 'x',
     type: EItemType.Stepper,
     shortName: 'STEP_X',
@@ -245,7 +243,7 @@ export const emptyGrid: GridType = [
     description: 'Включает клапан X',
   },
   {
-    name: 'Stepper',
+    name: 'Насос 2',
     id: 'y',
     type: EItemType.Stepper,
     shortName: 'STEP_Y',
@@ -254,7 +252,7 @@ export const emptyGrid: GridType = [
   },
 
   {
-    name: 'Stepper',
+    name: 'Насос 3',
     id: 'z',
     type: EItemType.Stepper,
     shortName: 'STEP_Z',
@@ -262,7 +260,7 @@ export const emptyGrid: GridType = [
     description: 'Включает клапан Z',
   },
   {
-    name: 'Stepper',
+    name: 'Насос 4',
     id: 'e',
     type: EItemType.Stepper,
     shortName: 'STEP_E',
@@ -280,7 +278,7 @@ export const emptyGrid: GridType = [
   },
 
   {
-    name: 'Optic Measurement',
+    name: 'AUX',
     id: 'o',
     type: EItemType.OptoAcc,
     shortName: 'Оптический измеритель',
@@ -288,7 +286,7 @@ export const emptyGrid: GridType = [
     description: 'Оптический измеритель',
   },
   {
-    name: 'Light',
+    name: 'Освещение',
     id: 'l',
     type: EItemType.Light,
     shortName: 'LIGHT',
@@ -297,9 +295,12 @@ export const emptyGrid: GridType = [
   },
 ];
 
+export const initialGridObj: GridDays = [initialGrid];
+
+
 export const testGrid: GridType = [
   {
-    name: 'Stepper',
+    name: 'Насос 1',
     id: 'x',
     type: EItemType.Stepper,
     shortName: 'STEP_X',
@@ -337,7 +338,7 @@ export const testGrid: GridType = [
     description: 'Включает клапан X',
   },
   {
-    name: 'Stepper',
+    name: 'Насос 2',
     id: 'y',
     type: EItemType.Stepper,
     shortName: 'STEP_Y',
@@ -346,7 +347,7 @@ export const testGrid: GridType = [
   },
 
   {
-    name: 'Stepper',
+    name: 'Насос 3',
     id: 'z',
     type: EItemType.Stepper,
     shortName: 'STEP_Z',
@@ -354,7 +355,7 @@ export const testGrid: GridType = [
     description: 'Включает клапан Z',
   },
   {
-    name: 'Stepper',
+    name: 'Насос 4',
     id: 'e',
     type: EItemType.Stepper,
     shortName: 'STEP_E',
@@ -390,7 +391,7 @@ export const testGrid: GridType = [
   },
 
   {
-    name: 'Optic Measurement',
+    name: 'AUX',
     id: 'o',
     type: EItemType.OptoAcc,
     shortName: 'Оптический измеритель',
@@ -406,7 +407,7 @@ export const testGrid: GridType = [
     description: 'Оптический измеритель',
   },
   {
-    name: 'Light',
+    name: 'Освещение',
     id: 'l',
     type: EItemType.Light,
     shortName: 'LIGHT',

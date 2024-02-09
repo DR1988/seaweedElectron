@@ -84,7 +84,7 @@ export type OptoAccusticItem = {
 };
 
 export type LineTypeStepper = {
-  name: 'Stepper';
+  name: ValveName;
   type: EItemType.Stepper;
   id: SteppersValues;
   shortName: string;
@@ -92,8 +92,11 @@ export type LineTypeStepper = {
   description: string;
 };
 
+export type ValveRange = 1 | 2 | 3 | 4 
+export type ValveName = `Насос ${ValveRange}`
+
 export type LineTypeLight = {
-  name: 'Light';
+  name: 'Освещение';
   type: EItemType.Light;
   id: LightValues;
   shortName: string;
@@ -111,7 +114,7 @@ export type LineTypeAirLift = {
 };
 
 export type LineTypeOptoAccustic = {
-  name: 'Optic Measurement';
+  name: 'AUX';
   type: EItemType.OptoAcc;
   id: OptoAccusticValues;
   shortName: string;
