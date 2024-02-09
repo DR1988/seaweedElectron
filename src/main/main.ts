@@ -10,7 +10,7 @@
  */
 import path from 'path';
 import fs from 'fs';
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -131,7 +131,10 @@ const createWindow = async () => {
             Number(decodedResult) > 0
           ) {
             event.sender.send('serial-channel', `CO2_RESULT:${decodedResult}`);
-            Co2ResultArray.push({ time: new Date().toISOString(), value: decodedResult });
+            Co2ResultArray.push({
+              time: new Date().toISOString(),
+              value: decodedResult,
+            });
             fs.writeFile(
               './co2Result.json',
               JSON.stringify(Co2ResultArray, null, 2),
@@ -326,6 +329,8 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  let factor = screen.getPrimaryDisplay().scaleFactor;
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 1624,
@@ -348,6 +353,7 @@ const createWindow = async () => {
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
+      mainWindow.webContents.setZoomFactor(1.0 / factor);
       mainWindow.show();
     }
   });
