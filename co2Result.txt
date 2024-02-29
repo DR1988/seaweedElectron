@@ -1,0 +1,42 @@
+time     value
+ February 29th 10:56:36    0.280000
+
+ February 29th 10:56:36    0.280000
+
+ February 29th 10:56:39    0.280000
+
+ February 29th 10:56:36    0.280000
+
+ February 29th 10:56:39    0.280000
+
+ February 29th 10:56:42    0.280000
+
+ February 29th 10:56:36    0.280000
+
+ February 29th 10:56:39    0.280000
+
+ February 29th 10:56:42    0.280000
+
+ February 29th 10:56:45    0.280000
+
+ February 29th 10:56:36    0.280000
+
+ February 29th 10:56:39    0.280000
+
+ February 29th 10:56:42    0.280000
+
+ February 29th 10:56:45    0.280000
+
+ February 29th 10:56:48    0.270000
+
+ February 29th 10:56:36    0.280000
+
+ February 29th 10:56:39    0.280000
+
+ February 29th 10:56:42    0.280000
+
+ February 29th 10:56:45    0.280000
+
+ February 29th 10:56:48    0.270000
+
+ February 29th 10:56:51    0.270000

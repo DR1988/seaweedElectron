@@ -20,8 +20,10 @@ import { EChannels } from '../Types/Types';
 import { DelimiterParser } from '@serialport/parser-delimiter';
 import { SerialPort } from 'serialport';
 import { AutoDetectTypes } from '@serialport/bindings-cpp';
+import moment from 'moment'
 
 const Co2ResultArray: { time: number; value: string }[] = [];
+let resultCo2 = 'time     value'
 
 class AppUpdater {
   constructor() {
@@ -136,9 +138,15 @@ const createWindow = async () => {
               time: new Date().toISOString(),
               value: decodedResult,
             });
+
+            Co2ResultArray.forEach((el) => {
+              resultCo2 += `\n ${moment(el.time).format('MMMM Do h:mm:ss')}    ${el.value}`
+            })
+
             fs.writeFile(
-              './co2Result.json',
-              JSON.stringify(Co2ResultArray, null, 2),
+              './co2Result.txt',
+              //JSON.stringify(Co2ResultArray, null, 2),
+              resultCo2,
               'utf-8',
               (err) => {
                 if (err) {
