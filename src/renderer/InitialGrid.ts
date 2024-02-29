@@ -295,7 +295,9 @@ export const emptyGrid: GridType = [
   },
 ];
 
-export const initialGridObj: GridDays = [initialGrid];
+const startGrid = process.env.NODE_ENV === 'development' ? initialGrid : emptyGrid
+
+export const initialGridObj: GridDays = [startGrid];
 
 
 export const testGrid: GridType = [

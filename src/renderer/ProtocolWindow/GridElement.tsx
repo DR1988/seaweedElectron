@@ -50,7 +50,7 @@ import {
   Seconds_In_Minute,
   Seconds_In_Hour,
 } from '../helpers/getHoursAndMinutes';
-import { emptyGrid, initialGrid, testGrid } from '../InitialGrid';
+import { emptyGrid, testGrid } from '../InitialGrid';
 
 type GridProps = {
   grid: GridType;
@@ -802,7 +802,7 @@ const _GridElement: React.FC<GridProps> = ({
 
         setMainGridArray([
           ...mainGridArray,
-          days.length % 2 === 0 ? emptyGrid : testGrid,
+          emptyGrid,
         ]);
       }
     }
