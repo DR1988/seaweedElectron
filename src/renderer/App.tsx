@@ -2226,13 +2226,13 @@ export default function App() {
         </div> */}
         <div>
          
-        {/* <input
+        <input
             style={{ width: 400, height: 60, fontSize: 20 }}
             onChange={(e) => setMessageCo2Value(e.currentTarget.value)}
             id="dataCo2"
             value={messageCo2Value}
           />
-         <button onClick={sendCo2Data}>Send data</button> */}
+         <button onClick={sendCo2Data}>Send data</button>
          <Typography>Значение Co2</Typography>
           {co2ResultValue && <h2>{co2ResultValue}</h2>}
         </div>

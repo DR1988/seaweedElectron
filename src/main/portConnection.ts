@@ -149,5 +149,8 @@ export async function getCo2Port(event: IpcMainEvent) {
   } else {
     event.sender.send('serial-channel', 'serial:co2_sensor_not-found');
   }
-  return connectedPort ?? null;
+
+  const parser = connectedPort?.pipe(new DelimiterParser({ delimiter: '\n' }));
+
+  return {connectedPort, parser};
 }

@@ -71,6 +71,7 @@ const installExtensions = async () => {
 // };
 
 const decodeC02Commands = (command: string): string | undefined => {
+  console.log('co2 command', command)
   const co2Lavel = command.split(' ')[1];
   return co2Lavel;
 };
@@ -81,8 +82,9 @@ const createWindow = async () => {
   }
 
   let serialPort: SerialPort<AutoDetectTypes> | null = null;
-  let serialPortCo2: Awaited<ReturnType<typeof getPort>> = null;
+  let serialPortCo2:SerialPort<AutoDetectTypes> | null = null // Awaited<ReturnType<typeof getPort>> = {connectedPort: null, parser: undefined};
   let arduinoParser: DelimiterParser | undefined;
+  let Co2Parser: DelimiterParser | undefined;
   let isSerialListenerSet = false;
   let isSerialCo2ListenerSet = false;
   ipcMain.on('serial-channel', async (event, args) => {
@@ -90,20 +92,21 @@ const createWindow = async () => {
       const { connectedPort, parser: _arduinoParser } = await getPort(event);
       serialPort = connectedPort;
       arduinoParser = _arduinoParser;
-      serialPortCo2 = await getCo2Port(event);
+      const { connectedPort: _serialPortCo2, parser: _Co2Parser } = await getCo2Port(event);
+      Co2Parser = _Co2Parser
+      serialPortCo2 = _serialPortCo2
       console.log('serialPort', !!serialPort);
       console.log('serialPortCo2', !!serialPortCo2);
     }
 
 
-    if (serialPortCo2 && !isSerialCo2ListenerSet) {
+    if (serialPortCo2 && !isSerialCo2ListenerSet && Co2Parser) {
       isSerialCo2ListenerSet = true;
       let connectedData = '';
       let result = '';
       let timerId: string | number | NodeJS.Timeout | undefined;
 
-      serialPortCo2.on('data', (chunk) => {
-        // console.log('CO2 chunk', chunk.toString());
+      Co2Parser.on('data', (chunk) => {
         connectedData += chunk.toString();
         // result = '';
 
