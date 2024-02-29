@@ -1,0 +1,1223 @@
+[
+  [
+    {
+      "name": "Насос 1",
+      "id": "x",
+      "type": "stepper",
+      "shortName": "STEP_X",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 240,
+          "volume": 20,
+          "direction": "clockwise",
+          "type": "stepper",
+          "endTime": 281.442,
+          "line": "x",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включает клапан X"
+    },
+    {
+      "name": "Насос 2",
+      "id": "y",
+      "type": "stepper",
+      "shortName": "STEP_Y",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 120,
+          "volume": 20,
+          "direction": "clockwise",
+          "type": "stepper",
+          "endTime": 159.47619047619048,
+          "line": "y",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включает клапан Y"
+    },
+    {
+      "name": "Насос 3",
+      "id": "z",
+      "type": "stepper",
+      "shortName": "STEP_Z",
+      "changes": [],
+      "description": "Включает клапан Z"
+    },
+    {
+      "name": "Насос 4",
+      "id": "e",
+      "type": "stepper",
+      "shortName": "STEP_E",
+      "changes": [],
+      "description": "Включает клапан E"
+    },
+    {
+      "name": "Air Lift",
+      "id": "a",
+      "type": "air_lift",
+      "shortName": "Компрессор",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 240,
+          "type": "air_lift",
+          "endTime": 86340,
+          "line": "a",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включение и выключение воздушного компрессора"
+    },
+    {
+      "name": "AUX",
+      "id": "o",
+      "type": "opto_accustic",
+      "shortName": "Оптический измеритель",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 3600,
+          "type": "opto_accustic",
+          "endTime": 3660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 2,
+          "startTime": 7200,
+          "type": "opto_accustic",
+          "endTime": 7260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 3,
+          "startTime": 10800,
+          "type": "opto_accustic",
+          "endTime": 10860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 4,
+          "startTime": 14400,
+          "type": "opto_accustic",
+          "endTime": 14460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 5,
+          "startTime": 18000,
+          "type": "opto_accustic",
+          "endTime": 18060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 6,
+          "startTime": 21600,
+          "type": "opto_accustic",
+          "endTime": 21660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 7,
+          "startTime": 25200,
+          "type": "opto_accustic",
+          "endTime": 25260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 8,
+          "startTime": 28800,
+          "type": "opto_accustic",
+          "endTime": 28860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 9,
+          "startTime": 32400,
+          "type": "opto_accustic",
+          "endTime": 32460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 10,
+          "startTime": 36000,
+          "type": "opto_accustic",
+          "endTime": 36060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 11,
+          "startTime": 39600,
+          "type": "opto_accustic",
+          "endTime": 39660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 12,
+          "startTime": 43200,
+          "type": "opto_accustic",
+          "endTime": 43260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 13,
+          "startTime": 46800,
+          "type": "opto_accustic",
+          "endTime": 46860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 14,
+          "startTime": 50400,
+          "type": "opto_accustic",
+          "endTime": 50460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 15,
+          "startTime": 54000,
+          "type": "opto_accustic",
+          "endTime": 54060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 16,
+          "startTime": 57600,
+          "type": "opto_accustic",
+          "endTime": 57660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 17,
+          "startTime": 61200,
+          "type": "opto_accustic",
+          "endTime": 61260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 18,
+          "startTime": 64800,
+          "type": "opto_accustic",
+          "endTime": 64860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 19,
+          "startTime": 68400,
+          "type": "opto_accustic",
+          "endTime": 68460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 20,
+          "startTime": 72000,
+          "type": "opto_accustic",
+          "endTime": 72060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 21,
+          "startTime": 75600,
+          "type": "opto_accustic",
+          "endTime": 75660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 22,
+          "startTime": 79200,
+          "type": "opto_accustic",
+          "endTime": 79260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 23,
+          "startTime": 82800,
+          "type": "opto_accustic",
+          "endTime": 82860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 24,
+          "startTime": 0,
+          "type": "opto_accustic",
+          "endTime": 60,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Оптический измеритель"
+    },
+    {
+      "name": "Освещение",
+      "id": "l",
+      "type": "light",
+      "shortName": "LIGHT",
+      "changes": [
+        {
+          "id": 1,
+          "type": "light",
+          "startTime": 36000,
+          "endTime": 37800,
+          "brightness": 7,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": true,
+          "crosses": [],
+          "brightnessEnd": 40,
+          "wrongSignLight": ""
+        },
+        {
+          "id": 2,
+          "type": "light",
+          "startTime": 37800,
+          "endTime": 77400,
+          "brightness": 0,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": false,
+          "crosses": []
+        },
+        {
+          "id": 3,
+          "type": "light",
+          "startTime": 77400,
+          "endTime": 79200,
+          "brightness": 40,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": true,
+          "crosses": [],
+          "brightnessEnd": 5,
+          "wrongSignLight": ""
+        }
+      ],
+      "description": "Включает свет"
+    }
+  ],
+  [
+    {
+      "name": "Насос 1",
+      "id": "x",
+      "type": "stepper",
+      "shortName": "STEP_X",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 240,
+          "volume": 20,
+          "direction": "clockwise",
+          "type": "stepper",
+          "endTime": 281.442,
+          "line": "x",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включает клапан X"
+    },
+    {
+      "name": "Насос 2",
+      "id": "y",
+      "type": "stepper",
+      "shortName": "STEP_Y",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 120,
+          "volume": 20,
+          "direction": "clockwise",
+          "type": "stepper",
+          "endTime": 159.47619047619048,
+          "line": "y",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включает клапан Y"
+    },
+    {
+      "name": "Насос 3",
+      "id": "z",
+      "type": "stepper",
+      "shortName": "STEP_Z",
+      "changes": [],
+      "description": "Включает клапан Z"
+    },
+    {
+      "name": "Насос 4",
+      "id": "e",
+      "type": "stepper",
+      "shortName": "STEP_E",
+      "changes": [],
+      "description": "Включает клапан E"
+    },
+    {
+      "name": "Air Lift",
+      "id": "a",
+      "type": "air_lift",
+      "shortName": "Компрессор",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 240,
+          "type": "air_lift",
+          "endTime": 86340,
+          "line": "a",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включение и выключение воздушного компрессора"
+    },
+    {
+      "name": "AUX",
+      "id": "o",
+      "type": "opto_accustic",
+      "shortName": "Оптический измеритель",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 3600,
+          "type": "opto_accustic",
+          "endTime": 3660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 2,
+          "startTime": 7200,
+          "type": "opto_accustic",
+          "endTime": 7260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 3,
+          "startTime": 10800,
+          "type": "opto_accustic",
+          "endTime": 10860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 4,
+          "startTime": 14400,
+          "type": "opto_accustic",
+          "endTime": 14460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 5,
+          "startTime": 18000,
+          "type": "opto_accustic",
+          "endTime": 18060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 6,
+          "startTime": 21600,
+          "type": "opto_accustic",
+          "endTime": 21660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 7,
+          "startTime": 25200,
+          "type": "opto_accustic",
+          "endTime": 25260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 8,
+          "startTime": 28800,
+          "type": "opto_accustic",
+          "endTime": 28860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 9,
+          "startTime": 32400,
+          "type": "opto_accustic",
+          "endTime": 32460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 10,
+          "startTime": 36000,
+          "type": "opto_accustic",
+          "endTime": 36060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 11,
+          "startTime": 39600,
+          "type": "opto_accustic",
+          "endTime": 39660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 12,
+          "startTime": 43200,
+          "type": "opto_accustic",
+          "endTime": 43260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 13,
+          "startTime": 46800,
+          "type": "opto_accustic",
+          "endTime": 46860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 14,
+          "startTime": 50400,
+          "type": "opto_accustic",
+          "endTime": 50460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 15,
+          "startTime": 54000,
+          "type": "opto_accustic",
+          "endTime": 54060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 16,
+          "startTime": 57600,
+          "type": "opto_accustic",
+          "endTime": 57660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 17,
+          "startTime": 61200,
+          "type": "opto_accustic",
+          "endTime": 61260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 18,
+          "startTime": 64800,
+          "type": "opto_accustic",
+          "endTime": 64860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 19,
+          "startTime": 68400,
+          "type": "opto_accustic",
+          "endTime": 68460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 20,
+          "startTime": 72000,
+          "type": "opto_accustic",
+          "endTime": 72060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 21,
+          "startTime": 75600,
+          "type": "opto_accustic",
+          "endTime": 75660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 22,
+          "startTime": 79200,
+          "type": "opto_accustic",
+          "endTime": 79260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 23,
+          "startTime": 82800,
+          "type": "opto_accustic",
+          "endTime": 82860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 24,
+          "startTime": 0,
+          "type": "opto_accustic",
+          "endTime": 60,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Оптический измеритель"
+    },
+    {
+      "name": "Освещение",
+      "id": "l",
+      "type": "light",
+      "shortName": "LIGHT",
+      "changes": [
+        {
+          "id": 1,
+          "type": "light",
+          "startTime": 36000,
+          "endTime": 37800,
+          "brightness": 7,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": true,
+          "crosses": [],
+          "brightnessEnd": 40,
+          "wrongSignLight": ""
+        },
+        {
+          "id": 2,
+          "type": "light",
+          "startTime": 37800,
+          "endTime": 77400,
+          "brightness": 0,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": false,
+          "crosses": []
+        },
+        {
+          "id": 3,
+          "type": "light",
+          "startTime": 77400,
+          "endTime": 79200,
+          "brightness": 40,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": true,
+          "crosses": [],
+          "brightnessEnd": 5,
+          "wrongSignLight": ""
+        }
+      ],
+      "description": "Включает свет"
+    }
+  ],
+  [
+    {
+      "name": "Насос 1",
+      "id": "x",
+      "type": "stepper",
+      "shortName": "STEP_X",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 240,
+          "volume": 20,
+          "direction": "clockwise",
+          "type": "stepper",
+          "endTime": 311.42413793103447,
+          "line": "x",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включает клапан X"
+    },
+    {
+      "name": "Насос 2",
+      "id": "y",
+      "type": "stepper",
+      "shortName": "STEP_Y",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 120,
+          "volume": 20,
+          "direction": "clockwise",
+          "type": "stepper",
+          "endTime": 191.348275862069,
+          "line": "y",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включает клапан Y"
+    },
+    {
+      "name": "Насос 3",
+      "id": "z",
+      "type": "stepper",
+      "shortName": "STEP_Z",
+      "changes": [],
+      "description": "Включает клапан Z"
+    },
+    {
+      "name": "Насос 4",
+      "id": "e",
+      "type": "stepper",
+      "shortName": "STEP_E",
+      "changes": [],
+      "description": "Включает клапан E"
+    },
+    {
+      "name": "Air Lift",
+      "id": "a",
+      "type": "air_lift",
+      "shortName": "Компрессор",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 240,
+          "type": "air_lift",
+          "endTime": 86340,
+          "line": "a",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Включение и выключение воздушного компрессора"
+    },
+    {
+      "name": "AUX",
+      "id": "o",
+      "type": "opto_accustic",
+      "shortName": "Оптический измеритель",
+      "changes": [
+        {
+          "id": 1,
+          "startTime": 3600,
+          "type": "opto_accustic",
+          "endTime": 3660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 2,
+          "startTime": 7200,
+          "type": "opto_accustic",
+          "endTime": 7260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 3,
+          "startTime": 10800,
+          "type": "opto_accustic",
+          "endTime": 10860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 4,
+          "startTime": 14400,
+          "type": "opto_accustic",
+          "endTime": 14460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 5,
+          "startTime": 18000,
+          "type": "opto_accustic",
+          "endTime": 18060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 6,
+          "startTime": 21600,
+          "type": "opto_accustic",
+          "endTime": 21660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 7,
+          "startTime": 25200,
+          "type": "opto_accustic",
+          "endTime": 25260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 8,
+          "startTime": 28800,
+          "type": "opto_accustic",
+          "endTime": 28860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 9,
+          "startTime": 32400,
+          "type": "opto_accustic",
+          "endTime": 32460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 10,
+          "startTime": 36000,
+          "type": "opto_accustic",
+          "endTime": 36060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 11,
+          "startTime": 39600,
+          "type": "opto_accustic",
+          "endTime": 39660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 12,
+          "startTime": 43200,
+          "type": "opto_accustic",
+          "endTime": 43260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 13,
+          "startTime": 46800,
+          "type": "opto_accustic",
+          "endTime": 46860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 14,
+          "startTime": 50400,
+          "type": "opto_accustic",
+          "endTime": 50460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 15,
+          "startTime": 54000,
+          "type": "opto_accustic",
+          "endTime": 54060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 16,
+          "startTime": 57600,
+          "type": "opto_accustic",
+          "endTime": 57660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 17,
+          "startTime": 61200,
+          "type": "opto_accustic",
+          "endTime": 61260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 18,
+          "startTime": 64800,
+          "type": "opto_accustic",
+          "endTime": 64860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 19,
+          "startTime": 68400,
+          "type": "opto_accustic",
+          "endTime": 68460,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 20,
+          "startTime": 72000,
+          "type": "opto_accustic",
+          "endTime": 72060,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 21,
+          "startTime": 75600,
+          "type": "opto_accustic",
+          "endTime": 75660,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 22,
+          "startTime": 79200,
+          "type": "opto_accustic",
+          "endTime": 79260,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 23,
+          "startTime": 82800,
+          "type": "opto_accustic",
+          "endTime": 82860,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        },
+        {
+          "id": 24,
+          "startTime": 0,
+          "type": "opto_accustic",
+          "endTime": 60,
+          "line": "o",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "crosses": []
+        }
+      ],
+      "description": "Оптический измеритель"
+    },
+    {
+      "name": "Освещение",
+      "id": "l",
+      "type": "light",
+      "shortName": "LIGHT",
+      "changes": [
+        {
+          "id": 1,
+          "type": "light",
+          "startTime": 36000,
+          "endTime": 37800,
+          "brightness": 7,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": true,
+          "crosses": [],
+          "brightnessEnd": 40,
+          "wrongSignLight": ""
+        },
+        {
+          "id": 2,
+          "type": "light",
+          "startTime": 37800,
+          "endTime": 77400,
+          "brightness": 0,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": false,
+          "crosses": []
+        },
+        {
+          "id": 3,
+          "type": "light",
+          "startTime": 77400,
+          "endTime": 79200,
+          "brightness": 40,
+          "line": "l",
+          "wrongSign": "",
+          "crossingValueStart": 0,
+          "crossingValueEnd": 0,
+          "isChangeable": true,
+          "crosses": [],
+          "brightnessEnd": 5,
+          "wrongSignLight": ""
+        }
+      ],
+      "description": "Включает свет"
+    }
+  ]
+]

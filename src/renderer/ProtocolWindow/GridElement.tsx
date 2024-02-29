@@ -206,7 +206,7 @@ const _GridElement: React.FC<GridProps> = ({
     if (start && timeArrowRef.current) {
       setStartCondition();
     }
-  }, [start, gridWidth]);
+  }, [start]);
 
   const started = useRef(false);
 
@@ -303,6 +303,7 @@ const _GridElement: React.FC<GridProps> = ({
               } else if (
                 Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05
               ) {
+                console.log('AIR LIFT START')
                 startAirLift();
               } else if (
                 Math.abs(el.endTime - timerIntervalRef.current / 1000) < 0.05
@@ -577,8 +578,10 @@ const _GridElement: React.FC<GridProps> = ({
           commands += startValveCommand(el.line);
         }
       } else if (el.type === EItemType.OptoAcc) {
+        if (Math.abs(el.startTime - timerIntervalRef.current / 1000) < 0.05) {
         // console.log('START INIT', el);
-        commands += startOpticCommand();
+          commands += startOpticCommand();
+        }
       }
     });
 

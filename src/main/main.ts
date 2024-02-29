@@ -123,9 +123,9 @@ const createWindow = async () => {
         timerId = setTimeout(() => {
           result = connectedData;
           connectedData = '';
-          console.log('result CO2', result);
+          //console.log('result CO2', result);
           const decodedResult = decodeC02Commands(result);
-          console.log('decodedResult', decodedResult);
+          //console.log('decodedResult', decodedResult);
           if (
             decodedResult &&
             decodedResult.length > 3 &&
