@@ -1,42 +1,32 @@
 time     value
- February 29th 10:56:36    0.280000
+ March 11th 2:44:59    0.020000
 
- February 29th 10:56:36    0.280000
+ March 11th 2:45:02    0.020000
 
- February 29th 10:56:39    0.280000
+ March 11th 2:45:05    0.020000
 
- February 29th 10:56:36    0.280000
+ March 11th 2:45:08    0.020000
 
- February 29th 10:56:39    0.280000
+ March 11th 2:45:11    0.020000
 
- February 29th 10:56:42    0.280000
+ March 11th 2:45:14    0.020000
 
- February 29th 10:56:36    0.280000
+ March 11th 2:45:17    0.020000
 
- February 29th 10:56:39    0.280000
+ March 11th 2:45:20    0.020000
 
- February 29th 10:56:42    0.280000
+ March 11th 2:45:23    0.020000
 
- February 29th 10:56:45    0.280000
+ March 11th 2:45:26    0.020000
 
- February 29th 10:56:36    0.280000
+ March 11th 2:45:29    0.020000
 
- February 29th 10:56:39    0.280000
+ March 11th 2:45:32    0.020000
 
- February 29th 10:56:42    0.280000
+ March 11th 2:45:35    0.020000
 
- February 29th 10:56:45    0.280000
+ March 11th 2:45:38    0.030000
 
- February 29th 10:56:48    0.270000
+ March 11th 2:45:41    0.030000
 
- February 29th 10:56:36    0.280000
-
- February 29th 10:56:39    0.280000
-
- February 29th 10:56:42    0.280000
-
- February 29th 10:56:45    0.280000
-
- February 29th 10:56:48    0.270000
-
- February 29th 10:56:51    0.270000
+ March 11th 2:45:44    0.030000

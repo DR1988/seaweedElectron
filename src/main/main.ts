@@ -25,6 +25,8 @@ import moment from 'moment'
 const Co2ResultArray: { time: number; value: string }[] = [];
 let resultCo2 = 'time     value'
 
+const co2FilePath = './co2Result.txt'
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -138,23 +140,34 @@ const createWindow = async () => {
               time: new Date().toISOString(),
               value: decodedResult,
             });
-
-            Co2ResultArray.forEach((el) => {
-              resultCo2 += `\n ${moment(el.time).format('MMMM Do h:mm:ss')}    ${el.value}`
-            })
-
-            fs.writeFile(
-              './co2Result.txt',
-              //JSON.stringify(Co2ResultArray, null, 2),
-              resultCo2,
-              'utf-8',
-              (err) => {
-                if (err) {
-                  console.log('ERROR:', err);
-                  return;
+            
+            if (fs.existsSync(co2FilePath)) {
+              result = `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')}    ${decodedResult}`
+              fs.appendFile(
+                co2FilePath,
+                result,
+                'utf-8',
+                (err) => {
+                  if (err) {
+                    console.log('ERROR:', err);
+                    return;
+                  }
                 }
-              }
-            );
+              );
+            } else {
+              resultCo2 += `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')}    ${decodedResult}`
+              fs.writeFile(
+                co2FilePath,
+                resultCo2,
+                'utf-8',
+                (err) => {
+                  if (err) {
+                    console.log('ERROR:', err);
+                    return;
+                  }
+                }
+              );
+            }
           }
         }, 300);
       });
