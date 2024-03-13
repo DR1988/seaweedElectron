@@ -215,6 +215,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    window.electron.ipcRenderer.sendMessage(EChannels.startProtocol, start)
+  }, [start]);
+
+  useEffect(() => {
     window.electron.ipcRenderer.sendMessage(EChannels.loadCalibration, 'ARGS');
     window.electron.ipcRenderer.on(EChannels.loadedCalibration, (data) => {
       setCalibrationValuesTime(data.calibrationTimePerSecond);

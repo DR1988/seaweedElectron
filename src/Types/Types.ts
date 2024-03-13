@@ -170,6 +170,7 @@ export enum EChannels {
   saveProtocolFile = 'save-protocol-file',
   loadProtocol = 'load-protocol',
   loadedProtocolData = 'loaded-protocol-data',
+  startProtocol = 'start-protocol',
 }
 
 export type ChannelsArgs = {
@@ -185,6 +186,7 @@ export type ChannelsArgs = {
   (channel: EChannels.saveProtocolFile, args: string): void;
   (channel: EChannels.loadProtocol): void;
   (channel: EChannels.loadedProtocolData, args: GridDays): void;
+  (channel: EChannels.startProtocol, args: boolean): void;
 };
 
 export type unsub = () => void;
@@ -214,6 +216,7 @@ export type ChannelsCallback = {
     channel: EChannels.loadedProtocolData,
     listener: (args: GridDays) => void
   ): void;
+  (channel: EChannels.startProtocol, listener: (args: boolean) => void): void;
 };
 
 export type Connection = 'initial' | 'connecting' | 'connected' | 'not-found';

@@ -25,7 +25,7 @@ import moment from 'moment'
 const Co2ResultArray: { time: number; value: string }[] = [];
 let resultCo2 = 'time     value'
 
-const co2FilePath = './co2Result.txt'
+let co2FilePath = `./co2Result.txt`
 
 class AppUpdater {
   constructor() {
@@ -140,7 +140,7 @@ const createWindow = async () => {
               time: new Date().toISOString(),
               value: decodedResult,
             });
-            
+           
             if (fs.existsSync(co2FilePath)) {
               result = `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')}    ${decodedResult}`
               fs.appendFile(
@@ -155,6 +155,7 @@ const createWindow = async () => {
                 }
               );
             } else {
+              
               resultCo2 += `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')}    ${decodedResult}`
               fs.writeFile(
                 co2FilePath,
@@ -244,6 +245,12 @@ const createWindow = async () => {
       mainWindow?.webContents.send(EChannels.loadedCalibration, parsedData);
     });
   });
+
+  ipcMain.on(EChannels.startProtocol, (event, args) => {
+    if(args === true) {
+      co2FilePath = `./${moment(new Date().toISOString()).format('MMMM_Do_h_mm_ss')}_co2Result.txt`
+    }
+  })
 
   ipcMain.on(EChannels.saveCalibration, (event, args) => {
     fs.writeFile(
