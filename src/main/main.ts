@@ -26,6 +26,7 @@ const Co2ResultArray: { time: number; value: string }[] = [];
 let resultCo2 = 'time     value'
 
 let co2FilePath = `./co2Result.txt`
+let commandLoggerPath = 'commandLogger.txt'
 
 class AppUpdater {
   constructor() {
@@ -208,6 +209,35 @@ const createWindow = async () => {
 
     if (args.includes('serial:transfer') && serialPort) {
       const message = args[1];
+      if (fs.existsSync(commandLoggerPath)) {
+        const messageLogResult = `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')} - ${message}`
+        fs.appendFile(
+          commandLoggerPath,
+          messageLogResult,
+          'utf-8',
+          (err) => {
+            if (err) {
+              console.log('ERROR:', err);
+              return;
+            }
+          }
+        );
+      } else {
+        commandLoggerPath = `./${moment(new Date().toISOString()).format('MMMM_Do_h_mm_ss')}_commandLogger.txt`
+        const messageLogResult = `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')} - ${message}`
+        console.log('messageLogResult', messageLogResult)
+        fs.writeFile(
+          commandLoggerPath,
+          messageLogResult,
+          'utf-8',
+          (err) => {
+            if (err) {
+              console.log('ERROR:', err);
+              return;
+            }
+          }
+        );
+      }
       serialPort.write(message);
     }
 
@@ -249,6 +279,21 @@ const createWindow = async () => {
   ipcMain.on(EChannels.startProtocol, (event, args) => {
     if(args === true) {
       co2FilePath = `./${moment(new Date().toISOString()).format('MMMM_Do_h_mm_ss')}_co2Result.txt`
+    } else {
+      if (fs.existsSync(commandLoggerPath)) {
+        const messageLogResult = `\n ${moment(new Date().toISOString()).format('MMMM Do h:mm:ss')} - STOP`
+        fs.appendFile(
+          commandLoggerPath,
+          messageLogResult,
+          'utf-8',
+          (err) => {
+            if (err) {
+              console.log('ERROR:', err);
+              return;
+            }
+          }
+        );
+      }
     }
   })
 
